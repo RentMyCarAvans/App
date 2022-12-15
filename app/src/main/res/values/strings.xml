@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">Rent My Car</string>
+    <string name="app_name" translatable="false">RMC</string>
+    <string name="title_home" translatable="false">Rent My Car</string>
+    <string name="title_offermycar">Offer My Car</string>
+    <string name="title_profile">Profile</string>
+    <string name="textview_profile">Profile</string>
+    <string name="textview_mycars">My Cars</string>
 </resources>
