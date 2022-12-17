@@ -14,7 +14,7 @@
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.avans.rentmycar.ui.mycars.MyCarsFragment"
-        android:label="@string/title_offermycar"
+        android:label="@string/title_mycar"
         tools:layout="@layout/fragment_mycars" />
 
     <fragment
@@ -22,4 +22,5 @@
         android:name="com.avans.rentmycar.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
+
 </navigation>

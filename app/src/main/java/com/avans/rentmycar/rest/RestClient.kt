@@ -1,12 +1,13 @@
 package com.avans.rentmycar.rest
 
+import com.avans.rentmycar.utils.Constant
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
 object RestClient {
 
-    private val BASE_URL = "http://rentmycar.lol"
+    private val BASE_URL = Constant.BASE_URL
     private var mRetrofit: Retrofit? = null
 
 
