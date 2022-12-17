@@ -1,21 +1,16 @@
 package com.avans.rentmycar
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.ActivityMainBinding
-import com.avans.rentmycar.model.LoginViewModel
-import com.avans.rentmycar.utils.SessionManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -48,13 +43,18 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         bottomNavigationView.setupWithNavController(navController)
 
+        if(userIsLoggedIn()) {
+            navController.navigate(R.id.action_introFragment_to_homeFragment)
+
+        }
         // hide navbar on login page
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.parent?.id == R.id.introFragment  || destination.parent?.id == R.id.loginFragment ) {
-                if (userIsLoggedin())
+                if (!userIsLoggedIn())
                 bottomNavigationView.visibility = View.GONE
                 else {
                     bottomNavigationView.visibility = View.VISIBLE
+
                 }
             }
         }
@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         return NavigationUI.navigateUp(navController, null)
     }
-    private fun userIsLoggedin(): Boolean {
-        return false
+    private fun userIsLoggedIn(): Boolean {
+        return true
     }
 }
