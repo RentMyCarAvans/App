@@ -9,17 +9,18 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentHomeBinding
+import com.avans.rentmycar.databinding.FragmentProfileDetailBinding
 
 class ProfileDetailFragment : Fragment() {
+    private var binding: FragmentProfileDetailBinding? = null
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding = FragmentProfileDetailBinding.bind(view)
+    }
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(R.layout.fragment_profile_detail, container, false)
-
+    override fun onDestroyView() {
+        binding = null
+        super.onDestroyView()
     }
 }
