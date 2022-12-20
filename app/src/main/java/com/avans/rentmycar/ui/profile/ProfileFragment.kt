@@ -6,6 +6,7 @@ import android.view.View
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentProfileBinding
@@ -20,12 +21,16 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentProfileBinding.bind(view)
         binding!!.userName.text = "BLADIEBLAAAA"
+        binding!!.btnEditProfile.setOnClickListener {
+            findNavController().navigate(R.id.action_profileFragment_to_profileDetailFragment)
 
+        }
         var test = viewModel.getUser("test@test.com","bladiebla")
         Log.v("APP", test.toString())
         viewModel.userResult.observe(viewLifecycleOwner) {
         Log.v("APP", it.toString())
         }
+
     }
 
     override fun onDestroyView() {

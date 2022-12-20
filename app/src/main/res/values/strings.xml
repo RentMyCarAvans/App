@@ -6,7 +6,10 @@
     <string name="textview_profile">Profile</string>
     <string name="textview_mycars">My Cars</string>
     <string name="txt_hint_firstname">First Name</string>
-    <string name="txt_hint_phonenumber">+31 6 12345678</string>
+    <string name="txt_hint_phonenumber" translatable="false">+31 6 12345678</string>
     <string name="txt_hint_lastname">Last Name</string>
     <string name="txt_hint_address">Address</string>
+    <string name="title_editprofile">Edit your profile</string>
+    <string name="save">save</string>
+    <string name="txt_upload_new_profile_photo">Upload new profile photo</string>
 </resources>

@@ -3,11 +3,9 @@ package com.avans.rentmycar.rest.methods
 import com.avans.rentmycar.rest.ApiClient
 import com.avans.rentmycar.rest.request.CreateUserRequest
 import com.avans.rentmycar.rest.response.UserResponse
+import okhttp3.MultipartBody
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.PUT
+import retrofit2.http.*
 
 interface UserService {
     @GET("/api/v1/users/1")
@@ -19,6 +17,9 @@ interface UserService {
     @POST("/api/v1/users/1")
     suspend fun createUser(@Body createUserRequest: CreateUserRequest): Response<UserResponse>
 
+    @Multipart
+    @POST("/api/v1/users/profilephoto")
+    suspend fun uploadProfilePhoto(@Part body: MultipartBody.Part) : Response<UserResponse>
 
     companion object {
         fun getApi(): UserService? {
