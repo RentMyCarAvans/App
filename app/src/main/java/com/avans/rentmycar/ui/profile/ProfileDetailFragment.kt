@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
@@ -14,8 +15,10 @@ import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentProfileDetailBinding
 import com.avans.rentmycar.repository.UserRepository
 import com.avans.rentmycar.rest.request.UploadStreamRequestBody
+import com.avans.rentmycar.rest.response.BaseResponse
 import com.avans.rentmycar.viewmodel.UserViewModel
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -40,8 +43,34 @@ class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail) {
 
         binding!!.btnUploadphoto.setOnClickListener {
             openImageChooser()
+        }
+        var test = viewModel.getUser("test@test.com","bladiebla")
 
-//            uploadImage()
+        viewModel.userResult.observe(viewLifecycleOwner) {
+            Log.d("APP", "entered observe!!")
+
+            when (it) {
+                is BaseResponse.Loading -> {
+//                    showLoading()
+                    Log.d("APP", "was LOADING!!")
+
+                }
+                is BaseResponse.Error -> {
+                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT)
+                    Log.d("APP", "was error!!")
+
+                }
+                is BaseResponse.Success -> {
+//                    stopLoading()
+                    Log.d("APP", "was success!!")
+                    view.findViewById<TextInputEditText>(R.id.firstname_input).setText(it.data?.data?.firstName)
+                    view.findViewById<TextInputEditText>(R.id.lastname_input).setText(it.data?.data?.lastName)
+                    view.findViewById<TextInputEditText>(R.id.address_input).setText(it.data?.data?.address)
+                    view.findViewById<TextInputEditText>(R.id.telephone_input).setText(it.data?.data?.telephone)
+
+
+                }
+            }
         }
     }
 
@@ -59,7 +88,8 @@ class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail) {
     private fun uploadImage(file: String) {
         lifecycleScope.launch {
             val file = File(file)
-            val reqFile = file.asRequestBody("*/*".toMediaTypeOrNull())
+//            val reqFile = file.asRequestBody("*/*".toMediaTypeOrNull())
+            val image = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
 
 //           val stream = context?.getContentResolver()?.openInputStream(file);
 //            val stream = contentResolver.openInputStream(file) ?: return@launch
@@ -69,14 +99,15 @@ class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail) {
 //                binding!!.progressBar.progress = it // Some ProgressBar
 //            })
             val filePart = MultipartBody.Part.createFormData(
+                "file",
                 file.name,
-                "test.jpg",
-                reqFile
+                image
             )
             try {
                 userRepo.uploadProfilePhoto(filePart)
             } catch (e: Exception) { // if something happens to the network
                 Snackbar.make(binding!!.root, "Something went wrong", Snackbar.LENGTH_SHORT).show()
+                Log.d("APP", e.toString())
                 return@launch
             }
             Log.d("MyActivity", "On finish upload file")
@@ -98,6 +129,7 @@ class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail) {
             when (requestCode) {
                 REQUEST_CODE_PICK_IMAGE -> {
                     selectedImageUri = data?.data
+                    Log.d("APP", selectedImageUri.toString())
                     uploadImage(selectedImageUri.toString())
                     binding!!.profileImage.setImageURI(selectedImageUri)
                 }

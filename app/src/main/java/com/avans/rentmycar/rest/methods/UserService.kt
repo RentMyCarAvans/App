@@ -18,8 +18,8 @@ interface UserService {
     suspend fun createUser(@Body createUserRequest: CreateUserRequest): Response<UserResponse>
 
     @Multipart
-    @POST("/api/v1/users/profilephoto")
-    suspend fun uploadProfilePhoto(@Part body: MultipartBody.Part) : Response<UserResponse>
+    @POST("/api/v1/users/profilephoto/1")
+    suspend fun uploadProfilePhoto(@Part file: MultipartBody.Part) : Response<UserResponse>
 
     companion object {
         fun getApi(): UserService? {

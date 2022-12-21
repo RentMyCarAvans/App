@@ -7,6 +7,7 @@ import com.avans.rentmycar.R
 object SessionManager {
 
     const val USER_TOKEN = "user_token"
+    const val USER_ID = "user_id"
 
     /**
      * Function to save auth token
@@ -20,6 +21,10 @@ object SessionManager {
      */
     fun getToken(context: Context): String? {
         return getString(context, USER_TOKEN)
+    }
+
+    fun getUserId(context: Context): String? {
+        return getString(context, USER_ID)
     }
 
     fun saveString(context: Context, key: String, value: String) {

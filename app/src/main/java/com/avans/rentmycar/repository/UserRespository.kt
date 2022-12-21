@@ -15,7 +15,7 @@ class UserRepository {
     }
 
     suspend fun uploadProfilePhoto(profile_picture: MultipartBody.Part): Response<UserResponse>? {
-        return UserService.getApi()?.uploadProfilePhoto(body = profile_picture)
+        return UserService.getApi()?.uploadProfilePhoto(file = profile_picture)
     }
 
 //    suspend fun updateUser(createUserRequest: CreateUserRequest): Response<UserResponse>? {

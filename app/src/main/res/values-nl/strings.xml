@@ -10,4 +10,5 @@
     <string name="title_editprofile">Wijzig profiel</string>
     <string name="save">Opslaan</string>
     <string name="txt_upload_new_profile_photo">Upload nieuw profielfoto</string>
+    <string name="txt_hint_phonenumber">Telefoonnummer</string>
 </resources>
