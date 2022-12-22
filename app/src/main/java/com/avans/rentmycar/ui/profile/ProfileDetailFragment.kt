@@ -6,17 +6,15 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.ImageView
 import android.widget.Toast
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentProfileDetailBinding
 import com.avans.rentmycar.repository.UserRepository
-import com.avans.rentmycar.rest.request.UploadStreamRequestBody
+import com.avans.rentmycar.rest.ApiClient
+import com.avans.rentmycar.rest.request.CreateUpdateUserRequest
 import com.avans.rentmycar.rest.response.BaseResponse
 import com.avans.rentmycar.utils.Constant
 import com.avans.rentmycar.viewmodel.UserViewModel
@@ -24,10 +22,10 @@ import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.launch
+import okhttp3.Call
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.Response
 import java.io.File
 
 
@@ -43,20 +41,19 @@ class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentProfileDetailBinding.bind(view)
 
-        binding!!.profileImage
-
+        binding!!.btnSave.setOnClickListener {
+            saveProfile()
+        }
         binding!!.btnUploadphoto.setOnClickListener {
             openImageChooser()
         }
         var test = viewModel.getUser("test@test.com","bladiebla")
 
         viewModel.userResult.observe(viewLifecycleOwner) {
-            Log.d("APP", "entered observe!!")
 
             when (it) {
                 is BaseResponse.Loading -> {
-//                    showLoading()
-                    Log.d("APP", "was LOADING!!")
+                    showLoading()
 
                 }
                 is BaseResponse.Error -> {
@@ -65,16 +62,23 @@ class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail) {
 
                 }
                 is BaseResponse.Success -> {
-//                    stopLoading()
+                    stopLoading()
                     Log.d("APP", "was success!!")
-                    Glide.with(this).load("${Constant.BASE_URL}/api/v1/users/profilephoto/${it.data?.data?.id}").into(binding!!.profileImage);
+                    Glide.with(this).load("${Constant.BASE_URL}/api/v1/users/profilephoto/${it.data?.data?.id}").centerCrop().placeholder(R.drawable.noprofilepic).into(binding!!.profileImage);
                     view.findViewById<TextInputEditText>(R.id.firstname_input).setText(it.data?.data?.firstName)
                     view.findViewById<TextInputEditText>(R.id.lastname_input).setText(it.data?.data?.lastName)
                     view.findViewById<TextInputEditText>(R.id.address_input).setText(it.data?.data?.address)
                     view.findViewById<TextInputEditText>(R.id.telephone_input).setText(it.data?.data?.telephone)
+
                     }
             }
         }
+    }
+
+    private fun saveProfile() {
+        var updatedUser =  CreateUpdateUserRequest(1, R.id.firstname_input.toString(),R.id.lastname_input.toString(), null, null, null, null, R.id.address_input.toString(), R.id.city_input.toString() );
+
+        viewModel.setUser(updatedUser)
     }
 
 
@@ -150,5 +154,12 @@ class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail) {
 //        }
 
         }
+    }
+    private fun stopLoading() {
+        binding?.progressBar?.visibility = View.GONE
+    }
+
+    private fun showLoading() {
+        binding?.progressBar?.visibility = View.VISIBLE
     }
 }

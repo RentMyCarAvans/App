@@ -17,6 +17,7 @@ data class Data(
 	val dateOfBirth: String,
 	val id: Int,
 	val adult: Boolean,
-	val email: String
+	val email: String,
+	val verifiedUser: Boolean
 )
 

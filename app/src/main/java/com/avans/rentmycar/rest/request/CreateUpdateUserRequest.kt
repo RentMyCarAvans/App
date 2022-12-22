@@ -2,7 +2,10 @@ package com.avans.rentmycar.rest.request
 
 import com.google.gson.annotations.SerializedName
 
-data class CreateUserRequest (
+data class CreateUpdateUserRequest (
+    @field:SerializedName("id")
+    val id: Long,
+
     @field:SerializedName("firstName")
     val firstName: String,
 
@@ -10,14 +13,21 @@ data class CreateUserRequest (
     val lastName: String,
 
     @field:SerializedName("bonusPoints")
-    val bonusPoints: Int,
+    val bonusPoints: Int?,
 
     @field:SerializedName("password")
-    val password: String,
+    val password: String?,
 
     @field:SerializedName("dateOfBirth")
-    val dateOfBirth: String,
+    val dateOfBirth: String?,
 
     @field:SerializedName("email")
-    val email: String
+    val email: String?,
+
+    @field:SerializedName("address")
+    val address: String,
+
+    @field:SerializedName("city")
+    val city: String
+
 )

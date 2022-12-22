@@ -31,6 +31,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
 
         />
     <com.google.android.material.textfield.TextInputLayout
@@ -40,6 +41,7 @@
         android:hint="@string/txt_hint_firstname"
         app:layout_constraintStart_toStartOf="parent"
                app:layout_constraintTop_toBottomOf="@id/profileImage"
+        android:layout_marginTop="8dp"
         >
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/firstname_input"
@@ -89,12 +91,29 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/city_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/txt_hint_address"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/address_label"
+        android:layout_marginTop="16dp">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/city_input"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textAutoComplete"
+            android:singleLine="true" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/inputlayout_telephone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/txt_hint_phonenumber"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/address_label"
+        app:layout_constraintTop_toBottomOf="@id/city_label"
         android:layout_marginTop="16dp">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/telephone_input"
@@ -104,6 +123,7 @@
             android:singleLine="true" />
 
     </com.google.android.material.textfield.TextInputLayout>
+
 
     <Button
         android:id="@+id/btn_uploadphoto"

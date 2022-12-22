@@ -1,7 +1,7 @@
 package com.avans.rentmycar.rest.methods
 
 import com.avans.rentmycar.rest.ApiClient
-import com.avans.rentmycar.rest.request.CreateUserRequest
+import com.avans.rentmycar.rest.request.CreateUpdateUserRequest
 import com.avans.rentmycar.rest.response.UserResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
@@ -12,10 +12,10 @@ interface UserService {
     suspend fun getUser(): Response<UserResponse>
 
     @PUT("/api/v1/users/1")
-    suspend fun putUser(@Body createUserRequest: CreateUserRequest): Response<UserResponse>
+    suspend fun putUser(@Body createUpdateUserRequest: CreateUpdateUserRequest): Response<UserResponse>
 
     @POST("/api/v1/users/1")
-    suspend fun createUser(@Body createUserRequest: CreateUserRequest): Response<UserResponse>
+    suspend fun createUser(@Body createUpdateUserRequest: CreateUpdateUserRequest): Response<UserResponse>
 
     @Multipart
     @POST("/api/v1/users/profilephoto/1")
