@@ -13,16 +13,16 @@ import androidx.lifecycle.lifecycleScope
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentProfileDetailBinding
 import com.avans.rentmycar.repository.UserRepository
-import com.avans.rentmycar.rest.ApiClient
 import com.avans.rentmycar.rest.request.CreateUpdateUserRequest
 import com.avans.rentmycar.rest.response.BaseResponse
 import com.avans.rentmycar.utils.Constant
+import com.avans.rentmycar.utils.SessionManager.getUserId
 import com.avans.rentmycar.viewmodel.UserViewModel
 import com.bumptech.glide.Glide
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.launch
-import okhttp3.Call
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -42,6 +42,7 @@ class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail) {
         binding = FragmentProfileDetailBinding.bind(view)
 
         binding!!.btnSave.setOnClickListener {
+            view.findViewById<TextInputEditText>(R.id.firstname_input).text.toString()
             saveProfile()
         }
         binding!!.btnUploadphoto.setOnClickListener {
@@ -76,8 +77,13 @@ class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail) {
     }
 
     private fun saveProfile() {
-        var updatedUser =  CreateUpdateUserRequest(1, R.id.firstname_input.toString(),R.id.lastname_input.toString(), null, null, null, null, R.id.address_input.toString(), R.id.city_input.toString() );
-
+        val firstName = view?.findViewById<TextInputEditText>(R.id.firstname_input)?.text.toString()
+        val lastName = view?.findViewById<TextInputEditText>(R.id.lastname_input)?.text.toString()
+        val address = view?.findViewById<TextInputEditText>(R.id.address_input)?.text.toString()
+        val city = view?.findViewById<TextInputEditText>(R.id.city_input)?.text.toString()
+        val telephone = view?.findViewById<TextInputEditText>(R.id.telephone_input)?.text.toString()
+        val userId = getUserId(requireContext())
+        val updatedUser = CreateUpdateUserRequest(userId!!, firstName, lastName, null, null, null, address, null, city, telephone)
         viewModel.setUser(updatedUser)
     }
 

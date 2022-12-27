@@ -52,6 +52,15 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <EditText
+        android:id="@+id/test"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:hint="TEST"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profileImage"
+        android:autofillHints="test" />
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/lastname_label"
         android:layout_width="match_parent"
@@ -94,7 +103,7 @@
         android:id="@+id/city_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/txt_hint_address"
+        android:hint="@string/txt_hint_city"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/address_label"
@@ -144,4 +153,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
 
         />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

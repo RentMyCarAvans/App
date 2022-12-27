@@ -23,8 +23,8 @@ object SessionManager {
         return getString(context, USER_TOKEN)
     }
 
-    fun getUserId(context: Context): String? {
-        return getString(context, USER_ID)
+    fun getUserId(context: Context): Long? {
+        return getLong(context, USER_ID)
     }
 
     fun saveString(context: Context, key: String, value: String) {
@@ -40,6 +40,12 @@ object SessionManager {
         val prefs: SharedPreferences =
             context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
         return prefs.getString(USER_TOKEN, null)
+    }
+
+    fun getLong(context: Context, key: String): Long? {
+        val prefs: SharedPreferences =
+            context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
+        return prefs.getLong(USER_TOKEN, 0L )
     }
 
     fun clearData(context: Context){
