@@ -21,4 +21,5 @@
     <string name="logout">UItloggen</string>
     <string name="switch_language">Verander taal</string>
     <string name="location">Locatie</string>
+    <string name="txt_hint_city">Stad</string>
 </resources>
