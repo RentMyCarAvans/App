@@ -15,6 +15,7 @@ import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentProfileBinding
 import com.avans.rentmycar.rest.response.BaseResponse
 import com.avans.rentmycar.utils.Constant
+import com.avans.rentmycar.utils.SessionManager
 import com.avans.rentmycar.utils.SessionManager.clearData
 import com.avans.rentmycar.viewmodel.UserViewModel
 import com.bumptech.glide.Glide
@@ -42,8 +43,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             findNavController().navigate(R.id.action_profileFragment_to_profileDetailFragment)
 
         }
+        val userId = SessionManager.getUserId(requireContext())
 
-        viewModel.getUser("test@test.com","bladiebla")
+        if (userId != null) {
+            viewModel.getUser(userId)
+        }
 
 
         viewModel.userResult.observe(viewLifecycleOwner) {

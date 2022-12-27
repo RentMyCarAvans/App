@@ -8,7 +8,7 @@ import retrofit2.Response
 
 
 class UserRepository {
-    suspend fun getUser(): Response<UserResponse>? {
+    suspend fun getUser(userId: Long): Response<UserResponse>? {
         return  UserService.getApi()?.getUser()
     }
 

@@ -2,6 +2,7 @@ package com.avans.rentmycar.viewmodel
 
 import android.app.Application
 import android.util.Log
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -9,6 +10,7 @@ import com.avans.rentmycar.repository.UserRepository
 import com.avans.rentmycar.rest.request.CreateUpdateUserRequest
 import com.avans.rentmycar.rest.response.BaseResponse
 import com.avans.rentmycar.rest.response.UserResponse
+import com.avans.rentmycar.utils.SessionManager
 import kotlinx.coroutines.launch
 
 
@@ -18,13 +20,14 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
     val userResult: MutableLiveData<BaseResponse<UserResponse>> = MutableLiveData()
     val userRequest: MutableLiveData<BaseResponse<CreateUpdateUserRequest>> = MutableLiveData()
 
-    fun getUser(email: String, pwd: String) {
+    fun getUser(userId: Long) {
 
         userResult.value = BaseResponse.Loading()
         viewModelScope.launch {
             try {
                 Log.v("RentMyCarApp", " get user launched, now trying api call")
-                val response = userRepo.getUser()
+
+                val response = userRepo.getUser(userId)
                 Log.d("RentMyCarApp", response.toString())
                 if (response?.code() == 200) {
                     userResult.value = BaseResponse.Success(response.body())

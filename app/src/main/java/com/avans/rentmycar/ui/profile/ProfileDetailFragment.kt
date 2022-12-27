@@ -36,7 +36,6 @@ class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail) {
 
     val userRepo = UserRepository()
 
-    //    val contentResolver = requireActivity().contentResolver
     private var selectedImageUri: Uri? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -50,8 +49,11 @@ class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail) {
         binding!!.btnUploadphoto.setOnClickListener {
             openImageChooser()
         }
-        var test = viewModel.getUser("test@test.com","bladiebla")
+        val userId = getUserId(requireContext())
 
+        if (userId != null) {
+            viewModel.getUser(userId)
+        }
         viewModel.userResult.observe(viewLifecycleOwner) {
 
             when (it) {
