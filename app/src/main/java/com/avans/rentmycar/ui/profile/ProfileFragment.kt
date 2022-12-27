@@ -74,7 +74,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     binding!!.tvAddress.text = it.data?.data?.address
                     binding!!.phone.text = it.data?.data?.telephone
                     binding!!.location.text = it.data?.data?.city
-//                    binding!!.txtBirthdate.text = it.data?.data?.dateOfBirth
+                    binding!!.txtBirthdate.text = it.data?.data?.dateOfBirth
                     binding!!.txtBonuspoint.text = it.data?.data?.bonusPoints.toString() + " " + getString(R.string.bonuspoints)
                     Glide.with(this).load("${Constant.BASE_URL}/api/v1/users/profilephoto/${it.data?.data?.id}").centerCrop().placeholder(R.drawable.noprofilepic).into(binding!!.profileImage);
 
