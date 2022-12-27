@@ -70,6 +70,7 @@ class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail) {
                     view.findViewById<TextInputEditText>(R.id.lastname_input).setText(it.data?.data?.lastName)
                     view.findViewById<TextInputEditText>(R.id.address_input).setText(it.data?.data?.address)
                     view.findViewById<TextInputEditText>(R.id.telephone_input).setText(it.data?.data?.telephone)
+                    view.findViewById<TextInputEditText>(R.id.city_input).setText(it.data?.data?.city)
 
                     }
             }
@@ -83,7 +84,7 @@ class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail) {
         val city = view?.findViewById<TextInputEditText>(R.id.city_input)?.text.toString()
         val telephone = view?.findViewById<TextInputEditText>(R.id.telephone_input)?.text.toString()
         val userId = getUserId(requireContext())
-        val updatedUser = CreateUpdateUserRequest(userId!!, firstName, lastName, null, null, null, address, null, city, telephone)
+        val updatedUser = CreateUpdateUserRequest(userId!!, firstName, lastName, null, null, null, null,address, city, telephone)
         viewModel.setUser(updatedUser)
     }
 

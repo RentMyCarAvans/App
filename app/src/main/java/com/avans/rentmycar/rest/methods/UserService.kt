@@ -8,6 +8,8 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface UserService {
+    // TODO: need to implement dynamic urls: https://stackoverflow.com/a/41341057
+
     @GET("/api/v1/users/1")
     suspend fun getUser(): Response<UserResponse>
 

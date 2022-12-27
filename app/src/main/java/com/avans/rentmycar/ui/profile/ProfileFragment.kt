@@ -21,6 +21,7 @@ import com.avans.rentmycar.utils.Constant.BASE_URL
 import com.avans.rentmycar.utils.SessionManager.clearData
 import com.avans.rentmycar.viewmodel.UserViewModel
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -44,34 +45,35 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         }
 
-        var test = viewModel.getUser("test@test.com","bladiebla")
+        viewModel.getUser("test@test.com","bladiebla")
 //        Log.v("APP", test.toString())
 
         viewModel.userResult.observe(viewLifecycleOwner) {
+            Log.d("RentMyCarApp", it.toString())
             when (it) {
                 is BaseResponse.Loading -> {
                     showLoading()
                 }
                 is BaseResponse.Error -> {
-                    Log.d("APP", "ERROR, API DOWN?")
+                    Log.d("RentMyCarApp", "ERROR, API DOWN?")
                     showLoading()
-                    Toast.makeText(context, "Error", Toast.LENGTH_LONG).show()
+                    Snackbar.make(view, "Error", Snackbar.LENGTH_LONG).show()
                 }
                 is BaseResponse.Success -> {
                     stopLoading()
-                binding!!.firstName.text = it.data?.data?.firstName
-                binding!!.lastName.text = it.data?.data?.lastName
-                binding!!.email.text = it.data?.data?.email
+                    binding!!.firstName.text = it.data?.data?.firstName
+                    binding!!.lastName.text = it.data?.data?.lastName
+                    binding!!.email.text = it.data?.data?.email
                     binding!!.tvAddress.text = it.data?.data?.address
                     binding!!.phone.text = it.data?.data?.telephone
                     binding!!.location.text = it.data?.data?.city
-//                    binding!!.txtBirthdate.text = it.data?.data?.dateOfBirth
-                binding!!.txtBonuspoint.text = "${it.data?.data?.bonusPoints.toString()} bonuspoints"
-
+    //              binding!!.txtBirthdate.text = it.data?.data?.dateOfBirth
+                    binding!!.txtBonuspoint.text = "${it.data?.data?.bonusPoints.toString()} bonuspoints"
                     Glide.with(this).load("${Constant.BASE_URL}/api/v1/users/profilephoto/${it.data?.data?.id}").centerCrop().placeholder(R.drawable.noprofilepic).into(binding!!.profileImage);
 
-                    if (it.data?.data?.verifiedUser == true) {
-                        binding!!.verifiedUser.text = "Verified User"                     } else {binding!!.verifiedUser.text = "No Verified User"    }
+                    if (it.data?.data?.isVerifiedUser == true) {
+                        binding!!.verifiedUser.text = "Verified User"
+                    } else {binding!!.verifiedUser.text = "No Verified User"    }
 
                     val date = it.data?.data?.dateOfBirth
                     val dateFormatted = LocalDateTime

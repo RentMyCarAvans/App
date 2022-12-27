@@ -21,7 +21,4 @@ class UserRepository {
 
     }
 
-//    suspend fun updateUser(createUserRequest: CreateUserRequest): Response<UserResponse>? {
-//        return  UserService.getApi()?.putUser(createUserRequest = CreateUserRequest)
-//    }
 }

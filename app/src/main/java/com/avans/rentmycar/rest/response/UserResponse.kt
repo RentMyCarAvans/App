@@ -18,6 +18,6 @@ data class Data(
 	val id: Int,
 	val adult: Boolean,
 	val email: String,
-	val verifiedUser: Boolean
+	val isVerifiedUser: Boolean
 )
 
