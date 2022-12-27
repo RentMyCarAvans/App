@@ -14,7 +14,7 @@
     <string name="email">E-mail</string>
     <string name="phone">Telefoon</string>
     <string name="date_of_birth">Geboortedatum</string>
-    <string name="verified_user">Geverifieerd</string>
+    <string name="verified_user">Geverifieerde gebruiker</string>
     <string name="bonuspoints">Bonuspunten</string>
     <string name="edit_profile">Wijzig profiel</string>
     <string name="show_statistics">Statistieken</string>
@@ -22,4 +22,5 @@
     <string name="switch_language">Verander taal</string>
     <string name="location">Locatie</string>
     <string name="txt_hint_city">Stad</string>
+    <string name="not_verified_user">Geen geverifieerde gebruiker</string>
 </resources>

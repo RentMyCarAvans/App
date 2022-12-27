@@ -23,8 +23,9 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
         userResult.value = BaseResponse.Loading()
         viewModelScope.launch {
             try {
-                Log.v("APP_RMC", "launched, now trying api  call")
+                Log.v("RentMyCarApp", " get user launched, now trying api call")
                 val response = userRepo.getUser()
+                Log.d("RentMyCarApp", response.toString())
                 if (response?.code() == 200) {
                     userResult.value = BaseResponse.Success(response.body())
                 } else {

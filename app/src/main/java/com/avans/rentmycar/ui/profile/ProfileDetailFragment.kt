@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentProfileDetailBinding
@@ -31,7 +32,8 @@ import java.io.File
 
 class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail) {
     private var binding: FragmentProfileDetailBinding? = null
-    private val viewModel by viewModels<UserViewModel>()
+    private val viewModel: UserViewModel by viewModels()
+
     val userRepo = UserRepository()
 
     //    val contentResolver = requireActivity().contentResolver
