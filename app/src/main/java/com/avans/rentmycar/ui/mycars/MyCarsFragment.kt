@@ -1,30 +1,76 @@
 package com.avans.rentmycar.ui.mycars
 
+import CarViewAdapter
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.avans.rentmycar.R
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.avans.rentmycar.databinding.FragmentMycarsBinding
+import com.google.android.material.snackbar.Snackbar
 
+
+private val TAG = "[RMC][MyCarsFragment]"
 class MyCarsFragment : Fragment() {
+
+    private lateinit var _binding: FragmentMycarsBinding
+
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_mycars, container, false)
 
-        view.findViewById<Button>(R.id.button).setOnClickListener {
-            findNavController().navigate(R.id.action_mycars_to_mycarsDetail)
+        Log.d(TAG, "onCreateView()")
+        _binding = FragmentMycarsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.d(TAG, "onViewCreated()")
+        super.onViewCreated(view, savedInstanceState)
+
+        val binding = FragmentMycarsBinding.bind(view)
+        binding.buttonNewCarFab.setOnClickListener {
+            Log.d(TAG, "onViewCreated() => Floating Action Button clicked")
+            val bar = (activity as AppCompatActivity).supportActionBar
+            bar?.title = "Add a new Car"
+            // val action = MyCarsFragmentDirections.actionNavigationMycarsToCarDetailFragment()
+            val action = MyCarsFragmentDirections.actionMycarsToCarAddItemFragment()
+            this.findNavController().navigate(action)
         }
-        return view
+
+        Log.d(TAG, "onViewCreated() => after fragmentMyCarsBinding")
+
+        binding.listCarRecyclerView.adapter = CarViewAdapter()
+        Log.d(TAG, "onViewCreated() => CarViewAdapter called")
+        binding.listCarRecyclerView.layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
+        Log.d(TAG, "onViewCreated() => listRecyclerView called")
+
+        val bar = (activity as AppCompatActivity).supportActionBar
+        bar?.title = "My Cars"
+    }
+
+    private fun showDialog(view: View) {
+        Log.d(TAG, "showDialog()")
+        Snackbar.make(view, "TODO Call to car_detail_fragment", Snackbar.LENGTH_LONG)
+            .setAction("DISMISS", View.OnClickListener {
+                // executed when DISMISS is clicked
+                System.out.println("Snackbar Set Action - OnClick.")
+                })
+            .show()
+    }
+
+    companion object {
+        fun newInstance(): MyCarsFragment = MyCarsFragment()
     }
 }

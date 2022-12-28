@@ -29,14 +29,18 @@
         tools:layout="@layout/fragment_mycars">
 
         <action
-            android:id="@+id/action_mycars_to_mycarsDetail"
-            app:destination="@id/mycarsDetail" />
+            android:id="@+id/action_mycars_to_carDetailFragment"
+            app:destination="@id/carDetailFragment" />
+        <action
+            android:id="@+id/action_mycars_to_carAddItemFragment"
+            app:destination="@id/carAddItemFragment" />
     </fragment>
     <fragment
-        android:id="@+id/mycarsDetail"
-        android:name="com.avans.rentmycar.ui.mycars.MyCarsDetailFragment"
-        android:label="@string/title_offermycar"
-        tools:layout="@layout/fragment_mycars_detail">
-
-    </fragment>
+        android:id="@+id/carDetailFragment"
+        android:name="com.avans.rentmycar.ui.mycars.CarDetailFragment"
+        android:label="CarDetailFragment" />
+    <fragment
+        android:id="@+id/carAddItemFragment"
+        android:name="com.avans.rentmycar.ui.mycars.CarAddItemFragment"
+        android:label="CarAddItemFragment" />
 </navigation>
