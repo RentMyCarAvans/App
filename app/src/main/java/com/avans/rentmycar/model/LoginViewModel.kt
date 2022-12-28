@@ -1,6 +1,7 @@
 package com.avans.rentmycar.model
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -27,9 +28,14 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                     email = email
                 )
                 val response = userRepo.loginUser(loginRequest = loginRequest)
+                Log.d("APP", response.toString())
                 if (response?.code() == 200) {
+                    Log.d("APP", "code 200")
+
                     loginResult.value = BaseResponse.Success(response.body())
                 } else {
+                    Log.d("APP", "not working this")
+
                     loginResult.value = BaseResponse.Error(response?.message())
                 }
 

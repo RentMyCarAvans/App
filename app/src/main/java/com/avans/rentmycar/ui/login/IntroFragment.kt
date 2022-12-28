@@ -1,18 +1,18 @@
 package com.avans.rentmycar.ui.login
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentIntroBinding
-import com.avans.rentmycar.databinding.FragmentLoginBinding
 import com.avans.rentmycar.model.LoginViewModel
-import com.avans.rentmycar.rest.response.BaseResponse
+import com.avans.rentmycar.utils.SessionManager
+
 
 class IntroFragment : Fragment() {
     private var _binding: FragmentIntroBinding? = null
@@ -30,6 +30,9 @@ class IntroFragment : Fragment() {
     ): View {
 
         _binding = FragmentIntroBinding.inflate(inflater, container, false)
+        //hide actionbar
+        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
+
         val root: View = binding.root
 
         binding.btnLogin.setOnClickListener {
@@ -40,11 +43,15 @@ class IntroFragment : Fragment() {
             doRegister()
         }
 
+        val token = context?.let { SessionManager.getToken(it) }
+        if (!token.isNullOrBlank()) {
+            findNavController().navigate(R.id.action_introFragment_to_homeFragment2)
+
+        }
         return root
     }
 
     private fun doRegister() {
-        findNavController().navigate(R.id.action_introFragment_to_registerFragment)
     }
 
     private fun doLogin() {
@@ -55,4 +62,5 @@ class IntroFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
 }

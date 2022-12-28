@@ -23,4 +23,12 @@
     <string name="location">Locatie</string>
     <string name="txt_hint_city">Stad</string>
     <string name="not_verified_user">Geen geverifieerde gebruiker</string>
+    <string name="register">Registreer</string>
+    <string name="login">Login</string>
+    <string name="title_intro">intro</string>
+    <string name="login_to_rent_my_car">Login</string>
+    <string name="password">Wachtwoord</string>
+    <string name="remember_me">Onthouden</string>
+    <string name="first_name">Voornaam</string>
+    <string name="last_name">Achternaam</string>
 </resources>

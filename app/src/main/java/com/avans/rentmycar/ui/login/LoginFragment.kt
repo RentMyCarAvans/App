@@ -5,11 +5,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.navigation.fragment.findNavController
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentLoginBinding
@@ -35,7 +32,9 @@ class LoginFragment : Fragment() {
 
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
+        binding.btnLogin.setOnClickListener {
+            doLogin()
+        }
 
         viewModel.loginResult.observe(viewLifecycleOwner) {
             when (it) {
@@ -68,10 +67,8 @@ class LoginFragment : Fragment() {
     }
 
     private fun navigateToHome() {
-
-
-
         Log.v("APP", "logging in")
+        findNavController().navigate(R.id.action_loginFragment_to_homeFragment2)
 
 
     }
@@ -99,7 +96,9 @@ class LoginFragment : Fragment() {
         showToast("Success:" + data?.message)
         if (data != null) {
             if (data.status === 200) {
+                context?.let { SessionManager.saveAuthToken(it, data.data.token) }
 //                data.data.let { SessionManager.saveAuthToken(this, it) }
+                Log.d("APP RMC", "status 200, now opening home")
                 navigateToHome()
             }
         }

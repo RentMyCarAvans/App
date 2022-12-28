@@ -103,7 +103,9 @@
         android:id="@+id/btn_create_account"
         android:layout_width="0dp"
         android:layout_height="48dp"
-        android:layout_marginEnd="2dp"
+
+        android:layout_margin="16dp"
+
         android:text="@string/register"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

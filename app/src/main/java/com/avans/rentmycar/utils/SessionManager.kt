@@ -3,6 +3,7 @@ package com.avans.rentmycar.utils
 import android.content.Context
 import android.content.SharedPreferences
 import com.avans.rentmycar.R
+import com.avans.rentmycar.ui.login.LoginFragment
 
 object SessionManager {
 
