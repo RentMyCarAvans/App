@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.avans.rentmycar.ui.profile.ProfileFragment"
-        android:label="Profile"
+        android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" >
         <action
             android:id="@+id/action_profileFragment_to_profileDetailFragment"
@@ -17,5 +17,5 @@
     <fragment
         android:id="@+id/profileDetailFragment"
         android:name="com.avans.rentmycar.ui.profile.ProfileDetailFragment"
-        android:label="ProfileDetailFragment" />
+        android:label="@string/title_editprofile" />
 </navigation>

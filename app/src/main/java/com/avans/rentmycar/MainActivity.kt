@@ -11,8 +11,10 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.ActivityMainBinding
+import com.bumptech.glide.annotation.GlideModule
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
+@GlideModule
 class MainActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
