@@ -9,7 +9,7 @@ import retrofit2.http.Query
  */
 interface CarApiService {
 
-    @GET("cars")
+    @GET("/api/v1/cars")
     suspend fun getAllCarsByUserId(@Query("userId") userId:Int) : List<CarList>
 
 }

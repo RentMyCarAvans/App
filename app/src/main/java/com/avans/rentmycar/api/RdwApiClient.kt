@@ -5,10 +5,9 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import com.avans.rentmycar.utils.Constant.BASE_URLRDW
 
 private val TAG = "[RMC][RdwApiClient]"
-
-private const val BASE_URL = "https://opendata.rdw.nl/resource/"
 
 /**
  * Build the Moshi object that Retrofit will be using, making sure to add the Kotlin adapter for
@@ -24,7 +23,7 @@ private val moshi = Moshi.Builder()
  */
 private val retrofit = Retrofit.Builder()
     .addConverterFactory(MoshiConverterFactory.create(moshi))
-    .baseUrl(BASE_URL)
+    .baseUrl(BASE_URLRDW)
     .build()
 
 /**
