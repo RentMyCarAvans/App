@@ -10,13 +10,6 @@
     android:layout_marginRight="8dp"
     >
 
-<!--    <ProgressBar-->
-<!--        style="@style/Widget.AppCompat.ProgressBar.Horizontal"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:max="100"-->
-<!--        tools:progress="40"-->
-<!--        />-->
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyle"
@@ -29,56 +22,53 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/profile_image"
+        android:id="@+id/img_profile_picture"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginTop="24dp"
         android:scaleType="fitCenter"
-
         android:src="@drawable/noprofilepic"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearanceOverlay="@style/circleImageView" />
 
     <TextView
-        android:id="@+id/firstName"
+        android:id="@+id/textview_firstName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/txt_hint_firstname"
-
         android:layout_marginLeft="8dp"
         android:textStyle="bold"
-
-app:layout_constraintStart_toEndOf="@id/profile_image"
-        app:layout_constraintTop_toTopOf="@+id/profile_image"/>
+        app:layout_constraintStart_toEndOf="@id/img_profile_picture"
+        app:layout_constraintTop_toTopOf="@+id/img_profile_picture"/>
 
     <TextView
-        android:id="@+id/lastName"
+        android:id="@+id/txtview_lastName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:text="@string/txt_hint_lastname"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/firstName"
-        app:layout_constraintTop_toTopOf="@+id/profile_image" />
+        app:layout_constraintStart_toEndOf="@id/textview_firstName"
+        app:layout_constraintTop_toTopOf="@+id/img_profile_picture" />
 
 
     <TextView
-        android:id="@+id/location"
+        android:id="@+id/textview_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/location"
         android:layout_marginLeft="8dp"
 
-        app:layout_constraintTop_toBottomOf="@id/firstName"
-        app:layout_constraintStart_toEndOf="@id/profile_image"/>
+        app:layout_constraintTop_toBottomOf="@id/textview_firstName"
+        app:layout_constraintStart_toEndOf="@id/img_profile_picture"/>
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="location,profile_image"
+        app:constraint_referenced_ids="textview_location,img_profile_picture"
         tools:layout_editor_absoluteX="84dp"
         tools:layout_editor_absoluteY="602dp"
         />
@@ -97,7 +87,7 @@ app:layout_constraintStart_toEndOf="@id/profile_image"
         app:layout_constraintTop_toBottomOf="@id/barrier1" />
 
     <TextView
-            android:id="@+id/tv_address"
+            android:id="@+id/textview_address"
             android:text="@string/txt_hint_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -111,14 +101,14 @@ app:layout_constraintStart_toEndOf="@id/profile_image"
 
     <View style="@style/HorizontalLine"
         app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_address"/>
+        app:layout_constraintTop_toBottomOf="@id/textview_address"/>
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="tv_address,img_address"
+        app:constraint_referenced_ids="textview_address,img_address"
         tools:layout_editor_absoluteX="84dp"
         tools:layout_editor_absoluteY="602dp"
         />
@@ -136,7 +126,7 @@ app:layout_constraintStart_toEndOf="@id/profile_image"
         app:layout_constraintTop_toBottomOf="@id/barrier2" />
 
     <TextView
-        android:id="@+id/email"
+        android:id="@+id/textview_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -150,14 +140,14 @@ app:layout_constraintStart_toEndOf="@id/profile_image"
 
     <View style="@style/HorizontalLine"
         app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/email"/>
+        app:layout_constraintTop_toBottomOf="@id/textview_email"/>
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="email,img_email"
+        app:constraint_referenced_ids="textview_email,img_email"
         tools:layout_editor_absoluteX="84dp"
         tools:layout_editor_absoluteY="602dp"
         />
@@ -175,7 +165,7 @@ app:layout_constraintStart_toEndOf="@id/profile_image"
         app:tint="#2196F3" />
 
     <TextView
-        android:id="@+id/phone"
+        android:id="@+id/textview_phone"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -188,14 +178,14 @@ app:layout_constraintStart_toEndOf="@id/profile_image"
 
     <View style="@style/HorizontalLine"
         app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/phone"/>
+        app:layout_constraintTop_toBottomOf="@id/textview_phone"/>
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="phone,img_phone"
+        app:constraint_referenced_ids="textview_phone,img_phone"
         tools:layout_editor_absoluteX="84dp"
         tools:layout_editor_absoluteY="602dp"
         />
@@ -213,7 +203,7 @@ app:layout_constraintStart_toEndOf="@id/profile_image"
         app:tint="#2196F3" />
 
     <TextView
-        android:id="@+id/txt_birthdate"
+        android:id="@+id/textview_birthdate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -228,14 +218,14 @@ app:layout_constraintStart_toEndOf="@id/profile_image"
 
     <View style="@style/HorizontalLine"
         app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txt_birthdate"/>
+        app:layout_constraintTop_toBottomOf="@id/textview_birthdate"/>
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="img_cake,txt_birthdate"
+        app:constraint_referenced_ids="img_cake,textview_birthdate"
         tools:layout_editor_absoluteX="84dp"
         tools:layout_editor_absoluteY="602dp"
         />
@@ -253,7 +243,7 @@ app:layout_constraintStart_toEndOf="@id/profile_image"
         app:tint="#2196F3" />
 
     <TextView
-        android:id="@+id/verified_user"
+        android:id="@+id/textview_verified_user"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -266,14 +256,14 @@ app:layout_constraintStart_toEndOf="@id/profile_image"
 
     <View style="@style/HorizontalLine"
         app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/verified_user"/>
+        app:layout_constraintTop_toBottomOf="@id/textview_verified_user"/>
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="verified_user, img_verified_user"
+        app:constraint_referenced_ids="textview_verified_user, img_verified_user"
         tools:layout_editor_absoluteX="84dp"
         tools:layout_editor_absoluteY="602dp"
         />
@@ -291,7 +281,7 @@ app:layout_constraintStart_toEndOf="@id/profile_image"
         app:tint="#2196F3" />
 
     <TextView
-        android:id="@+id/txt_bonuspoint"
+        android:id="@+id/textview_bonuspoint"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

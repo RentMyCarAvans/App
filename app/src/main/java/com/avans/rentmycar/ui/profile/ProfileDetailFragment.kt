@@ -69,7 +69,7 @@ class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail) {
                 is BaseResponse.Success -> {
                     stopLoading()
                     Log.d("APP", "was success!!")
-                    Glide.with(this).load("${Constant.BASE_URL}/api/v1/users/profilephoto/${it.data?.data?.id}").centerCrop().placeholder(R.drawable.noprofilepic).into(binding!!.profileImage);
+                    Glide.with(this).load("${Constant.BASE_URL}/api/v1/users/profilephoto/${it.data?.data?.id}").centerCrop().placeholder(R.drawable.noprofilepic).into(binding!!.imgProfilePicture);
                     view.findViewById<TextInputEditText>(R.id.firstname_input).setText(it.data?.data?.firstName)
                     view.findViewById<TextInputEditText>(R.id.lastname_input).setText(it.data?.data?.lastName)
                     view.findViewById<TextInputEditText>(R.id.address_input).setText(it.data?.data?.address)
@@ -104,6 +104,7 @@ class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail) {
 
 
     private fun uploadImage(file: String) {
+
         lifecycleScope.launch {
             val file = File(file)
 //            val reqFile = file.asRequestBody("*/*".toMediaTypeOrNull())
@@ -149,7 +150,7 @@ class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail) {
                     selectedImageUri = data?.data
                     Log.d("APP", selectedImageUri.toString())
                     uploadImage(selectedImageUri.toString())
-                    binding!!.profileImage.setImageURI(selectedImageUri)
+                    binding!!.imgProfilePicture.setImageURI(selectedImageUri)
                 }
             }
 

@@ -68,19 +68,19 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     Log.d("RentMyCarApp", "success")
 
                     stopLoading()
-                    binding!!.firstName.text = it.data?.data?.firstName
-                    binding!!.lastName.text = it.data?.data?.lastName
-                    binding!!.email.text = it.data?.data?.email
-                    binding!!.tvAddress.text = it.data?.data?.address
-                    binding!!.phone.text = it.data?.data?.telephone
-                    binding!!.location.text = it.data?.data?.city
-                    binding!!.txtBirthdate.text = it.data?.data?.dateOfBirth
-                    binding!!.txtBonuspoint.text = it.data?.data?.bonusPoints.toString() + " " + getString(R.string.bonuspoints)
-                    Glide.with(this).load("${Constant.BASE_URL}/api/v1/users/profilephoto/${it.data?.data?.id}").centerCrop().placeholder(R.drawable.noprofilepic).into(binding!!.profileImage);
+                    binding!!.textviewFirstName.text = it.data?.data?.firstName
+                    binding!!.txtviewLastName.text = it.data?.data?.lastName
+                    binding!!.textviewEmail.text = it.data?.data?.email
+                    binding!!.textviewAddress.text = it.data?.data?.address
+                    binding!!.textviewPhone.text = it.data?.data?.telephone
+                    binding!!.textviewLocation.text = it.data?.data?.city
+                    binding!!.textviewBirthdate.text = it.data?.data?.dateOfBirth
+                    binding!!.textviewBonuspoint.text = it.data?.data?.bonusPoints.toString() + " " + getString(R.string.bonuspoints)
+                    Glide.with(this).load("${Constant.BASE_URL}/api/v1/users/profilephoto/${it.data?.data?.id}").centerCrop().placeholder(R.drawable.noprofilepic).into(binding!!.imgProfilePicture);
 
                     if (it.data?.data?.isVerifiedUser == true) {
-                        binding!!.verifiedUser.text = getString(R.string.verified_user)
-                    } else {binding!!.verifiedUser.text = getString(R.string.not_verified_user)    }
+                        binding!!.textviewVerifiedUser.text = getString(R.string.verified_user)
+                    } else {binding!!.textviewVerifiedUser.text = getString(R.string.not_verified_user)    }
 
 
 //                    val dateofBirth = it.data?.data?.dateOfBirth
