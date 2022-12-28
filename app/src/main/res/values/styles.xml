@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="circleImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="HorizontalLine">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">@dimen/horizontal_line_height</item>
+        <item name="android:background">@color/material_dynamic_neutral80</item>
+        <item name="android:layout_marginTop">@dimen/large_spacer</item>
+        <item name="android:layout_marginBottom">@dimen/large_spacer</item>
+    </style>
+
+    <dimen name="horizontal_line_height">1dp</dimen>
+    <dimen name="large_spacer">16dp</dimen>
+</resources>

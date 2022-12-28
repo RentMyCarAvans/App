@@ -1,17 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">RMC</string>
     <string name="title_profile">Profiel</string>
     <string name="textview_profile">Profiel</string>
     <string name="textview_mycars">Mijn auto\'s</string>
-    <string name="title_mycar">Mijn auto</string>
-    <string name="register">Registreer</string>
-    <string name="login">Login</string>
-    <string name="login_to_rent_my_car">Login bij Rent My Car</string>
-    <string name="password">Wachtwoord</string>
-    <string name="remember_me">Blijf ingelogd</string>
+    <string name="title_offermycar">Bied auto aan</string>
+    <string name="txt_hint_firstname">Voornaam</string>
+    <string name="txt_hint_lastname">Achternaam</string>
+    <string name="txt_hint_address">Adres</string>
+    <string name="title_editprofile">Wijzig profiel</string>
+    <string name="save">Opslaan</string>
+    <string name="txt_upload_new_profile_photo">Upload nieuw profielfoto</string>
+    <string name="txt_hint_phonenumber">Telefoonnummer</string>
     <string name="email">E-mail</string>
-    <string name="title_intro">intro</string>
-    <string name="first_name">Voornaam</string>
-    <string name="last_name">Achternaam</string>
+    <string name="phone">Telefoon</string>
+    <string name="date_of_birth">Geboortedatum</string>
+    <string name="verified_user">Geverifieerde gebruiker</string>
+    <string name="bonuspoints">Bonuspunten</string>
+    <string name="edit_profile">Wijzig profiel</string>
+    <string name="show_statistics">Statistieken</string>
+    <string name="logout">UItloggen</string>
+    <string name="switch_language">Verander taal</string>
+    <string name="location">Locatie</string>
+    <string name="txt_hint_city">Stad</string>
+    <string name="not_verified_user">Geen geverifieerde gebruiker</string>
 </resources>

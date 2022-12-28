@@ -3,11 +3,11 @@ package com.avans.rentmycar.utils
 import android.content.Context
 import android.content.SharedPreferences
 import com.avans.rentmycar.R
-import com.avans.rentmycar.ui.login.LoginFragment
 
 object SessionManager {
 
     const val USER_TOKEN = "user_token"
+    const val USER_ID = "user_id"
 
     /**
      * Function to save auth token
@@ -23,6 +23,10 @@ object SessionManager {
         return getString(context, USER_TOKEN)
     }
 
+    fun getUserId(context: Context): Long? {
+        return getLong(context, USER_ID)
+    }
+
     fun saveString(context: Context, key: String, value: String) {
         val prefs: SharedPreferences =
             context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
@@ -36,6 +40,12 @@ object SessionManager {
         val prefs: SharedPreferences =
             context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
         return prefs.getString(USER_TOKEN, null)
+    }
+
+    fun getLong(context: Context, key: String): Long? {
+        val prefs: SharedPreferences =
+            context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
+        return prefs.getLong(USER_TOKEN, 0L )
     }
 
     fun clearData(context: Context){
