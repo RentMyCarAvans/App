@@ -1,6 +1,7 @@
 package com.avans.rentmycar
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -9,6 +10,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.ActivityMainBinding
+import com.avans.rentmycar.utils.SessionManager
 import com.bumptech.glide.annotation.GlideModule
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -22,6 +24,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+
+
+
+
 
         val navHostFragment = supportFragmentManager.findFragmentById(
             R.id.nav_host_container
@@ -37,6 +44,16 @@ class MainActivity : AppCompatActivity() {
             setOf( R.id.homeFragment,  R.id.mycars, R.id.profileFragment)
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if(destination.id == R.id.loginFragment || destination.id == R.id.registerFragment || destination.id == R.id.introFragment) {
+
+                bottomNavigationView.visibility = View.GONE
+            } else {
+
+                bottomNavigationView.visibility = View.VISIBLE
+            }
+        }
     }
 
         override fun onSupportNavigateUp(): Boolean {
