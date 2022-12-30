@@ -1,16 +1,15 @@
 package com.avans.rentmycar.ui.profile
 
+import android.content.Intent.getIntent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
-
+import androidx.core.app.ActivityCompat.recreate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentProfileBinding
 import com.avans.rentmycar.rest.response.BaseResponse
@@ -20,11 +19,8 @@ import com.avans.rentmycar.utils.SessionManager.clearData
 import com.avans.rentmycar.viewmodel.UserViewModel
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 import java.util.*
+
 
 // viewbinding in fragment : https://stackoverflow.com/questions/62952957/viewbinding-in-fragment
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
@@ -43,7 +39,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             findNavController().navigate(R.id.action_profileFragment_to_profileDetailFragment)
 
         }
-        val userId = SessionManager.getUserId(requireContext())
+        val userId = context?.let { SessionManager.getUserId(it) }
 
         if (userId != null) {
             viewModel.getUser(userId)
@@ -110,6 +106,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun logout() {
         clearData(requireContext())
+        //restart app
+        getActivity()?.recreate();
+
     }
 
     override fun onDestroyView() {

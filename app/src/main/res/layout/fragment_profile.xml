@@ -70,8 +70,7 @@
         app:barrierDirection="bottom"
         app:constraint_referenced_ids="textview_location,img_profile_picture"
         tools:layout_editor_absoluteX="84dp"
-        tools:layout_editor_absoluteY="602dp"
-        />
+        tools:layout_editor_absoluteY="602dp" />
 
 
     <ImageView
@@ -110,8 +109,7 @@
         app:barrierDirection="bottom"
         app:constraint_referenced_ids="textview_address,img_address"
         tools:layout_editor_absoluteX="84dp"
-        tools:layout_editor_absoluteY="602dp"
-        />
+        tools:layout_editor_absoluteY="602dp" />
 
     <ImageView
         android:id="@+id/img_email"
@@ -149,8 +147,7 @@
         app:barrierDirection="bottom"
         app:constraint_referenced_ids="textview_email,img_email"
         tools:layout_editor_absoluteX="84dp"
-        tools:layout_editor_absoluteY="602dp"
-        />
+        tools:layout_editor_absoluteY="602dp" />
 
     <ImageView
         android:id="@+id/img_phone"
@@ -187,8 +184,7 @@
         app:barrierDirection="bottom"
         app:constraint_referenced_ids="textview_phone,img_phone"
         tools:layout_editor_absoluteX="84dp"
-        tools:layout_editor_absoluteY="602dp"
-        />
+        tools:layout_editor_absoluteY="602dp" />
 
     <ImageView
         android:id="@+id/img_cake"
@@ -227,8 +223,7 @@
         app:barrierDirection="bottom"
         app:constraint_referenced_ids="img_cake,textview_birthdate"
         tools:layout_editor_absoluteX="84dp"
-        tools:layout_editor_absoluteY="602dp"
-        />
+        tools:layout_editor_absoluteY="602dp" />
 
     <ImageView
         android:id="@+id/img_verified_user"
@@ -265,8 +260,7 @@
         app:barrierDirection="bottom"
         app:constraint_referenced_ids="textview_verified_user, img_verified_user"
         tools:layout_editor_absoluteX="84dp"
-        tools:layout_editor_absoluteY="602dp"
-        />
+        tools:layout_editor_absoluteY="602dp" />
 
     <ImageView
         android:id="@+id/img_bonuspoints"
@@ -299,18 +293,9 @@
         android:layout_height="wrap_content"
         android:text="@string/edit_profile"
 
-       app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/btn_switchLanguage"
-    />
-    <Button
-        android:id="@+id/btn_switchLanguage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/switch_language"
+        app:layout_constraintBottom_toTopOf="@+id/btn_statistics"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/btn_statistics"
-        />
     <Button
         android:id="@+id/btn_statistics"
         android:layout_width="match_parent"

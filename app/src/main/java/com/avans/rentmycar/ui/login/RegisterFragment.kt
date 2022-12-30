@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.avans.rentmycar.databinding.FragmentIntroBinding
@@ -27,16 +28,22 @@ class RegisterFragment : Fragment() {
 
         _binding = FragmentRegisterBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        //hide actionbar
+        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
 
         binding.btnCreateAccount.setOnClickListener {
-            createAccount()
+            val firstName = binding.txtInputFirstName.text.toString()
+            val lastName = binding.txtInputLastName.text.toString()
+            val email = binding.txtInputEmail.text.toString()
+            val pwd = binding.txtInputPass.text.toString()
+            createAccount(firstName = firstName, lastName = lastName, email= email, password = pwd)
         }
 
         return root
     }
 
-    private fun createAccount() {
-        TODO("Not yet implemented")
+    private fun createAccount(firstName: String, lastName: String, email: String, password: String) {
+        viewModel.registerUser(firstName, lastName, email, password)
     }
 
 }

@@ -52,6 +52,8 @@ class IntroFragment : Fragment() {
     }
 
     private fun doRegister() {
+        findNavController().navigate(R.id.action_introFragment_to_registerFragment)
+
     }
 
     private fun doLogin() {
