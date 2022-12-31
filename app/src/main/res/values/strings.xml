@@ -32,4 +32,7 @@
     <string name="remember_me">Remember Me</string>
     <string name="first_name">First name</string>
     <string name="last_name">Last Name</string>
+    <string name="register_to_rent_my_car">Register to Rent My Car</string>
+    <string name="error_creating_account">There was an error creating your account.</string>
+    <string name="success_creating_account">Account created!</string>
 </resources>

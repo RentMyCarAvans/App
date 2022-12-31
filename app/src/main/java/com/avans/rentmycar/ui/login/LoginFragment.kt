@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -29,11 +30,17 @@ class LoginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        activity?.actionBar?.title= "Login"
 
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        //show actionbar
+        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
         binding.btnLogin.setOnClickListener {
             doLogin()
+        }
+        binding.btnRegister.setOnClickListener {
+            doRegister()
         }
 
         viewModel.loginResult.observe(viewLifecycleOwner) {
@@ -80,19 +87,19 @@ class LoginFragment : Fragment() {
 
     }
 
-    fun doSignup() {
-        showToast("Need to implement this" )
+    private fun doRegister() {
+        findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
     }
 
-    fun showLoading() {
+    private fun showLoading() {
         binding.prgbar.visibility = View.VISIBLE
     }
 
-    fun stopLoading() {
+    private fun stopLoading() {
         binding.prgbar.visibility = View.GONE
     }
 
-    fun processLogin(data: LoginResponse?) {
+    private fun processLogin(data: LoginResponse?) {
         showToast("Success:" + data?.message)
         if (data != null) {
             if (data.status === 200) {
@@ -104,7 +111,7 @@ class LoginFragment : Fragment() {
         }
     }
 
-    fun processError(msg: String?) {
+    private fun processError(msg: String?) {
         showToast("Error:" + msg)
     }
 

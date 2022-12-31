@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat.recreate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -96,18 +97,20 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     }
 
-    private fun stopLoading() {
+     fun stopLoading() {
         binding?.progressBar?.visibility = View.GONE
     }
 
-    private fun showLoading() {
+     fun showLoading() {
         binding?.progressBar?.visibility = View.VISIBLE
     }
 
     private fun logout() {
         clearData(requireContext())
         //restart app
-        getActivity()?.recreate();
+        findNavController().navigate(R.id.action_profileFragment_to_introFragment2)
+        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
+
 
     }
 

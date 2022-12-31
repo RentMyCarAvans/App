@@ -48,19 +48,19 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun registerUser(firstName: String, lastName: String, email: String, password: String) {
+    fun registerUser(firstName: String, lastName: String, dateOfBirth: String, email: String, password: String) {
         registerResult.value = BaseResponse.Loading()
         viewModelScope.launch {
             try {
 
                 val registerUserRequest = RegisterUserRequest(firstName= firstName, lastName = lastName,
                     password = password,
-                    email = email,
+                    email = email, dateOfBirth = dateOfBirth
                 )
                 val response = userRepo.registerUser(registerUserRequest = registerUserRequest)
                 Log.d("APP", response.toString())
-                if (response?.code() == 200) {
-                    Log.d("APP", "code 200")
+                if (response?.code() == 201) {
+                    Log.d("APP", "code 201")
 
                    registerResult.value = BaseResponse.Success(response.body())
                 } else {

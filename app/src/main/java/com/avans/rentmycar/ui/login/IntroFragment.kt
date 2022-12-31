@@ -28,7 +28,7 @@ class IntroFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
+        activity?.actionBar?.title = "RMC"
         _binding = FragmentIntroBinding.inflate(inflater, container, false)
         //hide actionbar
         (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
