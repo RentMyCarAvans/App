@@ -5,13 +5,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentLoginBinding
-import com.avans.rentmycar.model.LoginViewModel
+import com.avans.rentmycar.ui.viewmodel.LoginViewModel
 import com.avans.rentmycar.rest.response.BaseResponse
 import com.avans.rentmycar.rest.response.LoginResponse
 import com.avans.rentmycar.utils.SessionManager
@@ -39,10 +40,14 @@ class LoginFragment : Fragment() {
         binding.btnLogin.setOnClickListener {
             doLogin()
         }
+
         binding.btnRegister.setOnClickListener {
             doRegister()
         }
 
+        binding.txtviewForgotPassword.setOnClickListener {
+            doForgotPassword()
+        }
         viewModel.loginResult.observe(viewLifecycleOwner) {
             when (it) {
                 is BaseResponse.Loading -> {
@@ -65,7 +70,34 @@ class LoginFragment : Fragment() {
                 }
             }
         }
+
+        viewModel.forgotPasswordResult.observe(viewLifecycleOwner) {
+            when (it) {
+
+                is BaseResponse.Loading -> {
+                    showLoading()
+                }
+
+                is BaseResponse.Success -> {
+                    stopLoading()
+                    showToast("Password email has been sent.")
+                }
+
+                is BaseResponse.Error -> {
+                    processError(it.msg)
+                    stopLoading()
+                }
+                else -> {
+                    stopLoading()
+                }
+            }
+        }
         return root
+    }
+
+    private fun doForgotPassword() {
+        Log.d("RMC_APP", binding.txtInputEmail.text.toString())
+        viewModel.forgotPassword(binding.txtInputEmail.text.toString())
     }
 
     override fun onDestroyView() {
@@ -76,7 +108,6 @@ class LoginFragment : Fragment() {
     private fun navigateToHome() {
         Log.v("APP", "logging in")
         findNavController().navigate(R.id.action_loginFragment_to_homeFragment2)
-
 
     }
 
@@ -104,7 +135,6 @@ class LoginFragment : Fragment() {
         if (data != null) {
             if (data.status === 200) {
                 context?.let { SessionManager.saveAuthToken(it, data.data.token) }
-//                data.data.let { SessionManager.saveAuthToken(this, it) }
                 Log.d("APP RMC", "status 200, now opening home")
                 navigateToHome()
             }
@@ -116,7 +146,6 @@ class LoginFragment : Fragment() {
     }
 
     fun showToast(msg: String) {
-//        Toast.makeText(, msg, Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity, msg, Toast.LENGTH_LONG).show()
     }
-
 }

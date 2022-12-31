@@ -3,7 +3,7 @@ package com.avans.rentmycar.utils
 import android.util.Patterns
 import java.util.regex.Pattern
 
-object FieldValidators {
+object FieldValidation {
 
     /**
      * checking pattern of email

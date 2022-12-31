@@ -17,7 +17,7 @@ import com.avans.rentmycar.rest.response.BaseResponse
 import com.avans.rentmycar.utils.Constant
 import com.avans.rentmycar.utils.SessionManager
 import com.avans.rentmycar.utils.SessionManager.clearData
-import com.avans.rentmycar.viewmodel.UserViewModel
+import com.avans.rentmycar.ui.viewmodel.UserViewModel
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import java.util.*

@@ -1,4 +1,4 @@
-package com.avans.rentmycar.viewmodel
+package com.avans.rentmycar.ui.viewmodel
 
 import android.app.Application
 import android.util.Log

@@ -13,14 +13,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.avans.rentmycar.R
-import com.avans.rentmycar.databinding.FragmentIntroBinding
 import com.avans.rentmycar.databinding.FragmentRegisterBinding
-import com.avans.rentmycar.model.LoginViewModel
+import com.avans.rentmycar.ui.viewmodel.LoginViewModel
 import com.avans.rentmycar.rest.response.BaseResponse
-import com.avans.rentmycar.utils.FieldValidators.isStringContainNumber
-import com.avans.rentmycar.utils.FieldValidators.isStringContainSpecialCharacter
-import com.avans.rentmycar.utils.FieldValidators.isStringLowerAndUpperCase
-import com.avans.rentmycar.utils.FieldValidators.isValidEmail
+import com.avans.rentmycar.utils.FieldValidation.isValidEmail
 
 class RegisterFragment : Fragment() {
     private var _binding: FragmentRegisterBinding? = null
@@ -42,7 +38,6 @@ class RegisterFragment : Fragment() {
         val root: View = binding.root
         //show actionbar
         (activity as AppCompatActivity?)!!.supportActionBar!!.show()
-//        binding.btnCreateAccount.isEnabled = false
         binding.btnCreateAccount.setOnClickListener {
             if (isValidated()) {
                 val firstName = binding.txtInputFirstName.text.toString()
@@ -59,6 +54,7 @@ class RegisterFragment : Fragment() {
                 )
             }
         }
+
         setupListeners()
 
 
@@ -71,34 +67,29 @@ class RegisterFragment : Fragment() {
             when (it) {
                 is BaseResponse.Loading -> {
                     Log.d("RentMyCarApp", "loading")
-
                     showLoading()
                 }
                 is BaseResponse.Success -> {
                     Log.d("RentMyCarApp", "success")
-                    Toast.makeText(getActivity(),getString(R.string.success_creating_account),Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity,getString(R.string.success_creating_account),Toast.LENGTH_LONG).show();
                     stopLoading()
                     findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
-
-
                 }
                 is BaseResponse.Error -> {
                     Log.d("RentMyCarApp", "error")
-                    Toast.makeText(getActivity(),getString(R.string.error_creating_account),Toast.LENGTH_LONG).show();
-
+                    Toast.makeText(activity,getString(R.string.error_creating_account),Toast.LENGTH_LONG).show();
                     stopLoading()
-
                 }
             }
         }
     }
 
     private fun showLoading() {
-        binding?.progressBar?.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.VISIBLE
 
     }
     private fun stopLoading() {
-        binding?.progressBar?.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
 
     }
 
@@ -120,7 +111,7 @@ class RegisterFragment : Fragment() {
 
     private fun validateFirstName(): Boolean {
         if (binding.txtInputFirstName.text.toString().trim().isEmpty()) {
-            binding.txtLayFirstNameAdd.error = "Required Field!"
+            binding.txtLayFirstNameAdd.error = getString(R.string.required_field)
             binding.txtInputFirstName.requestFocus()
             return false
         } else {
@@ -131,7 +122,7 @@ class RegisterFragment : Fragment() {
 
     private fun validateLastName(): Boolean {
         if (binding.txtInputLastName.text.toString().trim().isEmpty()) {
-            binding.txtLayLastNameAdd.error = "Required Field!"
+            binding.txtLayLastNameAdd.error = getString(R.string.required_field)
             binding.txtInputLastName.requestFocus()
             return false
         } else {
@@ -142,11 +133,11 @@ class RegisterFragment : Fragment() {
 
     private fun validateEmail(): Boolean {
         if (binding.txtInputEmail.text.toString().trim().isEmpty()) {
-            binding.txtLayEmailAdd.error = "Required Field!"
+            binding.txtLayEmailAdd.error = getString(R.string.required_field)
             binding.txtInputEmail.requestFocus()
             return false
         } else if (!isValidEmail(binding.txtInputEmail.text.toString())) {
-            binding.txtLayEmailAdd.error = "Invalid Email!"
+            binding.txtLayEmailAdd.error = getString(R.string.invalid_email)
             binding.txtInputEmail.requestFocus()
             return false
         } else {
@@ -157,11 +148,11 @@ class RegisterFragment : Fragment() {
 
     private fun validatePassword(): Boolean {
         if (binding.txtInputPass.text.toString().trim().isEmpty()) {
-            binding.txtLayPassSignup.error = "Required Field!"
+            binding.txtLayPassSignup.error = getString(R.string.required_field)
             binding.txtInputPass.requestFocus()
             return false
         } else if (binding.txtInputPass.text.toString().length < 6) {
-            binding.txtLayPassSignup.error = "password can't be less than 6"
+            binding.txtLayPassSignup.error = "Password can't be less than 6"
             binding.txtInputPass.requestFocus()
             return false
         }

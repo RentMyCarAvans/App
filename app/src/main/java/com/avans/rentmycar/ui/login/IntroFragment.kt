@@ -10,7 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentIntroBinding
-import com.avans.rentmycar.model.LoginViewModel
+import com.avans.rentmycar.ui.viewmodel.LoginViewModel
 import com.avans.rentmycar.utils.SessionManager
 
 
