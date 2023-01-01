@@ -26,14 +26,16 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.avans.rentmycar.databinding.AddCarItemBinding
+import com.avans.rentmycar.model.RdwResponseItem
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.flow.combineTransform
 
 /**
  * [CarAddItemFragment] displays the details of the selected item.
  */
-private val TAG = "[RMC][CarAddItem]"
 class CarAddItemFragment : Fragment() {
+    private val TAG = "[RMC][CarAddItemFr]"
 
     // var for binding the add_car_item layout
     private var _binding: AddCarItemBinding? = null
@@ -58,22 +60,22 @@ class CarAddItemFragment : Fragment() {
 
         binding.buttonGetLicenseplateRdw.setOnClickListener {
             Log.d(TAG, "onViewCreated() => Button GET clicked. Invoke RdwApiService")
-            val kenteken : TextInputEditText = binding.etLicenseplate
+            val kenteken : TextInputEditText = binding.txtInputLicensePlate
             val license : String = kenteken.text.toString()
-            Log.d(TAG,"onViewCreated() => licenseplate: " + license)
 
             // invoke RdwApiService for retrieval of cardetails for the given licenseplate
-            val response = carAddItemViewModel.getRdwCarDetails(kenteken.text.toString())
-            Log.d(TAG, "onViewCreated() response " + response.toString())
+            Log.d(TAG,"onViewCreated() => invoke RdwApieService for licenseplate: " + license)
+            val responseRdw = carAddItemViewModel.getRdwCarDetails(kenteken.text.toString())
+            Log.d(TAG, "onViewCreated() response rdw " + responseRdw)
 
             Snackbar.make(view, "Car details retrieved of RDW", Snackbar.LENGTH_LONG)
                 .show()
         }
-       // Log.d(TAG, "ViewModel reponse1 " + carAddItemViewModel.rdwResponse.value.toString())
-       // carAddItemViewModel.rdwResponse.observe(viewLifecycleOwner) {
-       //     binding.textviewCarModel.text = carAddItemViewModel.rdwResponse.value.toString()
-       //     Log.d(TAG, "ViewModel reponse2 " + carAddItemViewModel.rdwResponse.value.toString())
-       // }
+        Log.d(TAG, "onViewCreated() => before observer ")
+        carAddItemViewModel.rdwResponse.observe(viewLifecycleOwner) {
+            Log.d(TAG, "onViewCreated() => it.ToString: " + it.toString())
+            // binding.txtInputLicensePlate.text = carAddItemViewModel.rdwResponse.value.toString()
+        }
     }
 
 /**

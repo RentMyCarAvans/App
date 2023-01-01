@@ -29,7 +29,7 @@ import com.avans.rentmycar.databinding.FragmentMycarsDetailBinding
  * [CarDetailFragment] displays the details of the selected item.
  */
 class CarDetailFragment : Fragment() {
- private val TAG = "[RMC][CarDetailVM]"
+ private val TAG = "[RMC][CarDetailFrg]"
     private var _binding: FragmentMycarsDetailBinding? = null
     private val binding get() = _binding!!
 
@@ -41,8 +41,8 @@ class CarDetailFragment : Fragment() {
         _binding = FragmentMycarsDetailBinding.inflate(inflater, container, false)
 
         val carDetailViewModel: CarDetailViewModel by viewModels()
-        carDetailViewModel.rdwResponse.observe(viewLifecycleOwner) {
-            binding.textviewCardetailModel.text = carDetailViewModel.rdwResponse.value.toString()
+        carDetailViewModel.carResponse.observe(viewLifecycleOwner) {
+            binding.textviewCardetailModel.text = carDetailViewModel.carResponse.value.toString()
             Log.d(TAG, "onCreateView => MODEL?:"+binding.textviewCardetailModel.text)
         }
         // TODO Implement button to view details of my car
