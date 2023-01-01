@@ -13,9 +13,20 @@
         <action
             android:id="@+id/action_profileFragment_to_profileDetailFragment"
             app:destination="@id/profileDetailFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_introFragment2"
+            app:destination="@id/introFragment2" />
     </fragment>
     <fragment
         android:id="@+id/profileDetailFragment"
         android:name="com.avans.rentmycar.ui.profile.ProfileDetailFragment"
-        android:label="@string/title_editprofile" />
+        android:label="@string/title_editprofile" >
+        <action
+            android:id="@+id/action_profileDetailFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/introFragment2"
+        android:name="com.avans.rentmycar.ui.login.IntroFragment"
+        android:label="IntroFragment" />
 </navigation>

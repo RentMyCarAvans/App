@@ -1,5 +1,9 @@
 package com.avans.rentmycar.rest.request
 
-class RegisterUserRequest(firstName: String, lastName: String, email: String, password: String) {
-
-}
+data class RegisterUserRequest(
+    var firstName: String,
+    var lastName: String,
+    var email: String,
+    var password: String,
+    var dateOfBirth: String
+)

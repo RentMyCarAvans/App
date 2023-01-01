@@ -1,4 +1,4 @@
-package com.avans.rentmycar.model
+package com.avans.rentmycar.ui.viewmodel
 
 import android.app.Application
 import android.util.Log
@@ -7,10 +7,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.avans.rentmycar.repository.UserRepository
 import com.avans.rentmycar.rest.request.LoginRequest
+import com.avans.rentmycar.rest.request.PasswordResetRequest
 import com.avans.rentmycar.rest.request.RegisterUserRequest
 import com.avans.rentmycar.rest.response.BaseResponse
 import com.avans.rentmycar.rest.response.LoginResponse
 import com.avans.rentmycar.rest.response.UserResponse
+import faker.com.fasterxml.jackson.databind.ser.Serializers.Base
 import kotlinx.coroutines.launch
 
 
@@ -19,6 +21,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     val userRepo = UserRepository()
     val loginResult: MutableLiveData<BaseResponse<LoginResponse>> = MutableLiveData()
     val registerResult: MutableLiveData<BaseResponse<UserResponse>> = MutableLiveData()
+    val forgotPasswordResult: MutableLiveData<BaseResponse<Any>> = MutableLiveData()
 
     fun loginUser(email: String, pwd: String) {
 
@@ -48,19 +51,19 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun registerUser(firstName: String, lastName: String, email: String, password: String) {
+    fun registerUser(firstName: String, lastName: String, dateOfBirth: String, email: String, password: String) {
         registerResult.value = BaseResponse.Loading()
         viewModelScope.launch {
             try {
 
                 val registerUserRequest = RegisterUserRequest(firstName= firstName, lastName = lastName,
                     password = password,
-                    email = email,
+                    email = email, dateOfBirth = dateOfBirth
                 )
                 val response = userRepo.registerUser(registerUserRequest = registerUserRequest)
                 Log.d("APP", response.toString())
-                if (response?.code() == 200) {
-                    Log.d("APP", "code 200")
+                if (response?.code() == 201) {
+                    Log.d("APP", "code 201")
 
                    registerResult.value = BaseResponse.Success(response.body())
                 } else {
@@ -73,4 +76,26 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                 loginResult.value = BaseResponse.Error(ex.message)
             }
         }    }
+
+    fun forgotPassword(email: String) {
+        forgotPasswordResult.value = BaseResponse.Loading()
+        viewModelScope.launch {
+            try {
+                val passwordResetRequest = PasswordResetRequest(email)
+                val response = userRepo.forgotPassword(passwordResetRequest)
+                if (response?.code() == 200) {
+                    Log.d("RMC_APP", "code 200")
+                    forgotPasswordResult.value = BaseResponse.Success(response.body())
+                } else {
+                    response?.toString()?.let { Log.d("RMC_APP", it) }
+
+                    forgotPasswordResult.value = BaseResponse.Error(response?.body().toString())
+                }
+            } catch (ex: Exception) {
+                ex?.toString()?.let { Log.d("RMC_APP", it) }
+
+                forgotPasswordResult.value = BaseResponse.Error(ex.message)
+            }
+    }
+    }
 }

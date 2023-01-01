@@ -7,7 +7,7 @@
     tools:context=".MainActivity">
 
     <ProgressBar
-        android:id="@+id/prgbar"
+        android:id="@+id/progressBar"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:visibility="gone"
@@ -17,23 +17,39 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
+    <TextView
+        android:id="@+id/register_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/register_to_rent_my_car"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/txtLay_firstNameAdd"/>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/txtLay_firstNameAdd"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:hint="@string/first_name"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/register_text"
+        android:layout_marginTop="32dp"
         app:layout_constraintVertical_bias="0.4"
-        app:layout_constraintWidth_percent="0.9">
+        app:layout_constraintWidth_percent="0.9"
+        app:errorEnabled="true"
+        >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtInput_firstName"
             android:layout_width="match_parent"
+            android:inputType="textPersonName"
             android:layout_height="wrap_content"
             android:maxLength="20" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -42,40 +58,64 @@
         android:id="@+id/txtLay_lastNameAdd"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:hint="@string/last_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txtLay_firstNameAdd"
         app:layout_constraintVertical_bias="0.4"
-        app:layout_constraintWidth_percent="0.9">
+        app:layout_constraintWidth_percent="0.9"
+        app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtInput_lastName"
             android:layout_width="match_parent"
+            android:inputType="textPersonName"
             android:layout_height="wrap_content"
             android:maxLength="20" />
     </com.google.android.material.textfield.TextInputLayout>
 
-
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/txtLay_emailAdd"
+        android:id="@+id/txtLay_birthDate"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:hint="@string/email"
+        android:layout_height="wrap_content"
+        android:hint="@string/date_of_birth"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txtLay_lastNameAdd"
         app:layout_constraintVertical_bias="0.4"
-        app:layout_constraintWidth_percent="0.9">
+        app:layout_constraintWidth_percent="0.9"
+        app:errorEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtInput_birthDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="datetime"
+            android:maxLength="20" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtLay_emailAdd"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtLay_birthDate"
+        app:layout_constraintVertical_bias="0.4"
+        app:layout_constraintWidth_percent="0.9"
+        app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtInput_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
             android:maxLength="20" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -83,13 +123,16 @@
         android:id="@+id/txtLay_pass_signup"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:hint="@string/password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtLay_emailAdd"
-        app:layout_constraintWidth_percent="0.9">
+        app:layout_constraintWidth_percent="0.9"
+        app:endIconMode="password_toggle"
+        app:errorEnabled="true"
+        >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtInput_pass"
@@ -103,12 +146,12 @@
         android:id="@+id/btn_create_account"
         android:layout_width="0dp"
         android:layout_height="48dp"
-
         android:layout_margin="16dp"
-
         android:text="@string/register"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtLay_pass_signup" />
+        app:errorEnabled="true"
+ />
 </androidx.constraintlayout.widget.ConstraintLayout>

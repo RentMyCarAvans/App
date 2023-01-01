@@ -10,7 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentIntroBinding
-import com.avans.rentmycar.model.LoginViewModel
+import com.avans.rentmycar.ui.viewmodel.LoginViewModel
 import com.avans.rentmycar.utils.SessionManager
 
 
@@ -28,7 +28,7 @@ class IntroFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
+        activity?.actionBar?.title = "RMC"
         _binding = FragmentIntroBinding.inflate(inflater, container, false)
         //hide actionbar
         (activity as AppCompatActivity?)!!.supportActionBar!!.hide()

@@ -3,7 +3,9 @@ package com.avans.rentmycar.rest.methods
 import com.avans.rentmycar.rest.ApiClient
 import com.avans.rentmycar.rest.request.CreateUpdateUserRequest
 import com.avans.rentmycar.rest.request.LoginRequest
+import com.avans.rentmycar.rest.request.PasswordResetRequest
 import com.avans.rentmycar.rest.request.RegisterUserRequest
+import com.avans.rentmycar.rest.response.BaseResponse
 import com.avans.rentmycar.rest.response.LoginResponse
 import com.avans.rentmycar.rest.response.UserResponse
 import okhttp3.MultipartBody
@@ -29,6 +31,9 @@ interface UserService {
     @Multipart
     @POST("/api/v1/users/profilephoto/1")
     suspend fun uploadProfilePhoto(@Part file: MultipartBody.Part) : Response<UserResponse>
+
+    @POST("/api/v1/auth/reset")
+    suspend fun resetPassword(@Body passwordResetRequest: PasswordResetRequest): Response<Any>
 
     companion object {
         fun getApi(): UserService? {

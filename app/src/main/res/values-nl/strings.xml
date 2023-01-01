@@ -31,4 +31,10 @@
     <string name="remember_me">Onthouden</string>
     <string name="first_name">Voornaam</string>
     <string name="last_name">Achternaam</string>
+    <string name="register_to_rent_my_car">Registreer bij Rent My Car</string>
+    <string name="error_creating_account">Er was een error bij het maken van uw account</string>
+    <string name="success_creating_account">Account aangemaakt!</string>
+    <string name="forgot_password">Wachtwoord vergeten?</string>
+    <string name="required_field">Verplicht veld!</string>
+    <string name="invalid_email">Onjuist email</string>
 </resources>
