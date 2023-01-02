@@ -76,7 +76,7 @@ class HomeFragment : Fragment() {
         // Set the title of the actionbar
         // TODO: Make this dynamic, change the title depending on the current language
         val bar = (activity as AppCompatActivity).supportActionBar
-        bar?.title = "Offers"
+        bar?.title = getString(R.string.offers_title)
     }
 
 }

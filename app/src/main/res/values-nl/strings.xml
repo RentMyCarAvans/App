@@ -40,4 +40,5 @@
     <string name="invalid_birthdate">Invullen als jjjj-mm-dd</string>
     <string name="get_cardetails">Ophalen kentekengegevens</string>
     <string name="licenseplate">kenteken</string>
+    <string name="offers_title">Offers</string>
 </resources>
