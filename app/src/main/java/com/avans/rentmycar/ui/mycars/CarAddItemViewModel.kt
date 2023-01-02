@@ -20,7 +20,7 @@ class CarAddItemViewModel : ViewModel() {
             var responseRdw = RdwApiClient.retrofitService.getCarInfoByLicensePlate(licenseplate).toString()
             Log.d(TAG, "getRdwCarDetails() => reponse RDW: " + responseRdw)
         }
-        Log.d(TAG, "getRdwCarDetails() => Data retrieved for car with licenseplate " + licenseplate)
+        Log.d(TAG, "getRdwCarDetails() => RDW data retrieved for car with licenseplate " + licenseplate)
     }
 
 }

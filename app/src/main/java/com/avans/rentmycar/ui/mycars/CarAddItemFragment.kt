@@ -29,7 +29,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 
 /**
- * [CarAddItemFragment] displays the details of the selected item.
+ * [CarAddItemFragment] Add a new car by licenseplate.
  */
 class CarAddItemFragment : Fragment() {
     private val TAG = "[RMC][CarAddItemFr]"
@@ -60,10 +60,10 @@ class CarAddItemFragment : Fragment() {
             val kenteken: TextInputEditText = binding.txtInputLicensePlate
             val licensePlate: String = kenteken.text.toString()
 
-            // invoke RdwApiService for retrieval of cardetails for the given licenseplate
+            // invoke RdwApiService for retrieval of cardetails of the given licenseplate
             Log.d(TAG, "onViewCreated() => invoke RdwApieService for licenseplate: " + licensePlate)
             carAddItemViewModel.getRdwCarDetails(kenteken.text.toString())
-            Snackbar.make(view, "Car details retrieved of RDW", Snackbar.LENGTH_LONG)
+            Snackbar.make(view, "Car details retrieved at the RDW", Snackbar.LENGTH_LONG)
                 .show()
         }
 
