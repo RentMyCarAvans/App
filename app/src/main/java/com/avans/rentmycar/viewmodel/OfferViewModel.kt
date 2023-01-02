@@ -44,10 +44,10 @@ class OfferViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val bookingResponse = offerRepository.createBooking(offerId, customerId)
-                Log.d("[OfferVM] response", bookingResponse.toString())
+                Log.d("[OfferVM] bookingresp", bookingResponse.toString())
 
             } catch (e: Exception) {
-                Log.e("[OfferVM] error", e.message.toString())
+                Log.e("[OfferVM] bookingerror", e.message.toString())
             }
         }
     }

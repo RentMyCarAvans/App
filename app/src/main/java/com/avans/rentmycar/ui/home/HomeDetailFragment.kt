@@ -15,6 +15,7 @@ import androidx.navigation.fragment.navArgs
 import com.avans.rentmycar.R
 import com.avans.rentmycar.api.OfferService
 import com.avans.rentmycar.databinding.FragmentHomeBinding
+import com.avans.rentmycar.rest.response.BaseResponse
 import com.avans.rentmycar.utils.Constant
 import com.avans.rentmycar.utils.GlideImageLoader
 import com.avans.rentmycar.utils.SessionManager
@@ -62,10 +63,10 @@ class HomeDetailFragment : Fragment() {
             Log.d("[HDF]", "Book button clicked")
             Log.d("[HDF]", "Book Offer " + offerId + " for user with id " + userId.toString())
 
-            // TODO: Make a POST request to the API to book the offer
-            // Use the OfferService.createBooking() method to make the request
-            // The method takes the offerId and userId as parameters
-            OfferViewModel().createBooking(offerId, userId!!)
+            val tryBooking = OfferViewModel().createBooking(offerId, userId!!)
+            Log.d("[HDF]", "Booking response: " + tryBooking.toString())
+
+            // TODO: Check the response and show a message to the user
 
 
         }

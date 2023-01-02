@@ -13,7 +13,7 @@ interface OfferService {
     @GET("/api/v1/offers")
     fun getOffers(): Response<OfferResponse>
 
-    @GET("/api/v1/offers")
+    @GET("/api/v1/offers/unbooked")
     suspend fun getOpenOffers(): Response<OfferResponse>
 
     @POST("/api/v1/bookings/")
