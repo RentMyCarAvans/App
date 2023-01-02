@@ -14,7 +14,15 @@ object FieldValidation {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
-
+    /**
+     * checking pattern of birthdate yyyy-mm-dd
+     * @param birthdate input
+     * @return true if matches with valid pattern else false
+     */
+    fun isValidBirthDate(birthdate: String): Boolean {
+        val pattern = Pattern.compile("\\d{4}-\\d{2}-\\d{2}")
+        val matcher = pattern.matcher(birthdate)
+        return matcher.matches()    }
     /**
      * checking is string contain any number
      * @param string value to check

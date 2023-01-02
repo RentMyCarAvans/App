@@ -16,6 +16,7 @@ import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentRegisterBinding
 import com.avans.rentmycar.ui.viewmodel.LoginViewModel
 import com.avans.rentmycar.rest.response.BaseResponse
+import com.avans.rentmycar.utils.FieldValidation.isValidBirthDate
 import com.avans.rentmycar.utils.FieldValidation.isValidEmail
 
 class RegisterFragment : Fragment() {
@@ -99,7 +100,7 @@ class RegisterFragment : Fragment() {
 
 
     private fun isValidated(): Boolean {
-        return validateFirstName()  && validateLastName() && validateEmail() && validatePassword()
+        return validateFirstName() && validateLastName() && validateBirthDate() && validateEmail() && validatePassword()
     }
 
     private fun setupListeners() {
@@ -107,6 +108,7 @@ class RegisterFragment : Fragment() {
         binding.txtInputLastName.addTextChangedListener(TextFieldValidation(binding.txtInputLastName))
         binding.txtInputEmail.addTextChangedListener(TextFieldValidation(binding.txtInputEmail))
         binding.txtInputPass.addTextChangedListener(TextFieldValidation(binding.txtInputPass))
+        binding.txtInputBirthDate.addTextChangedListener(TextFieldValidation(binding.txtLayBirthDate))
     }
 
     private fun validateFirstName(): Boolean {
@@ -146,6 +148,20 @@ class RegisterFragment : Fragment() {
         return true
     }
 
+    private fun validateBirthDate(): Boolean {
+        if (binding.txtInputBirthDate.text.toString().trim().isEmpty()) {
+            binding.txtLayBirthDate.error = getString(R.string.required_field)
+            binding.txtInputBirthDate.requestFocus()
+            return false
+        } else if (!isValidBirthDate(binding.txtInputBirthDate.text.toString())) {
+            binding.txtLayBirthDate.error = getString(R.string.invalid_birthdate)
+            binding.txtInputBirthDate.requestFocus()
+            return false
+        } else {
+            binding.txtLayBirthDate.isErrorEnabled = false
+        }
+        return true
+    }
     private fun validatePassword(): Boolean {
         if (binding.txtInputPass.text.toString().trim().isEmpty()) {
             binding.txtLayPassSignup.error = getString(R.string.required_field)
@@ -194,6 +210,9 @@ class RegisterFragment : Fragment() {
                 }
                 R.id.txtInput_pass -> {
                     validatePassword()
+                }
+                R.id.txtInput_birthDate -> {
+                    validateBirthDate()
                 }
             }
         }

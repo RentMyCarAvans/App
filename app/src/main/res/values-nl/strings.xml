@@ -37,4 +37,5 @@
     <string name="forgot_password">Wachtwoord vergeten?</string>
     <string name="required_field">Verplicht veld!</string>
     <string name="invalid_email">Onjuist email</string>
+    <string name="invalid_birthdate">Invullen als jjjj-mm-dd</string>
 </resources>
