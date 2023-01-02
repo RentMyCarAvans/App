@@ -49,23 +49,23 @@ class HomeFragment : Fragment() {
             LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
         binding.recyclerviewHomeFragmentOffers.adapter = offerAdapter
 
-        // Retreive the id of the current user
+        // Retreive the id of the current user, so we can use it to get the offers not made by the current user
+        // TODO: Adjust the API call to get the offers not made by the current user
         val userId = SessionManager.getUserId(requireContext())
 //        Log.d("[Home] Offer", "current userId: $userId")
 
-        val offerRepository = OfferRepository()
         val viewModel = OfferViewModel()
 
         viewModel.offerResult.observe(viewLifecycleOwner) {
-//            Log.d("[Home] vm", it.toString())
             offerAdapter.setData(it)
         }
 
-//        Log.d("[Home] vm-gO", viewModel.getOffers().toString())
+        // Get all offers and pass them to the adapter
         viewModel.getOffers()
         offerAdapter.setData(viewModel.offerResult.value?: emptyList())
-//        Log.d("[Home-Offer]", viewModel.getOffers().toString())
 
+        // Set the title of the actionbar
+        // TODO: Make this dynamic, change the title depending on the current language
         val bar = (activity as AppCompatActivity).supportActionBar
         bar?.title = "Offers"
     }
