@@ -5,12 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.avans.rentmycar.R
-import com.avans.rentmycar.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
 
@@ -22,6 +20,8 @@ class HomeFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home, container, false)
+        //show actionbar
+        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
 
         view.findViewById<Button>(R.id.button).setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_homeDetailFragment)
