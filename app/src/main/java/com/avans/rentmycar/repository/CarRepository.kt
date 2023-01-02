@@ -2,8 +2,11 @@ package com.avans.rentmycar.repository
 
 import com.avans.rentmycar.R
 import com.avans.rentmycar.model.CarModel
+import com.avans.rentmycar.model.CarResponse
+import com.avans.rentmycar.model.User
+import com.squareup.moshi.Json
 
-object CarRepository {
+object CarRepositoryStub {
     val carModels = mutableListOf<CarModel>(
         // TODO Replace with actual API call
         CarModel(R.drawable.lamborghini, "Lamborghini Diablo", "Internal Combustion Engine", "1099km $207 p/hr"),

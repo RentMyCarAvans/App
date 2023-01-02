@@ -4,7 +4,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.avans.rentmycar.databinding.MycarsItemBinding
 import com.avans.rentmycar.model.CarModel
-import com.avans.rentmycar.repository.CarRepository
+import com.avans.rentmycar.repository.CarRepositoryStub
 
 private val TAG = "[RMC][CarViewAdapter]"
 class CarViewAdapter: RecyclerView.Adapter<CarViewAdapter.CarViewHolder>() {
@@ -15,12 +15,11 @@ class CarViewAdapter: RecyclerView.Adapter<CarViewAdapter.CarViewHolder>() {
     inner class CarViewHolder(val binding: MycarsItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(carModel: CarModel) {
-
+            Log.d(TAG, "bind() => carmodel: " + carModel.title)
             binding.carImage.setImageResource(carModel.image)
             binding.textviewCarTitle.text = carModel.title
             binding.textviewCarDescription1.text = carModel.description1
             binding.textviewCarDescription2.text = carModel.description2
-            Log.d(TAG, "bind() => carmodel: " + carModel.title)
 
             // Adding clicklistener tp ropot layoput of this item
             //carModel.setOnClickListener{
@@ -37,9 +36,9 @@ class CarViewAdapter: RecyclerView.Adapter<CarViewAdapter.CarViewHolder>() {
 
     override fun onBindViewHolder(holder: CarViewHolder, position: Int) {
         Log.d(TAG, "onBindViewHolder() => position: "+position)
-        holder.bind(CarRepository.carModels[position])
+        holder.bind(CarRepositoryStub.carModels[position])
     }
 
-    override fun getItemCount() = CarRepository.carModels.size
+    override fun getItemCount() = CarRepositoryStub.carModels.size
 
 }

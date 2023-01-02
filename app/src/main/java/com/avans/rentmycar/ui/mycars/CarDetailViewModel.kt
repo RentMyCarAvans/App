@@ -1,33 +1,42 @@
 package com.avans.rentmycar.ui.mycars
 
 import android.util.Log
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.avans.rentmycar.api.RdwApiClient
-import com.avans.rentmycar.model.RdwResponseItem
+import com.avans.rentmycar.api.CarApiClient
+import androidx.fragment.app.viewModels
+import com.avans.rentmycar.model.CarResponse
+import com.avans.rentmycar.ui.viewmodel.UserViewModel
+import com.avans.rentmycar.utils.SessionManager
 import kotlinx.coroutines.launch
 
-private val TAG = "[RMC][MyCarsViewModel]"
 class CarDetailViewModel : ViewModel() {
+    private val TAG = "[RMC][CarDetailVM]"
 
-    private val _rdwResponse = MutableLiveData<List<RdwResponseItem>>()
-    val rdwResponse: LiveData<List<RdwResponseItem>>
-    get() = _rdwResponse
+    private val _carResponse = MutableLiveData<List<CarResponse>>()
+    val carResponse: LiveData<List<CarResponse>>
+    get() = _carResponse
 
     init {
         Log.d(TAG, "init()")
-        getRdwCarDetails()
+        getMyCars()
     }
 
-    fun getRdwCarDetails(){
-        Log.d(TAG, "getRdwCarDetails()")
+    fun getMyCars(){
+        Log.d(TAG, "getMyCars()")
+
+        // Retrieve userid of the logged in user, so we can fetch his cars
+        // TODO Retreieve userid by viewModel / observer. For now, let's hardcode the userid with 1
+
+
         viewModelScope.launch {
-            var getCarInfoByLicensePlateDeferred = RdwApiClient.retrofitService.getCarInfoByLicensePlate("69SXKZ").toString()
-            Log.d(TAG, "getRdwCarDetails => retrieved value: " + getCarInfoByLicensePlateDeferred)
+            var carDetails = CarApiClient.retrofitService.getAllCarsByUserId(1).toString()
+            Log.d(TAG, "getCarDetails => retrieved value: " + carDetails)
         }
-        Log.d(TAG, "getRdwCarDetails DONE")
+        Log.d(TAG, "getMyCars() DONE")
     }
 
 }

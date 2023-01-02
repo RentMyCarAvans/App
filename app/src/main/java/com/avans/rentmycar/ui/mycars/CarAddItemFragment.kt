@@ -15,7 +15,7 @@
  */
 
 package com.avans.rentmycar.ui.mycars
-import CarDetailAdapter
+
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -23,17 +23,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.avans.rentmycar.databinding.AddCarItemBinding
+import com.avans.rentmycar.model.RdwResponseItem
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 
 /**
- * [CarAddItemFragment] displays the details of the selected item.
+ * [CarAddItemFragment] Add a new car by licenseplate.
  */
-private val TAG = "[RMC][CarAddItem]"
 class CarAddItemFragment : Fragment() {
+    private val TAG = "[RMC][CarAddItemFr]"
 
     // var for binding the add_car_item layout
     private var _binding: AddCarItemBinding? = null
@@ -58,33 +57,40 @@ class CarAddItemFragment : Fragment() {
 
         binding.buttonGetLicenseplateRdw.setOnClickListener {
             Log.d(TAG, "onViewCreated() => Button GET clicked. Invoke RdwApiService")
-            val kenteken : TextInputEditText = binding.etLicenseplate
-            val license : String = kenteken.text.toString()
-            Log.d(TAG,"onViewCreated() => licenseplate: " + license)
+            val kenteken: TextInputEditText = binding.txtInputLicensePlate
+            val licensePlate: String = kenteken.text.toString()
 
-            // invoke RdwApiService for retrieval of cardetails for the given licenseplate
-            val response = carAddItemViewModel.getRdwCarDetails(kenteken.text.toString())
-            Log.d(TAG, "onViewCreated() response " + response.toString())
-
-            Snackbar.make(view, "Car details retrieved of RDW", Snackbar.LENGTH_LONG)
+            // invoke RdwApiService for retrieval of cardetails of the given licenseplate
+            Log.d(TAG, "onViewCreated() => invoke RdwApieService for licenseplate: " + licensePlate)
+            carAddItemViewModel.getRdwCarDetails(kenteken.text.toString())
+            Snackbar.make(view, "Car details retrieved at the RDW", Snackbar.LENGTH_LONG)
                 .show()
         }
-       // Log.d(TAG, "ViewModel reponse1 " + carAddItemViewModel.rdwResponse.value.toString())
-       // carAddItemViewModel.rdwResponse.observe(viewLifecycleOwner) {
-       //     binding.textviewCarModel.text = carAddItemViewModel.rdwResponse.value.toString()
-       //     Log.d(TAG, "ViewModel reponse2 " + carAddItemViewModel.rdwResponse.value.toString())
-       // }
+
+        // Observer for rdwResponse
+        Log.d(TAG, "onViewCreated() => set observer on rdw response ")
+        carAddItemViewModel.rdwResponse.observe(viewLifecycleOwner) {
+            bindUI(it)
+        }
     }
 
-/**
-* Binds views with the passed in item data.
-*/
+    /**
+     * Called when fragment is destroyed.
+     */
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
-/**
-* Called when fragment is destroyed.
-*/
-override fun onDestroyView() {
-super.onDestroyView()
-_binding = null
-}
+    /**
+     * Binds views with the passed in item data.
+     */
+    fun bindUI(it: List<RdwResponseItem>) {
+        Log.d(TAG, "bindUI() => voertuigsoort: " + it[0].voertuigsoort + " merk: " + it[0].merk)
+        binding.rtvRdwInrichting.text = it[0].inrichting
+        binding.tvRdwVoertuigsoort.text = it[0].voertuigsoort
+        binding.tvRdwAantalDeuren.text = it[0].aantal_deuren
+        binding.tvRdwAantalZitplaatsen.text = it[0].aantal_zitplaatsen
+        binding.rtvRdwKleur.text = it[0].eerste_kleur
+    }
 }

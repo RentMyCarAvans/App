@@ -38,4 +38,6 @@
     <string name="required_field">Verplicht veld!</string>
     <string name="invalid_email">Onjuist email</string>
     <string name="invalid_birthdate">Invullen als jjjj-mm-dd</string>
+    <string name="get_cardetails">Ophalen kentekengegevens</string>
+    <string name="licenseplate">kenteken</string>
 </resources>
