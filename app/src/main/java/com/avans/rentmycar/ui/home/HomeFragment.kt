@@ -28,11 +28,6 @@ class HomeFragment : Fragment() {
     // Declare viewmodel
     private val viewModel: OfferViewModel by viewModels()
 
-    // Setup adapter
-//    private val offerAdapter by lazy {
-//        OfferAdapter(GlideImageLoader(view?.context as AppCompatActivity))
-//    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -48,7 +43,14 @@ class HomeFragment : Fragment() {
 
         // Make all the items in the recyclerview clickable, so the user can click on an item and go to the detail page of the selected offer
         val offerAdapter = OfferAdapter(GlideImageLoader(view?.context as AppCompatActivity)) { offer ->
-            val action = HomeFragmentDirections.actionHomeFragmentToHomeDetailFragment(offer.id)
+            val action = HomeFragmentDirections.actionHomeFragmentToHomeDetailFragment(
+                offer.id,
+                offer.car.model,
+                offer.pickupLocation,
+                offer.startDateTime,
+                offer.endDateTime,
+            "http://placekitten.com/400/400"
+            )
             findNavController().navigate(action)
         }
 
@@ -56,24 +58,18 @@ class HomeFragment : Fragment() {
             LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
         binding.recyclerviewHomeFragmentOffers.adapter = offerAdapter
 
-        // Retreive the id of the current user, so we can use it to get the offers not made by the current user
-        // TODO: Adjust the API call to get the offers not made by the current user, after that add the id to the call
-        val userId = SessionManager.getUserId(requireContext())
-//        Log.d("[Home] Offer", "current userId: $userId")
-
-
-
-
         viewModel.offerResult.observe(viewLifecycleOwner) {
             offerAdapter.setData(it)
         }
 
         // Get all offers and pass them to the adapter
+        // TODO: Adjust the API call to get the offers not made by the current user, after that add the id to the call
+        // Retrieve the id of the current user, so we can use it to get the offers not made by the current user
+        val userId = SessionManager.getUserId(requireContext())
+        // Log.d("[Home] Offer", "current userId: $userId")
+
         viewModel.getOffers()
         offerAdapter.setData(viewModel.offerResult.value ?: emptyList())
-
-
-
 
         // Set the title of the actionbar
         // TODO: Make this dynamic, change the title depending on the current language

@@ -21,5 +21,20 @@
         <argument
             android:name="id"
             app:argType="long" />
+        <argument
+            android:name="carmodel"
+            app:argType="string" />
+        <argument
+            android:name="pickuplocation"
+            app:argType="string" />
+        <argument
+            android:name="startDateTime"
+            app:argType="string" />
+        <argument
+            android:name="endDateTime"
+            app:argType="string" />
+        <argument
+            android:name="carImageUrl"
+            app:argType="string" />
     </fragment>
 </navigation>
