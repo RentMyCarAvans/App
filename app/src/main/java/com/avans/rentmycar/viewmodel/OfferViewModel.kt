@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.avans.rentmycar.model.BookingResponse
 import com.avans.rentmycar.model.OfferData
 import com.avans.rentmycar.model.OfferResponse
 import com.avans.rentmycar.model.OfferUiModel
@@ -21,6 +22,8 @@ class OfferViewModel : ViewModel() {
 
     val offerRepository = OfferRepository()
     val offerResult: MutableLiveData<Collection<OfferData>> = MutableLiveData()
+
+    val bookingResult: MutableLiveData<BookingResponse?> = MutableLiveData()
 
     private val _offers = MutableLiveData<OfferData>()
 //    val offers: LiveData<OfferData> = _offers
@@ -44,7 +47,9 @@ class OfferViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val bookingResponse = offerRepository.createBooking(offerId, customerId)
+                bookingResult.value = bookingResponse
                 Log.d("[OfferVM] bookingresp", bookingResponse.toString())
+                Log.d("[OfferVM] bookingresult", bookingResult.value.toString())
 
             } catch (e: Exception) {
                 Log.e("[OfferVM] bookingerror", e.message.toString())

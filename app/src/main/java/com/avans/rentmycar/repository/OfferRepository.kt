@@ -3,6 +3,7 @@ package com.avans.rentmycar.repository
 import android.util.Log
 import com.avans.rentmycar.api.BookingDTO
 import com.avans.rentmycar.api.OfferService
+import com.avans.rentmycar.model.BookingResponse
 import com.avans.rentmycar.model.OfferCarData
 import com.avans.rentmycar.model.OfferData
 import com.avans.rentmycar.model.OfferUserData
@@ -17,7 +18,7 @@ class OfferRepository {
 
 
 
-    suspend fun createBooking(offerId: Long, customerId: Long): Any? {
+    suspend fun createBooking(offerId: Long, customerId: Long): BookingResponse? {
         var bookingDTO = BookingDTO()
         bookingDTO.offerId = offerId
         bookingDTO.customerId = customerId

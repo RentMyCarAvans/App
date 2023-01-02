@@ -1,6 +1,8 @@
 package com.avans.rentmycar.api
 
 
+import com.avans.rentmycar.model.BookingData
+import com.avans.rentmycar.model.BookingResponse
 import com.avans.rentmycar.model.OfferData
 import com.avans.rentmycar.model.OfferResponse
 import com.avans.rentmycar.rest.ApiClient
@@ -17,7 +19,7 @@ interface OfferService {
     suspend fun getOpenOffers(): Response<OfferResponse>
 
     @POST("/api/v1/bookings/")
-    suspend fun createBooking(@Body bookingDTO: BookingDTO): Response<Any>
+    suspend fun createBooking(@Body bookingDTO: BookingDTO): Response<BookingResponse>
 
     companion object {
         fun getApi(): OfferService? {

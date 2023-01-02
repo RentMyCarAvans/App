@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.avans.rentmycar.R
 import com.avans.rentmycar.api.OfferService
@@ -60,11 +61,21 @@ class HomeDetailFragment : Fragment() {
         // Setup Book Button
         view.findViewById<TextView>(R.id.button_home_detail_book).setOnClickListener {
 
-            Log.d("[HDF]", "Book button clicked")
             Log.d("[HDF]", "Book Offer " + offerId + " for user with id " + userId.toString())
 
-            val tryBooking = OfferViewModel().createBooking(offerId, userId!!)
-            Log.d("[HDF]", "Booking response: " + tryBooking.toString())
+            val offerViewModel = ViewModelProvider(this).get(OfferViewModel::class.java)
+            offerViewModel.createBooking(offerId, userId!!)
+
+            // TODO: Display success message Toast
+            // TODO: Navigate back to HomeFragment ONLY if successfull
+            // TODO: Make sure to refresh HomeFragment
+            Log.d("[HDF]", "Navigating back to HomeFragment")
+            val action = HomeDetailFragmentDirections.actionHomeDetailFragmentToHomeFragment()
+            view.findNavController().navigate(action)
+
+            Log.d("[HDF]", "bookingResult.value: " + offerViewModel.bookingResult.value)
+
+
 
             // TODO: Check the response and show a message to the user
 

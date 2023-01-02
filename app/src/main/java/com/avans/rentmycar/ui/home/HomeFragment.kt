@@ -1,6 +1,7 @@
 package com.avans.rentmycar.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -77,6 +78,24 @@ class HomeFragment : Fragment() {
         // TODO: Make this dynamic, change the title depending on the current language
         val bar = (activity as AppCompatActivity).supportActionBar
         bar?.title = getString(R.string.offers_title)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("[Home] Offer", "onStart")
+        val offerAdapter = OfferAdapter(GlideImageLoader(view?.context as AppCompatActivity)) { offer ->
+            val action = HomeFragmentDirections.actionHomeFragmentToHomeDetailFragment(
+                offer.id,
+                offer.car.model,
+                offer.pickupLocation,
+                offer.startDateTime,
+                offer.endDateTime,
+                "http://placekitten.com/400/400"
+            )
+            findNavController().navigate(action)
+        }
+        viewModel.getOffers()
+        offerAdapter.setData(viewModel.offerResult.value ?: emptyList())
     }
 
 }
