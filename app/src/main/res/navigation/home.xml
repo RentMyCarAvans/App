@@ -17,5 +17,9 @@
     <fragment
         android:id="@+id/homeDetailFragment"
         android:name="com.avans.rentmycar.ui.home.HomeDetailFragment"
-        android:label="HomeDetailFragment" />
+        android:label="HomeDetailFragment" >
+        <argument
+            android:name="id"
+            app:argType="long" />
+    </fragment>
 </navigation>

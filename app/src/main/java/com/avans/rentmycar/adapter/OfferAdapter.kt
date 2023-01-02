@@ -12,7 +12,9 @@ import com.avans.rentmycar.model.OfferData
 import com.avans.rentmycar.utils.ImageLoader
 import java.text.SimpleDateFormat
 
-class OfferAdapter(private val imageLoader: ImageLoader) :
+class OfferAdapter(
+    private val imageLoader: ImageLoader,
+    private val clickListener: (OfferData) -> Unit) :
     RecyclerView.Adapter<OfferAdapter.OfferViewHolder>() {
 
     inner class OfferViewHolder(container: View) : RecyclerView.ViewHolder(container) {
@@ -27,7 +29,6 @@ class OfferAdapter(private val imageLoader: ImageLoader) :
             // Convert the datetime strings to a more readable format
             val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
             val formatter = SimpleDateFormat("dd MM yyyy HH:mm")
-            val output: String = formatter.format(parser.parse("2018-12-14T09:55:00"))
 
             val startDate: String = formatter.format(parser.parse(offerData.startDateTime))
             val endDate: String = formatter.format(parser.parse(offerData.endDateTime))
@@ -47,7 +48,6 @@ class OfferAdapter(private val imageLoader: ImageLoader) :
     private val offerData = mutableListOf<OfferData>()
 
     fun setData(offerData: Collection<OfferData>) {
-        Log.d("[Home] OfferAdapter", "setData: $offerData")
         this.offerData.clear()
         this.offerData.addAll(offerData)
         notifyDataSetChanged()
@@ -61,6 +61,10 @@ class OfferAdapter(private val imageLoader: ImageLoader) :
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: OfferViewHolder, position: Int) {
+        holder.itemView.setOnClickListener {
+            clickListener(offerData[position])
+            Log.d("OfferAdapter", "Clicked on offer with id: " + offerData[position].id)
+        }
         holder.bindData(offerData[position])
     }
 
