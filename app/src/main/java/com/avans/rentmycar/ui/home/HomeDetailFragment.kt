@@ -22,6 +22,7 @@ import com.avans.rentmycar.utils.GlideImageLoader
 import com.avans.rentmycar.utils.SessionManager
 import com.avans.rentmycar.viewmodel.OfferViewModel
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 
 class HomeDetailFragment : Fragment() {
 
@@ -66,9 +67,11 @@ class HomeDetailFragment : Fragment() {
             val offerViewModel = ViewModelProvider(this).get(OfferViewModel::class.java)
             offerViewModel.createBooking(offerId, userId!!)
 
-            // TODO: Display success message Toast
+            // TODO: Display Snackbar depending on success or failure
+            // Show snackbar success message
+            Snackbar.make(view, "The car is booked!", Snackbar.LENGTH_LONG).show()
+
             // TODO: Navigate back to HomeFragment ONLY if successfull
-            // TODO: Make sure to refresh HomeFragment
             Log.d("[HDF]", "Navigating back to HomeFragment")
             val action = HomeDetailFragmentDirections.actionHomeDetailFragmentToHomeFragment()
             view.findNavController().navigate(action)
