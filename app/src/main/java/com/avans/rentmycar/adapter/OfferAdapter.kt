@@ -1,10 +1,12 @@
 package com.avans.rentmycar.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.avans.rentmycar.databinding.ItemOfferBinding
+import com.avans.rentmycar.model.OfferData
 import com.avans.rentmycar.model.OfferUiModel
 import com.avans.rentmycar.utils.ImageLoader
 
@@ -17,19 +19,20 @@ class OfferAdapter(private val imageLoader: ImageLoader) :
         private val offerDates = itemOfferBinding.textviewItemOfferDates
         private val offerLocation = itemOfferBinding.textviewItemOfferLocation
 
-        fun bindData(offerData: OfferUiModel) {
-            imageLoader.loadImage(offerData.image, offerCarImage)
-            offerCarName.text = offerData.car
-            offerDates.text = offerData.dates
-            offerLocation.text = offerData.location
+        fun bindData(offerData: OfferData) {
+            imageLoader.loadImage("http://placekitten.com/300/300", offerCarImage)
+            offerCarName.text = offerData.car.model
+            offerDates.text = offerData.startDateTime + " - " + offerData.endDateTime
+            offerLocation.text = offerData.pickupLocation
         }
     }
 
     lateinit var itemOfferBinding: ItemOfferBinding
 
-    private val offerData = mutableListOf<OfferUiModel>()
+    private val offerData = mutableListOf<OfferData>()
 
-    fun setData(offerData: List<OfferUiModel>) {
+    fun setData(offerData: Collection<OfferData>) {
+        Log.d("[Home] OfferAdapter", "setData: $offerData")
         this.offerData.clear()
         this.offerData.addAll(offerData)
         notifyDataSetChanged()
