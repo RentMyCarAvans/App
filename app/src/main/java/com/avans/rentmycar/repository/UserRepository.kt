@@ -14,15 +14,16 @@ import retrofit2.Response
 
 class UserRepository {
     suspend fun getUser(userId: Long): Response<UserResponse>? {
-        return UserService.getApi()?.getUser()
+
+        return UserService.getApi()?.getUser(url = "/api/v1/users/${userId}")
     }
 
     suspend fun uploadProfilePhoto(profile_picture: MultipartBody.Part): Response<UserResponse>? {
         return UserService.getApi()?.uploadProfilePhoto(file = profile_picture)
     }
 
-    suspend fun updateUser(updatedUser: CreateUpdateUserRequest): Response<UserResponse>? {
-        return UserService.getApi()?.putUser(createUpdateUserRequest = updatedUser)
+    suspend fun updateUser(updatedUser: CreateUpdateUserRequest, userId: Long): Response<UserResponse>? {
+        return UserService.getApi()?.putUser(createUpdateUserRequest = updatedUser, url = "/api/v1/users/${userId}")
     }
 
     suspend fun loginUser(loginRequest: LoginRequest): Response<LoginResponse>? {

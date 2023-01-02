@@ -2,13 +2,14 @@ package com.avans.rentmycar.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import com.avans.rentmycar.R
 import com.avans.rentmycar.ui.login.LoginFragment
 
 object SessionManager {
 
     const val USER_TOKEN = "user_token"
-    const val USER_ID = 1L
+    const val USER_ID = "user_id"
 
     /**
      * Function to save auth token
@@ -23,11 +24,19 @@ object SessionManager {
     fun getToken(context: Context): String? {
         return getString(context, USER_TOKEN)
     }
-
+    /**
+     * Function to get userId
+     */
     fun getUserId(context: Context): Long? {
         return getLong(context, USER_ID)
-    }
+        }
 
+    fun saveUserId(context: Context, userId: Long) {
+        saveLong(context, USER_ID, userId)
+    }
+    /**
+     * Helper functions to save data to shared prefs
+     */
     fun saveString(context: Context, key: String, value: String) {
         val prefs: SharedPreferences =
             context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
@@ -37,25 +46,34 @@ object SessionManager {
 
     }
 
+    fun saveLong(context: Context, key: String, value: Long) {
+        val prefs: SharedPreferences =
+            context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
+        val editor = prefs.edit()
+        editor.putLong(key, value)
+        editor.apply()
+    }
+
     fun getString(context: Context, key: String): String? {
         val prefs: SharedPreferences =
             context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
-        return prefs.getString(USER_TOKEN, null)
+        return prefs.getString(key, null)
     }
 
-    fun getLong(context: Context, key: Long): Long? {
+    fun getLong(context: Context, key: String): Long? {
         val prefs: SharedPreferences =
-            context.getSharedPreferences(context.getString(R.string.app_name)+ "userId", Context.MODE_PRIVATE)
-        return prefs.getLong(USER_TOKEN, 0L )
+            context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
+        return prefs.getLong(key, 1L )
     }
 
+    /**
+     * Function to remove the shared prefs with tag "RMC"
+     */
     fun clearData(context: Context){
         val editor = context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE).edit()
         editor.clear()
         editor.apply()
-        // to remove the userId
-        val editor2 = context.getSharedPreferences(context.getString(R.string.app_name)+ "userId", Context.MODE_PRIVATE).edit()
-        editor2.clear()
-        editor2.apply()
     }
+
+
 }

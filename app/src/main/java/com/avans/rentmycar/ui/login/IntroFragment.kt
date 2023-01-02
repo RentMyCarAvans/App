@@ -28,7 +28,6 @@ class IntroFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        activity?.actionBar?.title = "RMC"
         _binding = FragmentIntroBinding.inflate(inflater, container, false)
         //hide actionbar
         (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
@@ -48,6 +47,9 @@ class IntroFragment : Fragment() {
             findNavController().navigate(R.id.action_introFragment_to_homeFragment2)
 
         }
+        val bar = (activity as AppCompatActivity).supportActionBar
+        bar?.title = getString(R.string.app_name)
+
         return root
     }
 

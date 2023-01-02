@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat.recreate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentProfileBinding
@@ -107,11 +109,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun logout() {
         clearData(requireContext())
-        //restart app
-        findNavController().navigate(R.id.action_profileFragment_to_introFragment2)
-        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
 
-
+        val navController: NavController =
+           findNavController()
+        navController.run {
+            popBackStack()
+            navigate(R.id.introFragment)
+        }
     }
 
     override fun onDestroyView() {

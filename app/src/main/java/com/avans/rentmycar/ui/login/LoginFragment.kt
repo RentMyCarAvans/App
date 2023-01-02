@@ -16,6 +16,7 @@ import com.avans.rentmycar.ui.viewmodel.LoginViewModel
 import com.avans.rentmycar.rest.response.BaseResponse
 import com.avans.rentmycar.rest.response.LoginResponse
 import com.avans.rentmycar.utils.SessionManager
+import okhttp3.internal.toLongOrDefault
 
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
@@ -31,7 +32,6 @@ class LoginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        activity?.actionBar?.title= "Login"
 
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -92,6 +92,8 @@ class LoginFragment : Fragment() {
                 }
             }
         }
+        val bar = (activity as AppCompatActivity).supportActionBar
+        bar?.title = getString(R.string.login)
         return root
     }
 
@@ -135,6 +137,8 @@ class LoginFragment : Fragment() {
         if (data != null) {
             if (data.status === 200) {
                 context?.let { SessionManager.saveAuthToken(it, data.data.token) }
+                Log.d("APPRMC", data.toString())
+                context?.let {SessionManager.saveUserId(it, data.data.userId.toLong())}
                 Log.d("APP RMC", "status 200, now opening home")
                 navigateToHome()
             }

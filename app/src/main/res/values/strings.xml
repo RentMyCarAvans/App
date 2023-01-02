@@ -40,4 +40,5 @@
     <string name="invalid_email">Invalid Email!</string>
     <string name="get_cardetails">Get cardetails</string>
     <string name="licenseplate">licenseplate</string>
+    <string name="invalid_birthdate" >Format should be yyyy-mm-dd</string>
 </resources>
