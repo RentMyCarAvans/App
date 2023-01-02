@@ -1,10 +1,7 @@
 package com.avans.rentmycar.ui.mycars
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.avans.rentmycar.api.RdwApiClient
 import com.avans.rentmycar.model.RdwResponseItem
 import kotlinx.coroutines.launch
@@ -18,16 +15,12 @@ class CarAddItemViewModel : ViewModel() {
     get() = _rdwResponse
 
     fun getRdwCarDetails(licenseplate: String){
-        Log.d(TAG, "getRdwCarDetails() => licenseplate " + licenseplate)
+        Log.d(TAG, "getRdwCarDetails() => Get car details for car with licenseplate " + licenseplate)
         viewModelScope.launch {
             var responseRdw = RdwApiClient.retrofitService.getCarInfoByLicensePlate(licenseplate).toString()
-            Log.d(TAG, "getRdwCarDetails() => (1) response livedata rdwResponse: " + rdwResponse)
-            Log.d(TAG, "getRdwCarDetails() => (2) response livedata _rdwResponse.value: " + _rdwResponse.value)
-            Log.d(TAG, "getRdwCarDetails() => (3) reponse livedata : " + this@CarAddItemViewModel.rdwResponse.toString())
-            Log.d(TAG, "getRdwCarDetails() => reponseRdw: " + responseRdw)
-
+            Log.d(TAG, "getRdwCarDetails() => reponse RDW: " + responseRdw)
         }
-        Log.d(TAG, "getRdwCarDetails() => Data retrieved for car "+licenseplate)
+        Log.d(TAG, "getRdwCarDetails() => RDW data retrieved for car with licenseplate " + licenseplate)
     }
 
 }

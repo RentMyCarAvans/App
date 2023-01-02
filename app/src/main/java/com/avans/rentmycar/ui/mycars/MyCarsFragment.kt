@@ -40,21 +40,28 @@ class MyCarsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentMycarsBinding.bind(view)
+
+        // Clicklistener for floating action button
         binding.buttonNewCarFab.setOnClickListener {
             Log.d(TAG, "onViewCreated() => Floating Action Button clicked")
             val bar = (activity as AppCompatActivity).supportActionBar
             bar?.title = "Add a new Car"
-            // val action = MyCarsFragmentDirections.actionNavigationMycarsToCarDetailFragment()
             val action = MyCarsFragmentDirections.actionMycarsToCarAddItemFragment()
             this.findNavController().navigate(action)
         }
 
-        Log.d(TAG, "onViewCreated() => after fragmentMyCarsBinding")
+        // click listener for the item click
+        binding.root.setOnClickListener {
+            Log.d(TAG, "onViewCreated() => Floating Action Button clicked")
+            val bar = (activity as AppCompatActivity).supportActionBar
+            bar?.title = "Car details"
+            val action = MyCarsFragmentDirections.actionMycarsToCarDetailFragment()
+            this.findNavController().navigate(action)
+        }
+
 
         binding.listCarRecyclerView.adapter = CarViewAdapter()
-        Log.d(TAG, "onViewCreated() => CarViewAdapter called")
         binding.listCarRecyclerView.layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
-        Log.d(TAG, "onViewCreated() => listRecyclerView called")
 
         val bar = (activity as AppCompatActivity).supportActionBar
         bar?.title = "My Cars"

@@ -3,10 +3,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.avans.rentmycar.databinding.AddCarItemBinding
-import com.avans.rentmycar.databinding.MycarsItemBinding
 import com.avans.rentmycar.model.CarList
-import com.avans.rentmycar.model.CarModel
-import com.avans.rentmycar.repository.CarRepository
+import com.avans.rentmycar.repository.CarRepositoryStub
 
 private val TAG = "[RMC][CarDetailAdapter]"
 class CarDetailAdapter: RecyclerView.Adapter<CarDetailAdapter.CarAddItemViewHolder>() {
@@ -38,6 +36,6 @@ class CarDetailAdapter: RecyclerView.Adapter<CarDetailAdapter.CarAddItemViewHold
         //holder.bind(CarRepository.carList[position])
     }
 
-    override fun getItemCount() = CarRepository.carModels.size
+    override fun getItemCount() = CarRepositoryStub.carModels.size
 
 }
