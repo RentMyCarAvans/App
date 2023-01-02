@@ -15,8 +15,8 @@ import com.avans.rentmycar.databinding.FragmentMycarsBinding
 import com.google.android.material.snackbar.Snackbar
 
 
-private val TAG = "[RMC][MyCarsFragment]"
 class MyCarsFragment : Fragment() {
+    private val TAG = "[RMC][MyCarsFragment]"
 
     private lateinit var _binding: FragmentMycarsBinding
 

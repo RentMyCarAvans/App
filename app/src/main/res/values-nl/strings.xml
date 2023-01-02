@@ -37,4 +37,6 @@
     <string name="forgot_password">Wachtwoord vergeten?</string>
     <string name="required_field">Verplicht veld!</string>
     <string name="invalid_email">Onjuist email</string>
+    <string name="get_cardetails">Ophalen kentekengegevens</string>
+    <string name="licenseplate">kenteken</string>
 </resources>

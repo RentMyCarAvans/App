@@ -1,75 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:paddingTop="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_marginHorizontal="8dp"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:paddingTop="8dp">
 
     <FrameLayout
         android:id="@+id/layout_add_car"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/et_licenseplate"
-        app:endIconMode="clear_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:hint="Enter licenseplate"
-        android:inputType="textCapWords"
-        android:selectAllOnFocus="true"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <Button
-        android:id="@+id/button_get_licenseplate_rdw"
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
-        android:text="GET"
-        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="163dp"
+        tools:layout_editor_absoluteY="191dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fill in your licenseplate, and the cardetails will be fetched from RDW. When you are finished, select the Save button and your call will be added to MyCars. From there you can offer your car."
+        app:layout_constraintBottom_toTopOf="@id/txtLay_licensePlateAdd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-    <TextView
-        android:id="@+id/textview_car_model"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Lamborgini Diablo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_licenseplate" />
-
-    <TextView
-        android:id="@+id/textview_car_color"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Yellow"
-        tools:layout_editor_absoluteY="232dp"
-        app:layout_constraintStart_toStartOf="@+id/textview_car_model"
-        app:layout_constraintTop_toBottomOf="@+id/textview_car_model"/>
-
-    <TextView
-        android:id="@+id/textview_car_number_of_seats"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="4"
-        app:layout_constraintStart_toStartOf="@+id/textview_car_color"
-        app:layout_constraintTop_toBottomOf="@+id/textview_car_color" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtLay_licensePlateAdd"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:hint="@string/licenseplate"
+        app:endIconMode="clear_text"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintGuide_percent="0.85" />
+        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.4"
+        app:layout_constraintWidth_percent="0.9">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtInput_licensePlate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapCharacters"
+            android:maxLength="6" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <Button
+        android:id="@+id/button_get_licenseplate_rdw"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/get_cardetails"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btn_save"
+
+        />
+    <Button
+        android:id="@+id/btn_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/save"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

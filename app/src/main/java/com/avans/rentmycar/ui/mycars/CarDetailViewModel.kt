@@ -5,29 +5,31 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.avans.rentmycar.api.CarApiClient
 import com.avans.rentmycar.api.RdwApiClient
+import com.avans.rentmycar.model.CarResponse
 import com.avans.rentmycar.model.RdwResponseItem
 import kotlinx.coroutines.launch
 
-private val TAG = "[RMC][MyCarsViewModel]"
 class CarDetailViewModel : ViewModel() {
+    private val TAG = "[RMC][CarDetailVM]"
 
-    private val _rdwResponse = MutableLiveData<List<RdwResponseItem>>()
-    val rdwResponse: LiveData<List<RdwResponseItem>>
-    get() = _rdwResponse
+    private val _carResponse = MutableLiveData<List<CarResponse>>()
+    val carResponse: LiveData<List<CarResponse>>
+    get() = _carResponse
 
     init {
         Log.d(TAG, "init()")
-        getRdwCarDetails()
+        getMyCars()
     }
 
-    fun getRdwCarDetails(){
-        Log.d(TAG, "getRdwCarDetails()")
+    fun getMyCars(){
+        Log.d(TAG, "getMyCars()")
         viewModelScope.launch {
-            var getCarInfoByLicensePlateDeferred = RdwApiClient.retrofitService.getCarInfoByLicensePlate("69SXKZ").toString()
-            Log.d(TAG, "getRdwCarDetails => retrieved value: " + getCarInfoByLicensePlateDeferred)
+            var carDetails = CarApiClient.retrofitService.getAllCarsByUserId(1).toString()
+            Log.d(TAG, "getCarDetails => retrieved value: " + carDetails)
         }
-        Log.d(TAG, "getRdwCarDetails DONE")
+        Log.d(TAG, "getMyCars() DONE")
     }
 
 }
