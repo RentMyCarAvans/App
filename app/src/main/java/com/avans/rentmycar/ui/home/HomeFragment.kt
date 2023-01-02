@@ -1,19 +1,16 @@
 package com.avans.rentmycar.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.avans.rentmycar.adapter.OfferAdapter
 import com.avans.rentmycar.databinding.FragmentHomeBinding
-import com.avans.rentmycar.repository.OfferRepository
 import com.avans.rentmycar.utils.GlideImageLoader
 import com.avans.rentmycar.utils.SessionManager
 import com.avans.rentmycar.viewmodel.OfferViewModel
@@ -54,7 +51,7 @@ class HomeFragment : Fragment() {
         val userId = SessionManager.getUserId(requireContext())
 //        Log.d("[Home] Offer", "current userId: $userId")
 
-        val viewModel = OfferViewModel()
+//        val viewModel = OfferViewModel()
 
         viewModel.offerResult.observe(viewLifecycleOwner) {
             offerAdapter.setData(it)
@@ -62,7 +59,7 @@ class HomeFragment : Fragment() {
 
         // Get all offers and pass them to the adapter
         viewModel.getOffers()
-        offerAdapter.setData(viewModel.offerResult.value?: emptyList())
+        offerAdapter.setData(viewModel.offerResult.value ?: emptyList())
 
         // Set the title of the actionbar
         // TODO: Make this dynamic, change the title depending on the current language

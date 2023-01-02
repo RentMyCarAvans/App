@@ -1,14 +1,16 @@
 package com.avans.rentmycar.adapter
 
+import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.avans.rentmycar.databinding.ItemOfferBinding
 import com.avans.rentmycar.model.OfferData
-import com.avans.rentmycar.model.OfferUiModel
 import com.avans.rentmycar.utils.ImageLoader
+import java.text.SimpleDateFormat
 
 class OfferAdapter(private val imageLoader: ImageLoader) :
     RecyclerView.Adapter<OfferAdapter.OfferViewHolder>() {
@@ -19,10 +21,23 @@ class OfferAdapter(private val imageLoader: ImageLoader) :
         private val offerDates = itemOfferBinding.textviewItemOfferDates
         private val offerLocation = itemOfferBinding.textviewItemOfferLocation
 
+        @RequiresApi(Build.VERSION_CODES.O)
         fun bindData(offerData: OfferData) {
-            imageLoader.loadImage("http://placekitten.com/300/300", offerCarImage)
+
+            // Convert the datetime strings to a more readable format
+            val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+            val formatter = SimpleDateFormat("dd MM yyyy HH:mm")
+            val output: String = formatter.format(parser.parse("2018-12-14T09:55:00"))
+
+            val startDate: String = formatter.format(parser.parse(offerData.startDateTime))
+            val endDate: String = formatter.format(parser.parse(offerData.endDateTime))
+
+            // TODO: Replace cute placeholder images with dumb pictures of cars
+            val random = (1..10).random() * 100
+
+            imageLoader.loadImage("http://placekitten.com/" + random + "/" + random, offerCarImage)
             offerCarName.text = offerData.car.model
-            offerDates.text = offerData.startDateTime + " - " + offerData.endDateTime
+            offerDates.text = "$startDate - $endDate"
             offerLocation.text = offerData.pickupLocation
         }
     }
@@ -44,6 +59,7 @@ class OfferAdapter(private val imageLoader: ImageLoader) :
         return OfferViewHolder(itemOfferBinding.root)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: OfferViewHolder, position: Int) {
         holder.bindData(offerData[position])
     }
