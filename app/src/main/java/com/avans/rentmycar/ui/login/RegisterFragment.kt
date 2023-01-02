@@ -33,8 +33,6 @@ class RegisterFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        activity?.actionBar?.title = getString(R.string.register)
-
         _binding = FragmentRegisterBinding.inflate(inflater, container, false)
         val root: View = binding.root
         //show actionbar
@@ -58,6 +56,8 @@ class RegisterFragment : Fragment() {
 
         setupListeners()
 
+        val bar = (activity as AppCompatActivity).supportActionBar
+        bar?.title = getString(R.string.register)
 
         return root
     }

@@ -32,7 +32,6 @@ class LoginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        activity?.actionBar?.title= "Login"
 
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -93,6 +92,8 @@ class LoginFragment : Fragment() {
                 }
             }
         }
+        val bar = (activity as AppCompatActivity).supportActionBar
+        bar?.title = getString(R.string.login)
         return root
     }
 
