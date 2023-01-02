@@ -5,28 +5,76 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.avans.rentmycar.R
+import com.avans.rentmycar.adapter.OfferAdapter
 import com.avans.rentmycar.databinding.FragmentHomeBinding
+import com.avans.rentmycar.utils.GlideImageLoader
+import com.avans.rentmycar.utils.SessionManager
+import com.avans.rentmycar.viewmodel.OfferViewModel
 
 class HomeFragment : Fragment() {
 
+    // Declare viewbinding
+    private lateinit var _binding: FragmentHomeBinding
+    private val binding get() = _binding
+
+    // Declare viewmodel
+    private val viewModel: OfferViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_home, container, false)
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        view.findViewById<Button>(R.id.button).setOnClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_homeDetailFragment)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val binding = FragmentHomeBinding.bind(view)
+
+        // Make all the items in the recyclerview clickable, so the user can click on an item and go to the detail page of the selected offer
+        val offerAdapter = OfferAdapter(GlideImageLoader(view?.context as AppCompatActivity)) { offer ->
+            val action = HomeFragmentDirections.actionHomeFragmentToHomeDetailFragment(
+                offer.id,
+                offer.car.model,
+                offer.pickupLocation,
+                offer.startDateTime,
+                offer.endDateTime,
+            "http://placekitten.com/400/400"
+            )
+            findNavController().navigate(action)
         }
-        return view
+
+        binding.recyclerviewHomeFragmentOffers.layoutManager =
+            LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
+        binding.recyclerviewHomeFragmentOffers.adapter = offerAdapter
+
+        viewModel.offerResult.observe(viewLifecycleOwner) {
+            offerAdapter.setData(it)
+        }
+
+        // Get all offers and pass them to the adapter
+        // TODO: Adjust the API call to get the offers not made by the current user, after that add the id to the call
+        // Retrieve the id of the current user, so we can use it to get the offers not made by the current user
+        val userId = SessionManager.getUserId(requireContext())
+        // Log.d("[Home] Offer", "current userId: $userId")
+
+        viewModel.getOffers()
+        offerAdapter.setData(viewModel.offerResult.value ?: emptyList())
+
+        // Set the title of the actionbar
+        // TODO: Make this dynamic, change the title depending on the current language
+        val bar = (activity as AppCompatActivity).supportActionBar
+        bar?.title = "Offers"
     }
 
 }
