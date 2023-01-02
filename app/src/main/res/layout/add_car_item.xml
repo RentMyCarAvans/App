@@ -57,6 +57,7 @@
             android:layout_height="wrap_content"
             android:inputType="textCapCharacters"
             android:maxLength="6" />
+
     </com.google.android.material.textfield.TextInputLayout>
     <Button
         android:id="@+id/button_get_licenseplate_rdw"
@@ -76,5 +77,60 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         />
+
+    <TextView
+        android:id="@+id/tv_rdw_voertuigsoort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="5dp"
+        android:text="Soort voertuig: personenauto "
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtLay_licensePlateAdd" />
+    <TextView
+        android:id="@+id/tv_rdw_merk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="5dp"
+        android:text="Merk: Lamborghini Diablo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_rdw_voertuigsoort" />
+    <TextView
+        android:id="@+id/tv_rdw_aantal_zitplaatsen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="5dp"
+        android:text="Aantal zitplaatsen: 4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_rdw_merk" />
+    <TextView
+        android:id="@+id/tv_rdw_aantal_deuren"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="5dp"
+        android:text="Aantal deuren: 4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_rdw_aantal_zitplaatsen" />
+    <TextView
+        android:id="@+id/rtv_rdw_kleur"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="5dp"
+        android:text="Kleur: zwart"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_rdw_aantal_deuren" />
+    <TextView
+        android:id="@+id/rtv_rdw_inrichting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="5dp"
+        android:text="Inrichting: hatchback"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rtv_rdw_kleur" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

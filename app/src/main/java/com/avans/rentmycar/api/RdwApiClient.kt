@@ -38,6 +38,9 @@ private val retrofit = Retrofit.Builder()
 
 /**
  * A public Api object that exposes the lazy-initialized Retrofit service
+ * By adding the keywords “by lazy” after the variable type definition, we tell Kotlin that it should
+ * execute the following lambda code only the first time a class tries to access the partsApi variable.
+ * Afterwards, it will just return the created instance
  */
 object RdwApiClient {
         val retrofitService: RdwApiService by lazy {  retrofit.create(RdwApiService::class.java) }
