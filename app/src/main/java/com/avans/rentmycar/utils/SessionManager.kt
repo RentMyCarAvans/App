@@ -24,11 +24,19 @@ object SessionManager {
     fun getToken(context: Context): String? {
         return getString(context, USER_TOKEN)
     }
-
+    /**
+     * Function to get userId
+     */
     fun getUserId(context: Context): Long? {
         return getLong(context, USER_ID)
         }
 
+    fun saveUserId(context: Context, userId: Long) {
+        saveLong(context, USER_ID, userId)
+    }
+    /**
+     * Helper functions to save data to shared prefs
+     */
     fun saveString(context: Context, key: String, value: String) {
         val prefs: SharedPreferences =
             context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
@@ -36,6 +44,14 @@ object SessionManager {
         editor.putString(key, value)
         editor.apply()
 
+    }
+
+    fun saveLong(context: Context, key: String, value: Long) {
+        val prefs: SharedPreferences =
+            context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
+        val editor = prefs.edit()
+        editor.putLong(key, value)
+        editor.apply()
     }
 
     fun getString(context: Context, key: String): String? {
@@ -50,25 +66,14 @@ object SessionManager {
         return prefs.getLong(key, 1L )
     }
 
+    /**
+     * Function to remove the shared prefs with tag "RMC"
+     */
     fun clearData(context: Context){
         val editor = context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE).edit()
         editor.clear()
         editor.apply()
-        // to remove the userId
-//        val editor2 = context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE).edit()
-//        editor2.clear()
-//        editor2.apply()
     }
 
-    fun saveUserId(context: Context, userId: Long) {
-        saveLong(context, USER_ID, userId)
-    }
 
-    private fun saveLong(context: Context, key: String, value: Long) {
-        val prefs: SharedPreferences =
-            context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
-        val editor = prefs.edit()
-        editor.putLong(key, value)
-        editor.apply()
-    }
 }
