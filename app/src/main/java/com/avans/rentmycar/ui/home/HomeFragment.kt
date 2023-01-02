@@ -33,6 +33,8 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        //show actionbar
+        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
