@@ -110,9 +110,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         //restart app
         findNavController().navigate(R.id.action_profileFragment_to_introFragment2)
         (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
-
-
-    }
+   }
 
     override fun onDestroyView() {
         binding = null
