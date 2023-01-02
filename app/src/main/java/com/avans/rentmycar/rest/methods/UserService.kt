@@ -19,11 +19,11 @@ interface UserService {
     @POST("/api/v1/auth/login")
     suspend fun loginUser(@Body loginRequest: LoginRequest): Response<LoginResponse>
 
-    @GET("/api/v1/users/1")
-    suspend fun getUser(): Response<UserResponse>
+    @GET
+    suspend fun getUser(@Url url: String): Response<UserResponse>
 
-    @PUT("/api/v1/users/1")
-    suspend fun putUser(@Body createUpdateUserRequest: CreateUpdateUserRequest): Response<UserResponse>
+    @PUT()
+    suspend fun putUser(@Body createUpdateUserRequest: CreateUpdateUserRequest, @Url url: String): Response<UserResponse>
 
     @POST("/api/v1/users")
     suspend fun registerUser(@Body registerUserRequest: RegisterUserRequest): Response<UserResponse>

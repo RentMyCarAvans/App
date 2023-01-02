@@ -19,6 +19,7 @@ import com.avans.rentmycar.rest.response.BaseResponse
 import com.avans.rentmycar.utils.Constant
 import com.avans.rentmycar.utils.SessionManager.getUserId
 import com.avans.rentmycar.ui.viewmodel.UserViewModel
+import com.avans.rentmycar.utils.SessionManager
 import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
@@ -82,6 +83,7 @@ class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail) {
     }
 
     private fun saveProfile() {
+
         val firstName = view?.findViewById<TextInputEditText>(R.id.firstname_input)?.text.toString()
         val lastName = view?.findViewById<TextInputEditText>(R.id.lastname_input)?.text.toString()
         val address = view?.findViewById<TextInputEditText>(R.id.address_input)?.text.toString()
@@ -89,7 +91,7 @@ class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail) {
         val telephone = view?.findViewById<TextInputEditText>(R.id.telephone_input)?.text.toString()
         val userId = getUserId(requireContext())
         val updatedUser = CreateUpdateUserRequest(userId!!, firstName, lastName, null, null, null, null,address, city, telephone)
-        viewModel.setUser(updatedUser)
+        viewModel.setUser(updatedUser, userId)
     }
 
 

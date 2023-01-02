@@ -2,7 +2,6 @@ package com.avans.rentmycar.ui.viewmodel
 
 import android.app.Application
 import android.util.Log
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -10,7 +9,6 @@ import com.avans.rentmycar.repository.UserRepository
 import com.avans.rentmycar.rest.request.CreateUpdateUserRequest
 import com.avans.rentmycar.rest.response.BaseResponse
 import com.avans.rentmycar.rest.response.UserResponse
-import com.avans.rentmycar.utils.SessionManager
 import kotlinx.coroutines.launch
 
 
@@ -41,11 +39,11 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun setUser(createUpdateUserRequest: CreateUpdateUserRequest) {
+    fun setUser(createUpdateUserRequest: CreateUpdateUserRequest, userId: Long) {
         userRequest.value = BaseResponse.Loading()
         viewModelScope.launch {
             try {
-                val request = userRepo.updateUser(createUpdateUserRequest)
+                val request = userRepo.updateUser(createUpdateUserRequest, userId)
                 if (request?.code() == 200) {
                     userRequest.value = BaseResponse.Success()
                 } else {
