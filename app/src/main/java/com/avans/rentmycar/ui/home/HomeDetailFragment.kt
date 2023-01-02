@@ -13,10 +13,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.avans.rentmycar.R
+import com.avans.rentmycar.api.OfferService
 import com.avans.rentmycar.databinding.FragmentHomeBinding
 import com.avans.rentmycar.utils.Constant
 import com.avans.rentmycar.utils.GlideImageLoader
 import com.avans.rentmycar.utils.SessionManager
+import com.avans.rentmycar.viewmodel.OfferViewModel
 import com.bumptech.glide.Glide
 
 class HomeDetailFragment : Fragment() {
@@ -58,15 +60,13 @@ class HomeDetailFragment : Fragment() {
         view.findViewById<TextView>(R.id.button_home_detail_book).setOnClickListener {
 
             Log.d("[HDF]", "Book button clicked")
-            Log.d("[HDF] User", "userId: " + userId.toString())
-
-
-            // TODO: Remove this when user is logged in
-            Log.w("[HDF]", "LET OP! USING MOCK USER ID!")
-            val userId = 1
             Log.d("[HDF]", "Book Offer " + offerId + " for user with id " + userId.toString())
 
             // TODO: Make a POST request to the API to book the offer
+            // Use the OfferService.createBooking() method to make the request
+            // The method takes the offerId and userId as parameters
+            OfferViewModel().createBooking(offerId, userId!!)
+
 
         }
 

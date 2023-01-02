@@ -16,6 +16,8 @@ interface OfferService {
     @GET("/api/v1/offers")
     suspend fun getOpenOffers(): Response<OfferResponse>
 
+    @POST("/api/v1/bookings/")
+    suspend fun createBooking(@Body bookingDTO: BookingDTO): Response<Any>
 
     companion object {
         fun getApi(): OfferService? {
@@ -23,4 +25,9 @@ interface OfferService {
         }
 
     }
+}
+
+class BookingDTO {
+    var offerId: Long = 0
+    var customerId: Long = 0
 }

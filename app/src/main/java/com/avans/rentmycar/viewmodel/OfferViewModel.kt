@@ -17,27 +17,34 @@ import kotlinx.coroutines.launch
 
 class OfferViewModel : ViewModel() {
 
-    private val _offerResponse = MutableLiveData<String?>()
+//    private val _offerResponse = MutableLiveData<String?>()
 
     val offerRepository = OfferRepository()
     val offerResult: MutableLiveData<Collection<OfferData>> = MutableLiveData()
 
     private val _offers = MutableLiveData<OfferData>()
-    val offers: LiveData<OfferData> = _offers
+//    val offers: LiveData<OfferData> = _offers
 
     fun getOffers() {
 
 
-//        offerResult.value = BaseResponse.Loading()
         viewModelScope.launch {
             try {
-                Log.v("[OfferViewModel]", "getOffers() is called")
-
-//                val response = offerRepository.getMockOffers()
                 val offerResponse = offerRepository.getOpenOffers()
-//                Log.d("[offerResponse]", offerResponse.toString())
                 offerResult.value = offerResponse
                 Log.d("[OfferVM] response", offerResponse.toString())
+
+            } catch (e: Exception) {
+                Log.e("[OfferVM] error", e.message.toString())
+            }
+        }
+    }
+
+    fun createBooking(offerId: Long, customerId: Long) {
+        viewModelScope.launch {
+            try {
+                val bookingResponse = offerRepository.createBooking(offerId, customerId)
+                Log.d("[OfferVM] response", bookingResponse.toString())
 
             } catch (e: Exception) {
                 Log.e("[OfferVM] error", e.message.toString())
