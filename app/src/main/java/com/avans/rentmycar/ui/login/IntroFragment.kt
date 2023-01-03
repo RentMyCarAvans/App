@@ -46,7 +46,7 @@ class IntroFragment : Fragment() {
         val token = context?.let { SessionManager.getToken(it) }
 
         if (!token.isNullOrBlank()) {
-            findNavController().navigate(R.id.action_introFragment_to_homeFragment)
+            findNavController().navigate(R.id.action_introFragment_to_homeFragment2)
 
         }
         val bar = (activity as AppCompatActivity).supportActionBar

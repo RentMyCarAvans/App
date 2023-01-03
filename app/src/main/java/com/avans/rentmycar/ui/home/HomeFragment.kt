@@ -84,7 +84,7 @@ class HomeFragment : Fragment() {
         super.onStart()
         Log.d("[Home] Offer", "onStart")
         val offerAdapter = OfferAdapter(GlideImageLoader(view?.context as AppCompatActivity)) { offer ->
-            val action = HomeFragmentDirections.actionHomeFragmentToHomeDetailFragment(
+            val action = HomeFragmentDirections.actionHomeFragment2ToHomeDetailFragment2(
                 offer.id,
                 offer.car.model,
                 offer.pickupLocation,
