@@ -109,7 +109,7 @@ class LoginFragment : Fragment() {
 
     private fun navigateToHome() {
         Log.v("APP", "logging in")
-        findNavController().navigate(R.id.action_loginFragment_to_homeFragment2)
+        findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
 
     }
 
