@@ -114,7 +114,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
            findNavController()
         navController.run {
             popBackStack()
-            navigate(R.id.introFragment)
+            navigate(R.id.home)
         }
     }
 
