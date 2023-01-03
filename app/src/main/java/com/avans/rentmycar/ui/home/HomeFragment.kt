@@ -45,7 +45,7 @@ class HomeFragment : Fragment() {
 
         // Make all the items in the recyclerview clickable, so the user can click on an item and go to the detail page of the selected offer
         val offerAdapter = OfferAdapter(GlideImageLoader(view?.context as AppCompatActivity)) { offer ->
-            val action = HomeFragmentDirections.actionHomeFragmentToHomeDetailFragment(
+            val action = HomeFragmentDirections.actionHomeFragment2ToHomeDetailFragment2(
                 offer.id,
                 offer.car.model,
                 offer.pickupLocation,
