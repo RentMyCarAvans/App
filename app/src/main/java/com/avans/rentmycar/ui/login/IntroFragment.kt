@@ -45,16 +45,10 @@ class IntroFragment : Fragment() {
 
         val token = context?.let { SessionManager.getToken(it) }
 
-//        if (!token.isNullOrBlank()) {
-////            findNavController().navigate(R.id.action_introFragment_to_homeFragment2)
-//
-//            val navController: NavController =
-//                findNavController()
-//            navController.run {
-//                popBackStack()
-//                navigate(R.id.homeFragment2)
-//            }
-//        }
+        if (!token.isNullOrBlank()) {
+            findNavController().navigate(R.id.action_introFragment_to_homeFragment2)
+
+        }
         val bar = (activity as AppCompatActivity).supportActionBar
         bar?.title = getString(R.string.app_name)
 
