@@ -10,9 +10,7 @@ import com.avans.rentmycar.model.OfferData
 import com.avans.rentmycar.repository.OfferRepository
 import kotlinx.coroutines.launch
 
-class OfferViewModel : ViewModel() {
-
-//    private val _offerResponse = MutableLiveData<String?>()
+class BookingViewModel : ViewModel() {
 
     val offerRepository = OfferRepository()
     val offerResult: MutableLiveData<Collection<OfferData>> = MutableLiveData()
@@ -21,14 +19,13 @@ class OfferViewModel : ViewModel() {
     val bookingsResult: MutableLiveData<Collection<BookingData>> = MutableLiveData()
 
     private val _offers = MutableLiveData<OfferData>()
-//    val offers: LiveData<OfferData> = _offers
 
     fun getOffers() {
         viewModelScope.launch {
             try {
                 val offerResponse = offerRepository.getOpenOffers()
                 offerResult.value = offerResponse
-                Log.d("[OfferVM] getOffers", offerResponse.toString())
+                Log.d("[OfferVM] response", offerResponse.toString())
 
             } catch (e: Exception) {
                 Log.e("[OfferVM] error", e.message.toString())
@@ -41,7 +38,7 @@ class OfferViewModel : ViewModel() {
             try {
                 val getBookingResponse = offerRepository.getBookings(userId)
                 bookingsResult.value = getBookingResponse
-                Log.d("[OfferVM] getBookings", getBookingResponse.toString())
+                Log.d("[OfferVM] getBooking", getBookingResponse.toString())
 
             } catch (e: Exception) {
                 Log.e("[OfferVM] getB error", e.message.toString())
@@ -62,5 +59,4 @@ class OfferViewModel : ViewModel() {
             }
         }
     }
-
 }

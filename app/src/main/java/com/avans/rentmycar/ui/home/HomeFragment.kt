@@ -12,10 +12,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.avans.rentmycar.R
+import com.avans.rentmycar.adapter.BookingAdapter
 import com.avans.rentmycar.adapter.OfferAdapter
 import com.avans.rentmycar.databinding.FragmentHomeBinding
 import com.avans.rentmycar.utils.GlideImageLoader
 import com.avans.rentmycar.utils.SessionManager
+import com.avans.rentmycar.viewmodel.BookingViewModel
 import com.avans.rentmycar.viewmodel.OfferViewModel
 
 class HomeFragment : Fragment() {
@@ -28,6 +30,7 @@ class HomeFragment : Fragment() {
 
     // Declare viewmodel
     private val viewModel: OfferViewModel by viewModels()
+    private val bookingViewModel: BookingViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,6 +58,21 @@ class HomeFragment : Fragment() {
                 offer.endDateTime,
             "http://placekitten.com/400/400"
             )
+            //TODO: Andere Fragment maken voor de Booking Details
+            findNavController().navigate(action)
+        }
+
+
+        // TODO: This test with BookingAdapter should be removed if not needed
+        val bookingAdapter = BookingAdapter(GlideImageLoader(view?.context as AppCompatActivity)) { booking ->
+            val action = HomeFragmentDirections.actionHomeFragment2ToHomeDetailFragment2(
+                booking.id,
+                booking.offer.car.model,
+                booking.offer.pickupLocation,
+                booking.offer.startDateTime,
+                booking.offer.endDateTime,
+                "http://placekitten.com/400/400"
+            )
             findNavController().navigate(action)
         }
 
@@ -75,18 +93,28 @@ class HomeFragment : Fragment() {
 
 
         binding.buttonHomeAvailablecars.setOnClickListener {
-            Log.d("[Home] button", "available cars clicked")
+            Log.d("[Home]", "available cars clicked")
             this.currentCall = 0
             binding.textviewHomeTitle.text = getString(R.string.home_availablecars)
             viewModel.getOffers()
+            Log.d("[Home] offrRes", viewModel.offerResult.value.toString())
+            offerAdapter.setData(viewModel.offerResult.value ?: emptyList())
         }
 
         binding.buttonHomeMybookings.setOnClickListener {
-            Log.d("[Home] button", "my bookings clicked")
+            Log.d("[Home]", "my bookings clicked")
             this.currentCall = 1
             binding.textviewHomeTitle.text = getString(R.string.home_mybookings)
             if (userId != null) {
                 viewModel.getBookings(userId)
+                Log.d("[Home] bkngSres", viewModel.bookingsResult.value.toString())
+
+                // extracting the offers from my bookings to display them in the recyclerview
+                val offersFromMyBookings = viewModel.bookingsResult.value?.map { it.offer } ?: emptyList()
+
+                offerAdapter.setData(offersFromMyBookings ?: emptyList())
+
+                //TODO: Zorgen dat de lijst herlaadt
             }
         }
 
@@ -95,6 +123,7 @@ class HomeFragment : Fragment() {
             this.currentCall = 2
             binding.textviewHomeTitle.text = getString(R.string.home_myoffers)
             viewModel.getOffers()
+            offerAdapter.setData(viewModel.offerResult.value ?: emptyList())
         }
 
         // Get all offers and pass them to the adapter

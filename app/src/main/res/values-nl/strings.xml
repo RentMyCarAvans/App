@@ -43,4 +43,5 @@
     <string name="offers_title">Aanbiedingen</string>
     <string name="home_availablecars">Beschikbare Auto\'s</string>
     <string name="home_mybookings">Mijn Boekingen</string>
+    <string name="home_myoffers">My Offers (werkt nog niet)</string>
 </resources>
