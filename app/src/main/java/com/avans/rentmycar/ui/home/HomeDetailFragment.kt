@@ -73,6 +73,7 @@ class HomeDetailFragment : Fragment() {
             offerViewModel.bookingResult.observe(viewLifecycleOwner) { response ->
                 if (response != null) {
                     Log.d("[HDF]", "Response: $response")
+                    Log.d("[HDF]", "Resp.status: " + response.status)
                     if (response.status == 201) {
                         // Show snackbar success message
                         Snackbar.make(view, "Booking created successfully", Snackbar.LENGTH_LONG)

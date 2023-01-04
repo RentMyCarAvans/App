@@ -1,19 +1,21 @@
 package com.avans.rentmycar.repository
 
-import android.util.Log
 import com.avans.rentmycar.api.BookingDTO
 import com.avans.rentmycar.api.OfferService
-import com.avans.rentmycar.model.BookingResponse
-import com.avans.rentmycar.model.OfferCarData
-import com.avans.rentmycar.model.OfferData
-import com.avans.rentmycar.model.OfferUserData
-import com.avans.rentmycar.rest.response.BaseResponse
-import retrofit2.Response
+import com.avans.rentmycar.model.*
 
 class OfferRepository {
 
     suspend fun getOpenOffers(): Collection<OfferData> {
         return OfferService.getApi()?.getOpenOffers()?.body()?.data ?: emptyList()
+    }
+
+    suspend fun getBookings(userId: Long): Collection<BookingData> {
+        if(userId == 0L) {
+            return OfferService.getApi()?.getBookings()?.body()?.data ?: emptyList()
+        } else {
+            return OfferService.getApi()?.getBookingsForUser(userId)?.body()?.data ?: emptyList()
+        }
     }
 
 

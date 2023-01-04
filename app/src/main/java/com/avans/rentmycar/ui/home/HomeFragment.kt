@@ -5,11 +5,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,6 +24,8 @@ class HomeFragment : Fragment() {
     private lateinit var _binding: FragmentHomeBinding
     private val binding get() = _binding
 
+    private var currentCall = 0;
+
     // Declare viewmodel
     private val viewModel: OfferViewModel by viewModels()
 
@@ -37,6 +37,7 @@ class HomeFragment : Fragment() {
         //show actionbar
         (activity as AppCompatActivity?)!!.supportActionBar!!.show()
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        this.currentCall = 0
         return binding.root
     }
 
@@ -65,13 +66,50 @@ class HomeFragment : Fragment() {
             offerAdapter.setData(it)
         }
 
+        // Set the onClickListener for the buttons to change the API call
+//        binding.buttonHomeAvailablecars.addOnButtonCheckedListener { toggleButton, checkedId, isChecked ->
+//            // Respond to button selection
+//        }
+
+        val userId = SessionManager.getUserId(requireContext())
+
+
+        binding.buttonHomeAvailablecars.setOnClickListener {
+            Log.d("[Home] button", "available cars clicked")
+            this.currentCall = 0
+            binding.textviewHomeTitle.text = getString(R.string.home_availablecars)
+            viewModel.getOffers()
+        }
+
+        binding.buttonHomeMybookings.setOnClickListener {
+            Log.d("[Home] button", "my bookings clicked")
+            this.currentCall = 1
+            binding.textviewHomeTitle.text = getString(R.string.home_mybookings)
+            if (userId != null) {
+                viewModel.getBookings(userId)
+            }
+        }
+
+        binding.buttonHomeMyoffers.setOnClickListener {
+            Log.d("[Home] button", "my offers clicked")
+            this.currentCall = 2
+            binding.textviewHomeTitle.text = getString(R.string.home_myoffers)
+            viewModel.getOffers()
+        }
+
         // Get all offers and pass them to the adapter
         // TODO: Adjust the API call to get the offers not made by the current user, after that add the id to the call
         // Retrieve the id of the current user, so we can use it to get the offers not made by the current user
-        val userId = SessionManager.getUserId(requireContext())
         // Log.d("[Home] Offer", "current userId: $userId")
 
-        viewModel.getOffers()
+        when(this.currentCall) {
+            0 -> viewModel.getOffers()
+            1 -> userId?.let { viewModel.getBookings(it) }
+            2 -> viewModel.getOffers()
+        }
+
+        Log.d("[Home] Offer", "currentCall: $currentCall")
+//        viewModel.getOffers()
         offerAdapter.setData(viewModel.offerResult.value ?: emptyList())
 
         // Set the title of the actionbar

@@ -42,4 +42,7 @@
     <string name="licenseplate">licenseplate</string>
     <string name="invalid_birthdate" >Format should be yyyy-mm-dd</string>
     <string name="offers_title">Offers</string>
+    <string name="home_availablecars">Available Cars</string>
+    <string name="home_mybookings">My Bookings</string>
+    <string name="home_myoffers">My Offers</string>
 </resources>
