@@ -42,4 +42,5 @@
     <string name="licenseplate">licenseplate</string>
     <string name="invalid_birthdate" >Format should be yyyy-mm-dd</string>
     <string name="delete">Delete</string>
+    <string name="invalid_license">Licenseplate has an invalid pattern. Please provide a valid Dutch licenseplate</string>
 </resources>
