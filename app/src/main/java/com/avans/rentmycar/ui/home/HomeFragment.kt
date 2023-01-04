@@ -54,6 +54,8 @@ class HomeFragment : Fragment() {
                 offer.endDateTime,
             "http://placekitten.com/400/400"
             )
+            Log.d("[Home][Fragment]", "onViewCreated() => offer with carmodel " + offer.car.model)
+
             findNavController().navigate(action)
         }
 

@@ -43,7 +43,7 @@ class MyCarsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.d(TAG, "onViewCreated()")
+        Log.d(TAG, "onViewCreated() ******************************************")
 
         // Make all the items in the recyclerview clickable, so the user can click on an item and go to the detail page of the selected car
         val carAdapter = CarAdapter(GlideImageLoader(view?.context as AppCompatActivity)) { car ->
@@ -57,6 +57,7 @@ class MyCarsFragment : Fragment() {
                 car.licensePlate,
                 car.createdAt // TODO: Change to carImageURL
             )
+            Log.d(TAG,"onViewCreated() => Clicked on item with model " + car.model + ". Navigate to detailscreen")
             findNavController().navigate(action)
         }
 
@@ -87,8 +88,8 @@ class MyCarsFragment : Fragment() {
             this.findNavController().navigate(action)
         }
 
-        val bar = (activity as AppCompatActivity).supportActionBar
-        bar?.title = "My Cars"
+        //val bar = (activity as AppCompatActivity).supportActionBar
+        //bar?.title = "My Cars"
     }
 
     companion object {

@@ -25,19 +25,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentMycarsDetailBinding
 import com.avans.rentmycar.model.CarList
-import com.avans.rentmycar.viewmodel.CarViewModel
 import com.bumptech.glide.Glide
 
 /**
  * [CarDetailFragment] displays the details of the selected item.
  */
 class CarDetailFragment : Fragment() {
- private val TAG = "[RMC][CarDetailFrg]"
+    private val TAG = "[RMC][CarDetailFrg]"
     private var _binding: FragmentMycarsDetailBinding? = null
     private val binding get() = _binding!!
 
@@ -46,26 +44,9 @@ class CarDetailFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentMycarsDetailBinding.inflate(inflater, container, false)
-
-        val carViewModel: CarViewModel by viewModels()
-
-        // Observer for carResponse
-        Log.d(TAG, "onViewCreated() => set observer on rdw response ")
-        carViewModel.carResponse.observe(viewLifecycleOwner) {
-            Log.d(TAG, "onViewCreated() => observe set ")
-           // bindUI(it)
-        }
-        // TODO Implement button to view details of my car
-        //binding.getBtn.setOnClickListener {
-        //    carDetailViewModel.getRdwCarDetails()
-        //}
-        return binding.root
+        Log.d("[RMC]", "onCreateView()")
+        return inflater.inflate(R.layout.fragment_mycars_detail,container, false)
     }
-
-    /**
-     * Binds views with the passed in item data.
-     */
 
     /**
      * Called when fragment is destroyed.
@@ -85,14 +66,12 @@ class CarDetailFragment : Fragment() {
         binding.tvCarSeats.text = it[0].numberOfSeats.toString()
         binding.tvCarYear.text = it[0].yearOfManufacture.toString()
         binding.tvCarLicenseplate.text = it[0].licensePlate
-       // binding.tvCarLicenseplate.text = it[0].data[0].licensePlate
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        Log.d("[RMC]", "onViewCreated()")
+        Log.d("[RMC]", "onViewCreated() => view: " + view.toString())
         val args: CarDetailFragmentArgs by navArgs()
         val carId = args.id
         val carModel = args.brand
@@ -103,15 +82,26 @@ class CarDetailFragment : Fragment() {
         val carLicensePlate = args.licenseplate
         val carImageUrl = args.carimageurl
 
-        Log.d("[RMC]", "OfferId: " + carId.toString())
+        Log.d("[RMC]", "onViewCreated() => Checking navArgs")
+        Log.d("[RMC]", "onViewCreated() => navargs/args.brand: " + args.brand)
+        Log.d("[RMC]", "onViewCreated() => navargs/args.id: " + args.id)
+        Log.d("[RMC]", "onViewCreated() => navargs/args.year: " + args.year)
+        Log.d("[RMC]", "onViewCreated() => navargs/args.numberofseats: " + args.numberofseats)
+        Log.d("[RMC]", "onViewCreated() => navargs/args.color: " + args.color)
+        Log.d("[RMC]", "onViewCreated() => navargs/args.mileage: " + args.mileage)
+        Log.d("[RMC]", "onViewCreated() => navargs/args.licenseplate: " + args.licenseplate)
+        Log.d("[RMC]", "onViewCreated() => navargs/args.imageurl: " + args.carimageurl)
+
+        Log.d("[RMC]", "onViewCreated() => Selected item with model " + args.brand + " and id " +args.id)
 
         // TODO: Replace with binding
-        val imageViewCar = view.findViewById<ImageView>(R.id.car_image)
-        Glide.with(this).load(carImageUrl).centerCrop().placeholder(R.drawable.audi).into(imageViewCar);
-        view.findViewById<TextView>(R.id.textview_car_title).text = "Title: " + carModel.toString()
-        view.findViewById<TextView>(R.id.textview_car_description1).text = "Year: " + carYear
-        view.findViewById<TextView>(R.id.textview_car_description2).text = "Licenseplate: " + carLicensePlate
-
+        //val imageViewCar = view.findViewById<ImageView>(R.id.car_image)
+        //Log.d("[RMC]", "onViewCreated() => imageViewCar: " + imageViewCar)
+        //Glide.with(this).load(carImageUrl).centerCrop().placeholder(R.drawable.audi).into(imageViewCar);
+        //Log.d("[RMC]", "onViewCreated() => after Glice imageViewCar: " + imageViewCar)
+        view.findViewById<TextView>(R.id.tv_car_brand).text = carModel.toString()
+        view.findViewById<TextView>(R.id.tv_car_year).text = carYear
+        view.findViewById<TextView>(R.id.tv_car_licenseplate).text = carLicensePlate
 
         // Set the title of the actionbar
         val bar = (activity as AppCompatActivity).supportActionBar

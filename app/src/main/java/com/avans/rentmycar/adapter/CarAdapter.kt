@@ -60,6 +60,7 @@ class CarAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         Log.d(TAG, "onBindViewHolder() => position: "+position)
         holder.itemView.setOnClickListener {
+            clickListener(carResponse[position])
             Log.d(TAG, "Clicked on car " + carResponse[position].model + " with id: " + carResponse[position].id)
         }
         holder.bindData(carResponse[position])

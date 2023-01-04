@@ -31,7 +31,7 @@ class OfferViewModel : ViewModel() {
 //        offerResult.value = BaseResponse.Loading()
         viewModelScope.launch {
             try {
-                Log.v("[OfferViewModel]", "getOffers() is called")
+                Log.v("[RMC][OfferViewModel]", "getOffers() is called")
 
 //                val response = offerRepository.getMockOffers()
                 val offerResponse = offerRepository.getOpenOffers()

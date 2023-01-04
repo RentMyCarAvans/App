@@ -11,7 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CarViewModel : ViewModel() {
-    private val TAG = "[RMC][CarDetailVM]"
+    private val TAG = "[RMC][CarViewModel]"
     val carRepository = CarRepository()
 
     val carResponse: MutableLiveData<Collection<CarList>> = MutableLiveData()
