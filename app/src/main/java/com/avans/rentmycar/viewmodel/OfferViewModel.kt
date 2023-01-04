@@ -22,8 +22,8 @@ class OfferViewModel : ViewModel() {
     val offerRepository = OfferRepository()
     val offerResult: MutableLiveData<Collection<OfferData>> = MutableLiveData()
 
-    private val _offers = MutableLiveData<OfferData>()
-    val offers: LiveData<OfferData> = _offers
+     private val _offers = MutableLiveData<OfferData>()
+     val offers: LiveData<OfferData> = _offers
 
     fun getOffers() {
 

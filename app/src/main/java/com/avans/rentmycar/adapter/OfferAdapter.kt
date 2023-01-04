@@ -69,5 +69,4 @@ class OfferAdapter(
     }
 
     override fun getItemCount(): Int = offerData.size
-
 }
