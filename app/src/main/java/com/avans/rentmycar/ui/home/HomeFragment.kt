@@ -26,7 +26,7 @@ class HomeFragment : Fragment() {
 
     // CurrentCall is the current call to the API, which influences the UI
     // TODO: Check if this is still needed
-    private var currentCall = 0;
+    private var currentCall = 0
 
     // Declare viewmodel
     private val viewModel: OfferViewModel by viewModels()
@@ -56,13 +56,13 @@ class HomeFragment : Fragment() {
         val userId = SessionManager.getUserId(requireContext())
 
         // Make all the items in the recyclerview clickable, so the user can click on an item and go to the detail page of the selected offer
-        val offerAdapter = OfferAdapter(GlideImageLoader(view?.context as AppCompatActivity)) { offer ->
+        val offerAdapter = OfferAdapter(GlideImageLoader(view.context as AppCompatActivity)) { offer ->
 
             var carImage = ""
-            if(offer.car.image == null) {
-                carImage = "http://placekitten.com/500/500"
+            carImage = if(offer.car.image == null) {
+                "http://placekitten.com/500/500"
             } else {
-                carImage = offer.car.image
+                offer.car.image
             }
 
             val action = HomeFragmentDirections.actionHomeFragment2ToHomeDetailFragment2(
@@ -133,7 +133,7 @@ class HomeFragment : Fragment() {
                 // Extracting the Offers from My Bookings to display them in the recyclerview
                 val offersFromMyBookings = viewModel.bookingsResult.value?.map { it.offer } ?: emptyList()
 
-                offerAdapter.setData(offersFromMyBookings ?: emptyList())
+                offerAdapter.setData(offersFromMyBookings)
             }
         }
 

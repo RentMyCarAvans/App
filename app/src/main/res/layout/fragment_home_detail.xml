@@ -12,7 +12,8 @@
         android:layout_height="300dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_launcher_background"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/the_car" />
 
     <TextView
         android:id="@+id/textview_home_detail_car_name"

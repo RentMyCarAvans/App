@@ -14,14 +14,13 @@ class OfferViewModel : ViewModel() {
 
 //    private val _offerResponse = MutableLiveData<String?>()
 
-    val offerRepository = OfferRepository()
+    private val offerRepository = OfferRepository()
     val offerResult: MutableLiveData<Collection<OfferData>> = MutableLiveData()
 
     val bookingResult: MutableLiveData<BookingResponse?> = MutableLiveData()
     val bookingsResult: MutableLiveData<Collection<BookingData>> = MutableLiveData()
 
-    private val _offers = MutableLiveData<OfferData>()
-//    val offers: LiveData<OfferData> = _offers
+    //    val offers: LiveData<OfferData> = _offers
 
     fun getOffers() {
         viewModelScope.launch {

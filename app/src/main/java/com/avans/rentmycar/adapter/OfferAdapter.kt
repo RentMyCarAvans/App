@@ -37,8 +37,14 @@ class OfferAdapter(
 
             // TODO: Replace cute placeholder images with dumb pictures of cars
             val random = (1..10).random() * 100
+            var carImage = ""
+            carImage = if(offerData.car.image == null) {
+                "http://placekitten.com/$random/$random"
+            } else {
+                offerData.car.image
+            }
 
-            imageLoader.loadImage("http://placekitten.com/" + random + "/" + random, offerCarImage)
+            imageLoader.loadImage(carImage, offerCarImage)
             offerCarName.text = offerData.car.model
             offerStartDate.text = itemView.context.getString(R.string.offer_pickupAfter, startDate)
             offerEndDate.text = itemView.context.getString(R.string.offer_returnBefore, endDate)

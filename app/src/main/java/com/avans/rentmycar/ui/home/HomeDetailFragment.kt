@@ -1,6 +1,5 @@
 package com.avans.rentmycar.ui.home
 
-import android.media.Image
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,11 +13,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.avans.rentmycar.R
-import com.avans.rentmycar.api.OfferService
-import com.avans.rentmycar.databinding.FragmentHomeBinding
-import com.avans.rentmycar.rest.response.BaseResponse
-import com.avans.rentmycar.utils.Constant
-import com.avans.rentmycar.utils.GlideImageLoader
 import com.avans.rentmycar.utils.SessionManager
 import com.avans.rentmycar.viewmodel.OfferViewModel
 import com.bumptech.glide.Glide
@@ -46,15 +40,16 @@ class HomeDetailFragment : Fragment() {
         val offerEndDateTime = args.endDateTime
         val carImageUrl = args.carImageUrl
 
-        Log.d("[HDF]", "OfferId: " + offerId.toString())
+        Log.d("[HDF]", "OfferId: $offerId")
 
         // TODO: Replace with binding
         val imageViewCar = view.findViewById<ImageView>(R.id.imageview_home_detail_car_image)
-        Glide.with(this).load(carImageUrl).centerCrop().placeholder(R.drawable.audi).into(imageViewCar);
-        view.findViewById<TextView>(R.id.textview_home_detail_offerid).text = "OfferId: " + offerId.toString()
+        Glide.with(this).load(carImageUrl).centerCrop().placeholder(R.drawable.audi).into(imageViewCar)
+        view.findViewById<TextView>(R.id.textview_home_detail_offerid).text = "OfferId: $offerId"
         view.findViewById<TextView>(R.id.textview_home_detail_car_name).text = offerCarModel
         view.findViewById<TextView>(R.id.textview_home_detail_offer_pickuplocation).text = offerPickupLocation
-        view.findViewById<TextView>(R.id.textview_home_detail_offer_dates).text = offerStartDateTime + " - " + offerEndDateTime
+        view.findViewById<TextView>(R.id.textview_home_detail_offer_dates).text =
+            "$offerStartDateTime - $offerEndDateTime"
 
 
         val userId = SessionManager.getUserId(requireContext())
@@ -64,7 +59,7 @@ class HomeDetailFragment : Fragment() {
 
             Log.d("[HDF]", "Book Offer " + offerId + " for user with id " + userId.toString())
 
-            val offerViewModel = ViewModelProvider(this).get(OfferViewModel::class.java)
+            val offerViewModel = ViewModelProvider(this)[OfferViewModel::class.java]
             offerViewModel.createBooking(offerId, userId!!)
 
             // TODO: Check the response and show a message to the user depending on the response

@@ -9,9 +9,6 @@ import retrofit2.http.*
 
 interface OfferService {
 
-    @GET("/api/v1/offers")
-    fun getOffers(): Response<OfferResponse>
-
     @GET("/api/v1/offers/unbooked")
     suspend fun getOpenOffers(): Response<OfferResponse>
 

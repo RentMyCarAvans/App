@@ -12,10 +12,10 @@ class OfferRepository {
     }
 
     suspend fun getBookings(userId: Long): Collection<BookingData> {
-        if(userId == 0L) {
-            return OfferService.getApi()?.getBookings()?.body()?.data ?: emptyList()
+        return if(userId == 0L) {
+            OfferService.getApi()?.getBookings()?.body()?.data ?: emptyList()
         } else {
-            return OfferService.getApi()?.getBookingsForUser(userId)?.body()?.data ?: emptyList()
+            OfferService.getApi()?.getBookingsForUser(userId)?.body()?.data ?: emptyList()
         }
     }
 
@@ -23,7 +23,7 @@ class OfferRepository {
 
     suspend fun createBooking(offerId: Long, customerId: Long): BookingResponse? {
         Log.d("[OfferRep] crBooking", "offerId: $offerId, customerId: $customerId")
-        var bookingDTO = BookingDTO()
+        val bookingDTO = BookingDTO()
         bookingDTO.offerId = offerId
         bookingDTO.customerId = customerId
         Log.d("[OfferRep] crBooking", "bookingDTO: $bookingDTO")

@@ -47,4 +47,5 @@
     <string name="home_myoffers">My Offers (werkt nog niet)</string>
     <string name="offer_pickupAfter">Pickup after: %1$s</string>
     <string name="offer_returnBefore">Return before: %1$s</string>
+    <string name="the_car">The Car</string>
 </resources>
