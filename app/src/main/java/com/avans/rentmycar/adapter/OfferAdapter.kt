@@ -30,7 +30,7 @@ class OfferAdapter(
 
             // Convert the datetime strings to a more readable format
             val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-            val formatter = SimpleDateFormat("dd MM yyyy HH:mm")
+            val formatter = SimpleDateFormat("dd-MM-yyyy HH:mm")
 
             val startDate: String = formatter.format(parser.parse(offerData.startDateTime))
             val endDate: String = formatter.format(parser.parse(offerData.endDateTime))
