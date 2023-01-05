@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.avans.rentmycar.model.BookingData
 import com.avans.rentmycar.model.BookingResponse
+import com.avans.rentmycar.model.CreateBookingResponse
 import com.avans.rentmycar.model.OfferData
 import com.avans.rentmycar.repository.OfferRepository
 import kotlinx.coroutines.launch
@@ -13,10 +14,13 @@ import kotlinx.coroutines.launch
 class OfferViewModel : ViewModel() {
 
     private val offerRepository = OfferRepository()
+
     val offerResult: MutableLiveData<Collection<OfferData>> = MutableLiveData()
 
     val bookingResult: MutableLiveData<BookingResponse?> = MutableLiveData()
     val bookingsResult: MutableLiveData<Collection<BookingData>> = MutableLiveData()
+
+    val createBookingResult: MutableLiveData<CreateBookingResponse?> = MutableLiveData()
 
     fun getOffers() {
         viewModelScope.launch {
@@ -51,14 +55,14 @@ class OfferViewModel : ViewModel() {
         viewModelScope.launch {
             Log.d("[OfferVM] createBooking", "offerId: $offerId, customerId: $customerId")
             try {
-                val bookingResponse = offerRepository.createBooking(offerId, customerId)
-                bookingResult.value = bookingResponse
-                Log.d("[OfferVM] bookingresp", bookingResponse.toString())
-                Log.d("[OfferVM] bookingresult", bookingResult.value.toString())
+                val createBookingResponse = offerRepository.createBooking(offerId, customerId)
+                createBookingResult.value = createBookingResponse
+                Log.d("[OfferVM] crBookingResp", createBookingResponse.toString())
+                Log.d("[OfferVM] crBookingResu", createBookingResult.value.toString())
 
             } catch (e: Exception) {
-                Log.d("[OfferVM] bookingresult", bookingResult.value.toString())
-                Log.e("[OfferVM] bookingerror", e.message.toString())
+                Log.d("[OfferVM] bookingresult", createBookingResult.value.toString())
+                Log.e("[OfferVM] crBookingResu", e.message.toString())
             }
         }
     }

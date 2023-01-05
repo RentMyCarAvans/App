@@ -67,10 +67,10 @@ class HomeDetailFragment : Fragment() {
             // TODO: Check the response and show a message to the user depending on the response
             // TODO: Navigate back to HomeFragment ONLY if successfull
 
-            offerViewModel.bookingResult.observe(viewLifecycleOwner) { response ->
+            offerViewModel.createBookingResult.observe(viewLifecycleOwner) { response ->
                 if (response != null) {
-                    Log.d("[HDF]", "Response: $response")
-                    Log.d("[HDF]", "Resp.status: " + response.status)
+                    Log.d("[HDF] Response", "Response: $response")
+                    Log.d("[HDF] Resp.status", "Resp.status: " + response.status)
                     if (response.status == 201) {
                         // Show snackbar success message
                         Snackbar.make(view, "Booking created successfully", Snackbar.LENGTH_LONG)
@@ -79,10 +79,12 @@ class HomeDetailFragment : Fragment() {
                         val action =
                             HomeDetailFragmentDirections.actionHomeDetailFragmentToHomeFragment()
                         view.findNavController().navigate(action)
-                    } else {
-                        Snackbar.make(view, "Booking failed", Snackbar.LENGTH_LONG).show()
-                        Log.e("[HDF]", "--- BOOKING FAILED ---")
                     }
+
+                }
+                if(response == null){
+                    Snackbar.make(view, "Booking failed", Snackbar.LENGTH_LONG).show()
+                    Log.e("[HDF]", "--- BOOKING FAILED ---")
                 }
             }
 
