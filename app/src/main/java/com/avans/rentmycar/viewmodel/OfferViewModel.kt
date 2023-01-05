@@ -12,19 +12,17 @@ import kotlinx.coroutines.launch
 
 class OfferViewModel : ViewModel() {
 
-//    private val _offerResponse = MutableLiveData<String?>()
-
     private val offerRepository = OfferRepository()
     val offerResult: MutableLiveData<Collection<OfferData>> = MutableLiveData()
 
     val bookingResult: MutableLiveData<BookingResponse?> = MutableLiveData()
     val bookingsResult: MutableLiveData<Collection<BookingData>> = MutableLiveData()
 
-    //    val offers: LiveData<OfferData> = _offers
-
     fun getOffers() {
         viewModelScope.launch {
             try {
+                Log.v("[RMC][OfferViewModel]", "getOffers() is called")
+
                 val offerResponse = offerRepository.getOpenOffers()
                 offerResult.value = offerResponse
                 Log.d("[OfferVM] getOffers", offerResponse.toString())

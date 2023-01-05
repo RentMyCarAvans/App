@@ -48,4 +48,6 @@
     <string name="offer_pickupAfter">Pickup after: %1$s</string>
     <string name="offer_returnBefore">Return before: %1$s</string>
     <string name="the_car">The Car</string>
+    <string name="delete">Delete</string>
+    <string name="invalid_license">Licenseplate has an invalid pattern. Please provide a valid Dutch licenseplate</string>
 </resources>

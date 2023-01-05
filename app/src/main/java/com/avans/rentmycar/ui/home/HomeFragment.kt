@@ -72,6 +72,9 @@ class HomeFragment : Fragment() {
                 carImage,
 
             )
+
+            Log.d("[Home][Fragment]", "onViewCreated() => offer with carmodel " + offer.car.model)
+
             //TODO: Andere Fragment maken voor de Booking Details
             findNavController().navigate(action)
         }

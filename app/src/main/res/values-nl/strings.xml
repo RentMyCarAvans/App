@@ -47,4 +47,6 @@
     <string name="offer_pickupAfter">Ophalen na: %1$s</string>
     <string name="offer_returnBefore">Terugbrengen voor: %1$s</string>
     <string name="the_car">De Auto</string>
+    <string name="delete">Verwijderen</string>
+    <string name="invalid_license">Het kentekenformaat is onjuist. Voer een geldig Nederlands kenteken in</string>
 </resources>
