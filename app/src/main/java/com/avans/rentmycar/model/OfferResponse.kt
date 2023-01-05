@@ -23,6 +23,8 @@ data class OfferCarData(
 	val colorType: String,
 	val mileage: Int,
 	val numberOfSeats: Int,
+	val image: String,
+	val vehicleType: String,
 	val createdAt: String,
 	val updatedAt: String,
 	val owner: OfferUserData

@@ -44,4 +44,6 @@
     <string name="home_availablecars">Beschikbare Auto\'s</string>
     <string name="home_mybookings">Mijn Boekingen</string>
     <string name="home_myoffers">My Offers (werkt nog niet)</string>
+    <string name="offer_pickupAfter">Ophalen na: %1$s</string>
+    <string name="offer_returnBefore">Terugbrengen voor: %1$s</string>
 </resources>

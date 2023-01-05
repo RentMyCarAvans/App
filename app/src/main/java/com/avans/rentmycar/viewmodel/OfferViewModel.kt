@@ -51,6 +51,7 @@ class OfferViewModel : ViewModel() {
 
     fun createBooking(offerId: Long, customerId: Long) {
         viewModelScope.launch {
+            Log.d("[OfferVM] createBooking", "offerId: $offerId, customerId: $customerId")
             try {
                 val bookingResponse = offerRepository.createBooking(offerId, customerId)
                 bookingResult.value = bookingResponse
@@ -58,6 +59,7 @@ class OfferViewModel : ViewModel() {
                 Log.d("[OfferVM] bookingresult", bookingResult.value.toString())
 
             } catch (e: Exception) {
+                Log.d("[OfferVM] bookingresult", bookingResult.value.toString())
                 Log.e("[OfferVM] bookingerror", e.message.toString())
             }
         }

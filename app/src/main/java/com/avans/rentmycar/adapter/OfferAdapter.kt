@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
+import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.ItemOfferBinding
 import com.avans.rentmycar.model.OfferData
 import com.avans.rentmycar.utils.ImageLoader
@@ -20,7 +21,8 @@ class OfferAdapter(
     inner class OfferViewHolder(container: View) : RecyclerView.ViewHolder(container) {
         private val offerCarImage = itemOfferBinding.imageviewItemOfferCarImage
         private val offerCarName = itemOfferBinding.textviewItemOfferCarName
-        private val offerDates = itemOfferBinding.textviewItemOfferDates
+        private val offerStartDate = itemOfferBinding.textviewItemOfferStartdate
+        private val offerEndDate = itemOfferBinding.textviewItemOfferEnddate
         private val offerLocation = itemOfferBinding.textviewItemOfferLocation
 
         @RequiresApi(Build.VERSION_CODES.O)
@@ -38,7 +40,8 @@ class OfferAdapter(
 
             imageLoader.loadImage("http://placekitten.com/" + random + "/" + random, offerCarImage)
             offerCarName.text = offerData.car.model
-            offerDates.text = "$startDate - $endDate"
+            offerStartDate.text = itemView.context.getString(R.string.offer_pickupAfter, startDate)
+            offerEndDate.text = itemView.context.getString(R.string.offer_returnBefore, endDate)
             offerLocation.text = offerData.pickupLocation
         }
     }
