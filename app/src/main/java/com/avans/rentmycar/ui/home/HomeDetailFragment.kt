@@ -20,6 +20,7 @@ import com.google.android.material.snackbar.Snackbar
 
 class HomeDetailFragment : Fragment() {
 
+    // TODO: Refactor this page
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,6 +32,8 @@ class HomeDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val userId = SessionManager.getUserId(requireContext())
 
         val args: HomeDetailFragmentArgs by navArgs()
         val offerId = args.id
@@ -52,7 +55,6 @@ class HomeDetailFragment : Fragment() {
             "$offerStartDateTime - $offerEndDateTime"
 
 
-        val userId = SessionManager.getUserId(requireContext())
 
         // Setup Book Button
         view.findViewById<TextView>(R.id.button_home_detail_book).setOnClickListener {
@@ -85,7 +87,7 @@ class HomeDetailFragment : Fragment() {
             }
 
 
-//            Log.d("[HDF]", "bookingResult.value: " + offerViewModel.bookingResult.value)
+            Log.d("[HDF]", "bookingResult.value: " + offerViewModel.bookingResult.value)
 
 
 

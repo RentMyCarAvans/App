@@ -12,9 +12,12 @@ class OfferRepository {
     }
 
     suspend fun getBookings(userId: Long): Collection<BookingData> {
+        Log.d("[OfferRepo] getBookings", "userId: $userId")
         return if(userId == 0L) {
+            Log.d("[OfferRepo] getBookings", "userId is 0")
             OfferService.getApi()?.getBookings()?.body()?.data ?: emptyList()
         } else {
+            Log.d("[OfferRepo] getBookings", "userId is not 0")
             OfferService.getApi()?.getBookingsForUser(userId)?.body()?.data ?: emptyList()
         }
     }

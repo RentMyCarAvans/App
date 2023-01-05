@@ -37,10 +37,11 @@ class OfferViewModel : ViewModel() {
 
     fun getBookings(userId: Long) {
         viewModelScope.launch {
+            Log.d("[OfferVM] getBookings", "function called")
             try {
                 val getBookingResponse = offerRepository.getBookings(userId)
                 bookingsResult.value = getBookingResponse
-                Log.d("[OfferVM] getBookings", getBookingResponse.toString())
+                Log.d("[OfferVM] gBookingsResp", getBookingResponse.toString())
 
             } catch (e: Exception) {
                 Log.e("[OfferVM] getB error", e.message.toString())
