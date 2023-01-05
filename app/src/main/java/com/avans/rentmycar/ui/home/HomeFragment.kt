@@ -1,6 +1,7 @@
 package com.avans.rentmycar.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,6 +54,8 @@ class HomeFragment : Fragment() {
                 offer.endDateTime,
             "http://placekitten.com/400/400"
             )
+            Log.d("[Home][Fragment]", "onViewCreated() => offer with carmodel " + offer.car.model)
+
             findNavController().navigate(action)
         }
 

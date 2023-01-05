@@ -40,6 +40,7 @@ class OfferAdapter(
             offerCarName.text = offerData.car.model
             offerDates.text = "$startDate - $endDate"
             offerLocation.text = offerData.pickupLocation
+            Log.d("[Home][Adapter]", "bindData() => offer with carname " + offerCarName.text)
         }
     }
 
@@ -63,11 +64,11 @@ class OfferAdapter(
     override fun onBindViewHolder(holder: OfferViewHolder, position: Int) {
         holder.itemView.setOnClickListener {
             clickListener(offerData[position])
+            Log.d("[Home][Adapter]", "onBindViewHolder() => Clicked on offer with id: " + offerData[position].id)
             Log.d("OfferAdapter", "Clicked on offer with id: " + offerData[position].id)
         }
         holder.bindData(offerData[position])
     }
 
     override fun getItemCount(): Int = offerData.size
-
 }

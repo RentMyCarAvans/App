@@ -22,8 +22,8 @@ class OfferViewModel : ViewModel() {
     val offerRepository = OfferRepository()
     val offerResult: MutableLiveData<Collection<OfferData>> = MutableLiveData()
 
-    private val _offers = MutableLiveData<OfferData>()
-    val offers: LiveData<OfferData> = _offers
+     private val _offers = MutableLiveData<OfferData>()
+     val offers: LiveData<OfferData> = _offers
 
     fun getOffers() {
 
@@ -31,7 +31,7 @@ class OfferViewModel : ViewModel() {
 //        offerResult.value = BaseResponse.Loading()
         viewModelScope.launch {
             try {
-                Log.v("[OfferViewModel]", "getOffers() is called")
+                Log.v("[RMC][OfferViewModel]", "getOffers() is called")
 
 //                val response = offerRepository.getMockOffers()
                 val offerResponse = offerRepository.getOpenOffers()

@@ -23,8 +23,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.AddCarItemBinding
 import com.avans.rentmycar.model.RdwResponseItem
+import com.avans.rentmycar.utils.FieldValidation
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 
@@ -60,11 +62,14 @@ class CarAddItemFragment : Fragment() {
             val kenteken: TextInputEditText = binding.txtInputLicensePlate
             val licensePlate: String = kenteken.text.toString()
 
-            // invoke RdwApiService for retrieval of cardetails of the given licenseplate
-            Log.d(TAG, "onViewCreated() => invoke RdwApieService for licenseplate: " + licensePlate)
-            carAddItemViewModel.getRdwCarDetails(kenteken.text.toString())
-            Snackbar.make(view, "Car details retrieved at the RDW", Snackbar.LENGTH_LONG)
+            // Validate licenseplate before API call
+            if (isValidLicensePlate()){
+                // invoke RdwApiService for retrieval of cardetails of the given licenseplate
+                Log.d(TAG, "onViewCreated() => invoke RdwApieService for licenseplate: " + licensePlate)
+                carAddItemViewModel.getRdwCarDetails(kenteken.text.toString())
+                Snackbar.make(view, "Car details retrieved at the RDW", Snackbar.LENGTH_LONG)
                 .show()
+            }
         }
 
         // Observer for rdwResponse
@@ -92,5 +97,20 @@ class CarAddItemFragment : Fragment() {
         binding.tvRdwAantalDeuren.text = it[0].aantal_deuren
         binding.tvRdwAantalZitplaatsen.text = it[0].aantal_zitplaatsen
         binding.rtvRdwKleur.text = it[0].eerste_kleur
+    }
+
+    private fun isValidLicensePlate(): Boolean {
+        if (binding.txtInputLicensePlate.text.toString().trim().isEmpty()) {
+            binding.txtLayLicensePlateAdd.error = getString(R.string.required_field)
+            binding.txtInputLicensePlate.requestFocus()
+            return false
+        } else if (!FieldValidation.isValidLicensePlate((binding.txtInputLicensePlate.text.toString()))) {
+            binding.txtLayLicensePlateAdd.error = getString(R.string.invalid_license)
+            binding.txtInputLicensePlate.requestFocus()
+            return false
+        } else {
+            binding.txtLayLicensePlateAdd.isErrorEnabled = false
+        }
+        return true
     }
 }

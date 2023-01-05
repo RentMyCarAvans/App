@@ -38,9 +38,38 @@
     <fragment
         android:id="@+id/carDetailFragment"
         android:name="com.avans.rentmycar.ui.mycars.CarDetailFragment"
-        android:label="CarDetailFragment" />
+        android:label="CarDetailFragment"
+        tools:layout="@layout/fragment_mycars_detail">
+        <argument
+            android:name="id"
+            app:argType="string" />
+        <argument
+            android:name="brand"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="year"
+            app:argType="string" />
+        <argument android:name="numberofseats"
+            app:argType="string" />
+        <argument
+            android:name="color"
+            app:argType="string" />
+        <argument
+            android:name="mileage"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="licenseplate"
+            app:argType="string" />
+        <argument
+            android:name="carimageurl"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
     <fragment
         android:id="@+id/carAddItemFragment"
         android:name="com.avans.rentmycar.ui.mycars.CarAddItemFragment"
-        android:label="CarAddItemFragment" />
+        android:label="CarAddItemFragment"
+        tools:layout="@layout/add_car_item"/>
 </navigation>
