@@ -47,6 +47,8 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentHomeBinding.bind(view)
+        binding.buttonHomeAvailablecars.setBackgroundColor(resources.getColor(R.color.blue_200))
+        binding.buttonHomeMybookings.setBackgroundColor(resources.getColor(R.color.blue_500))
 
         // Make all the items in the recyclerview clickable, so the user can click on an item and go to the detail page of the selected offer
         val offerAdapter = OfferAdapter(GlideImageLoader(view?.context as AppCompatActivity)) { offer ->
@@ -96,15 +98,20 @@ class HomeFragment : Fragment() {
             Log.d("[Home]", "available cars clicked")
             this.currentCall = 0
             binding.textviewHomeTitle.text = getString(R.string.home_availablecars)
+            binding.buttonHomeAvailablecars.setBackgroundColor(resources.getColor(R.color.blue_200))
+            binding.buttonHomeMybookings.setBackgroundColor(resources.getColor(R.color.blue_500))
             viewModel.getOffers()
             Log.d("[Home] offrRes", viewModel.offerResult.value.toString())
             offerAdapter.setData(viewModel.offerResult.value ?: emptyList())
+
         }
 
         binding.buttonHomeMybookings.setOnClickListener {
             Log.d("[Home]", "my bookings clicked")
             this.currentCall = 1
             binding.textviewHomeTitle.text = getString(R.string.home_mybookings)
+            binding.buttonHomeAvailablecars.setBackgroundColor(resources.getColor(R.color.blue_500))
+            binding.buttonHomeMybookings.setBackgroundColor(resources.getColor(R.color.blue_200))
             if (userId != null) {
                 viewModel.getBookings(userId)
                 Log.d("[Home] bkngSres", viewModel.bookingsResult.value.toString())
@@ -118,13 +125,7 @@ class HomeFragment : Fragment() {
             }
         }
 
-        binding.buttonHomeMyoffers.setOnClickListener {
-            Log.d("[Home] button", "my offers clicked")
-            this.currentCall = 2
-            binding.textviewHomeTitle.text = getString(R.string.home_myoffers)
-            viewModel.getOffers()
-            offerAdapter.setData(viewModel.offerResult.value ?: emptyList())
-        }
+
 
         // Get all offers and pass them to the adapter
         // TODO: Adjust the API call to get the offers not made by the current user, after that add the id to the call
@@ -134,7 +135,6 @@ class HomeFragment : Fragment() {
         when(this.currentCall) {
             0 -> viewModel.getOffers()
             1 -> userId?.let { viewModel.getBookings(it) }
-            2 -> viewModel.getOffers()
         }
 
         Log.d("[Home] Offer", "currentCall: $currentCall")
