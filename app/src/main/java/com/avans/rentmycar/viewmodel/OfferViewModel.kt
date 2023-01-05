@@ -1,46 +1,64 @@
 package com.avans.rentmycar.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.avans.rentmycar.model.BookingData
+import com.avans.rentmycar.model.BookingResponse
 import com.avans.rentmycar.model.OfferData
-import com.avans.rentmycar.model.OfferResponse
-import com.avans.rentmycar.model.OfferUiModel
 import com.avans.rentmycar.repository.OfferRepository
-import com.avans.rentmycar.repository.UserRepository
-import com.avans.rentmycar.rest.request.CreateUpdateUserRequest
-import com.avans.rentmycar.rest.response.BaseResponse
-import com.avans.rentmycar.rest.response.UserResponse
 import kotlinx.coroutines.launch
 
 class OfferViewModel : ViewModel() {
 
-    private val _offerResponse = MutableLiveData<String?>()
-
-    val offerRepository = OfferRepository()
+    private val offerRepository = OfferRepository()
     val offerResult: MutableLiveData<Collection<OfferData>> = MutableLiveData()
 
-     private val _offers = MutableLiveData<OfferData>()
-     val offers: LiveData<OfferData> = _offers
+    val bookingResult: MutableLiveData<BookingResponse?> = MutableLiveData()
+    val bookingsResult: MutableLiveData<Collection<BookingData>> = MutableLiveData()
 
     fun getOffers() {
-
-
-//        offerResult.value = BaseResponse.Loading()
         viewModelScope.launch {
             try {
                 Log.v("[RMC][OfferViewModel]", "getOffers() is called")
 
-//                val response = offerRepository.getMockOffers()
                 val offerResponse = offerRepository.getOpenOffers()
-//                Log.d("[offerResponse]", offerResponse.toString())
                 offerResult.value = offerResponse
-                Log.d("[OfferVM] response", offerResponse.toString())
+                Log.d("[OfferVM] getOffers", offerResponse.toString())
 
             } catch (e: Exception) {
                 Log.e("[OfferVM] error", e.message.toString())
+            }
+        }
+    }
+
+    fun getBookings(userId: Long) {
+        viewModelScope.launch {
+            Log.d("[OfferVM] getBookings", "function called")
+            try {
+                val getBookingResponse = offerRepository.getBookings(userId)
+                bookingsResult.value = getBookingResponse
+                Log.d("[OfferVM] gBookingsResp", getBookingResponse.toString())
+
+            } catch (e: Exception) {
+                Log.e("[OfferVM] getB error", e.message.toString())
+            }
+        }
+    }
+
+    fun createBooking(offerId: Long, customerId: Long) {
+        viewModelScope.launch {
+            Log.d("[OfferVM] createBooking", "offerId: $offerId, customerId: $customerId")
+            try {
+                val bookingResponse = offerRepository.createBooking(offerId, customerId)
+                bookingResult.value = bookingResponse
+                Log.d("[OfferVM] bookingresp", bookingResponse.toString())
+                Log.d("[OfferVM] bookingresult", bookingResult.value.toString())
+
+            } catch (e: Exception) {
+                Log.d("[OfferVM] bookingresult", bookingResult.value.toString())
+                Log.e("[OfferVM] bookingerror", e.message.toString())
             }
         }
     }

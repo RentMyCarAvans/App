@@ -41,6 +41,13 @@
     <string name="get_cardetails">Get cardetails</string>
     <string name="licenseplate">licenseplate</string>
     <string name="invalid_birthdate" >Format should be yyyy-mm-dd</string>
+    <string name="offers_title">Offers</string>
+    <string name="home_availablecars">Available Cars</string>
+    <string name="home_mybookings">My Bookings</string>
+    <string name="home_myoffers">My Offers (werkt nog niet)</string>
+    <string name="offer_pickupAfter">Pickup after: %1$s</string>
+    <string name="offer_returnBefore">Return before: %1$s</string>
+    <string name="the_car">The Car</string>
     <string name="delete">Delete</string>
     <string name="invalid_license">Licenseplate has an invalid pattern. Please provide a valid Dutch licenseplate</string>
 </resources>

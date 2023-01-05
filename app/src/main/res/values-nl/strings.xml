@@ -40,6 +40,13 @@
     <string name="invalid_birthdate">Invullen als jjjj-mm-dd</string>
     <string name="get_cardetails">Ophalen kentekengegevens</string>
     <string name="licenseplate">kenteken</string>
+    <string name="offers_title">Aanbiedingen</string>
+    <string name="home_availablecars">Beschikbare Auto\'s</string>
+    <string name="home_mybookings">Mijn Boekingen</string>
+    <string name="home_myoffers">My Offers (werkt nog niet)</string>
+    <string name="offer_pickupAfter">Ophalen na: %1$s</string>
+    <string name="offer_returnBefore">Terugbrengen voor: %1$s</string>
+    <string name="the_car">De Auto</string>
     <string name="delete">Verwijderen</string>
     <string name="invalid_license">Het kentekenformaat is onjuist. Voer een geldig Nederlands kenteken in</string>
 </resources>
