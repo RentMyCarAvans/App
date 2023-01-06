@@ -38,7 +38,7 @@ class OfferRepository {
         endDateTime: String,
         pickupLocation: String,
         carId: Long,
-    ): OfferResponse? {
+    ): CreateOfferResponse? {
         Log.d("[OfferRep] crOffer", "startDateTime: $startDateTime, endDateTime: $endDateTime, pickupLocation: $pickupLocation, carId: $carId")
         val offerDTO = OfferDTO()
         offerDTO.startDateTime = startDateTime
