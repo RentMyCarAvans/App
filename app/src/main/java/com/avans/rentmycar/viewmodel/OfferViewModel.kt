@@ -4,11 +4,14 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.avans.rentmycar.api.MapsApiService
 import com.avans.rentmycar.model.BookingData
 import com.avans.rentmycar.model.BookingResponse
+import com.avans.rentmycar.model.GeocodeResponse
 import com.avans.rentmycar.model.OfferData
 import com.avans.rentmycar.repository.OfferRepository
 import kotlinx.coroutines.launch
+import retrofit2.Response
 
 class OfferViewModel : ViewModel() {
 
@@ -17,6 +20,8 @@ class OfferViewModel : ViewModel() {
 
     val bookingResult: MutableLiveData<BookingResponse?> = MutableLiveData()
     val bookingsResult: MutableLiveData<Collection<BookingData>> = MutableLiveData()
+
+    var geocodeResult: MutableLiveData<GeocodeResponse?>? = MutableLiveData()
 
     fun getOffers() {
         viewModelScope.launch {
@@ -61,6 +66,20 @@ class OfferViewModel : ViewModel() {
                 Log.e("[OfferVM] bookingerror", e.message.toString())
             }
         }
+    }
+
+    fun getGeocodeResponse(pickupLocation: String) {
+        viewModelScope.launch {
+            Log.d("[OfferVM] getGeocResp", "function called with PuL: $pickupLocation")
+            try {
+                val geocodeResponse = MapsApiService.getApi()?.getLatLongFromAddress(pickupLocation)
+                Log.d("[OfferVM]suc getGeoResp", geocodeResponse.toString())
+                geocodeResult?.value = geocodeResponse
+            } catch (e: Exception) {
+                Log.e("[OfferVM]err getGeoResp", e.message.toString())
+            }
+        }
+
     }
 
 }

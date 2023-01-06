@@ -79,5 +79,11 @@
         <action
             android:id="@+id/action_homeDetailFragment_to_homeFragment"
             app:destination="@id/homeFragment2" />
+        <argument
+            android:name="lat"
+            app:argType="string" />
+        <argument
+            android:name="lng"
+            app:argType="string" />
     </fragment>
 </navigation>

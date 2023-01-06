@@ -63,6 +63,22 @@ class HomeFragment : Fragment() {
                 offer.car.image
             }
 
+            // TODO: Dit moet uit de gegevens van de offer komen. De API moet aangepast worden hiervoor.
+            var latToSend = "51.5837013"
+            var lngToSend = "4.797106"
+
+//            latToSend = geocodeResponse.results[0].geometry.location.lat.toString()
+//            lngToSend = geocodeResponse.results[0].geometry.location.lng
+
+            viewModel.getGeocodeResponse(offer.pickupLocation)
+
+//            viewModel.geocodeResult.observe(viewLifecycleOwner) {
+//                latToSend = it?.results?.get(0)?.geometry?.location?.lat.toString()
+//                lngToSend = it?.results?.get(0)?.geometry?.location?.lng.toString()
+//            }
+
+            Log.d("[Home]", "viewModel.geocodeResult: ${viewModel.geocodeResult}")
+
             val action = HomeFragmentDirections.actionHomeFragment2ToHomeDetailFragment2(
                 offer.id,
                 offer.car.model,
@@ -70,6 +86,8 @@ class HomeFragment : Fragment() {
                 offer.startDateTime,
                 offer.endDateTime,
                 carImage,
+                latToSend,
+                lngToSend
 
             )
 
@@ -86,6 +104,8 @@ class HomeFragment : Fragment() {
         viewModel.offerResult.observe(viewLifecycleOwner) {
             offerAdapter.setData(it)
         }
+
+
 
         viewModel.bookingsResult.observe(viewLifecycleOwner) {
             Log.d("[Home]", "Bookings: $it")
@@ -145,7 +165,9 @@ class HomeFragment : Fragment() {
                 offer.pickupLocation,
                 offer.startDateTime,
                 offer.endDateTime,
-                "http://placekitten.com/400/400"
+                "http://placekitten.com/400/400",
+                "51.5837013",
+                "4.797106"
             )
             findNavController().navigate(action)
         }
