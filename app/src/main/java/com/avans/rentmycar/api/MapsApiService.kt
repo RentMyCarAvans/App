@@ -5,7 +5,6 @@ import com.avans.rentmycar.model.GeocodeResponse
 import com.avans.rentmycar.rest.ApiClient
 import retrofit2.http.GET
 import retrofit2.http.Query
-import retrofit2.Response
 
 
 interface MapsApiService {

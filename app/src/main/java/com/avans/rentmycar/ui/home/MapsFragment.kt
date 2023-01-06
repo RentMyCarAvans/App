@@ -54,10 +54,10 @@ class MapsFragment : Fragment() {
 
     fun setMapLocation(latToSet: Double, lngToSet: Double) {
         Log.d("[MAPS]", "setMapLoc called")
-        if (!isAdded()) return;
+        if (!isAdded()) return
         Log.d("[MAPS]", "setMapLoc called 2")
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-        mapFragment?.getMapAsync(OnMapReadyCallback { googleMap ->
+        mapFragment?.getMapAsync({ googleMap ->
             val location = LatLng(latToSet, lngToSet)
             Log.d("[MAPS]", "Location: $location")
 

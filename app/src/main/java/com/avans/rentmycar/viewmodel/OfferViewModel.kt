@@ -11,7 +11,6 @@ import com.avans.rentmycar.model.GeocodeResponse
 import com.avans.rentmycar.model.OfferData
 import com.avans.rentmycar.repository.OfferRepository
 import kotlinx.coroutines.launch
-import retrofit2.Response
 
 class OfferViewModel : ViewModel() {
 

@@ -14,13 +14,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.avans.rentmycar.R
-import com.avans.rentmycar.api.MapsApiService
 import com.avans.rentmycar.utils.SessionManager
 import com.avans.rentmycar.viewmodel.OfferViewModel
 import com.bumptech.glide.Glide
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.Snackbar
 
 class HomeDetailFragment : Fragment() {
@@ -57,10 +53,8 @@ class HomeDetailFragment : Fragment() {
         val offerEndDateTime = args.endDateTime
         val carImageUrl = args.carImageUrl
 
-        if(args.lat != null && args.lng != null) {
             offerLat = args.lat.toDouble()
             offerLng = args.lng.toDouble()
-        }
 
         viewModel.getGeocodeResponse(offerPickupLocation)
 //        val geocodeResponse = viewModel.geocodeResult.value
@@ -69,7 +63,7 @@ class HomeDetailFragment : Fragment() {
             val geocodeResponse = viewModel.geocodeResult!!.value
             if(geocodeResponse != null) {
                 offerLat = geocodeResponse.results?.get(0)?.geometry?.location?.lat!!
-                offerLng = geocodeResponse.results?.get(0)?.geometry?.location?.lng!!
+                offerLng = geocodeResponse.results.get(0)?.geometry?.location?.lng!!
 
             }
             Log.d("[HDF]", "Geocode response: geocodeResponse = $geocodeResponse")
