@@ -63,21 +63,11 @@ class HomeFragment : Fragment() {
                 offer.car.image
             }
 
-            // TODO: Dit moet uit de gegevens van de offer komen. De API moet aangepast worden hiervoor.
+            // Default waardes voor als er iets niet ingevuld is
             var latToSend = "51.5837013"
             var lngToSend = "4.797106"
 
-//            latToSend = geocodeResponse.results[0].geometry.location.lat.toString()
-//            lngToSend = geocodeResponse.results[0].geometry.location.lng
-
             viewModel.getGeocodeResponse(offer.pickupLocation)
-
-//            viewModel.geocodeResult.observe(viewLifecycleOwner) {
-//                latToSend = it?.results?.get(0)?.geometry?.location?.lat.toString()
-//                lngToSend = it?.results?.get(0)?.geometry?.location?.lng.toString()
-//            }
-
-            Log.d("[Home]", "viewModel.geocodeResult: ${viewModel.geocodeResult}")
 
             val action = HomeFragmentDirections.actionHomeFragment2ToHomeDetailFragment2(
                 offer.id,
@@ -88,7 +78,6 @@ class HomeFragment : Fragment() {
                 carImage,
                 latToSend,
                 lngToSend
-
             )
 
             Log.d("[Home][Fragment]", "onViewCreated() => offer with carmodel " + offer.car.model)
@@ -106,7 +95,6 @@ class HomeFragment : Fragment() {
         }
 
 
-
         viewModel.bookingsResult.observe(viewLifecycleOwner) {
             Log.d("[Home]", "Bookings: $it")
             val offersFromMyBookings = viewModel.bookingsResult.value?.map { it.offer } ?: emptyList()
@@ -114,9 +102,6 @@ class HomeFragment : Fragment() {
             offerAdapter.setData(offersFromMyBookings)
         }
 
-
-
-        //TODO: Zorgen dat de lijst herlaadt na klikken op de knop
 
         binding.buttonHomeAvailablecars.setOnClickListener {
             Log.d("[Home]", "BUTTON Available Cars clicked")
