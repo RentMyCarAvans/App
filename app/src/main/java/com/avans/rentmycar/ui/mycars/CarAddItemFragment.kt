@@ -98,11 +98,10 @@ class CarAddItemFragment : Fragment() {
      */
     fun bindUI(it: List<RdwResponseItem>) {
         Log.d(TAG, "bindUI() => voertuigsoort: " + it[0].voertuigsoort + " merk: " + it[0].merk)
-        binding.rtvRdwInrichting.text = it[0].inrichting
-        binding.tvRdwVoertuigsoort.text = it[0].voertuigsoort
-        binding.tvRdwAantalDeuren.text = it[0].aantalDeuren
-        binding.tvRdwAantalZitplaatsen.text = it[0].aantalZitplaatsen
-        binding.rtvRdwKleur.text = it[0].eersteKleur
+        binding.txtInputCarmodel.setText(it[0].inrichting)
+        binding.txtInputVehicle.setText(it[0].voertuigsoort)
+        binding.txtInputCarNrOfDoors.setText(it[0].aantalDeuren)
+        binding.txtInputCarNrOfSeats.setText(it[0].aantalZitplaatsen)
     }
 
     private fun isValidLicensePlate(): Boolean {

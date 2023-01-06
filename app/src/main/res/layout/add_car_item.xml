@@ -27,15 +27,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Fill in your licenseplate, and the cardetails will be fetched from RDW. When you are finished, select the Save button and your call will be added to MyCars. From there you can offer your car."
-        app:layout_constraintBottom_toTopOf="@id/txtLay_licensePlateAdd"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/txtLay_licensePlateAdd"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -43,13 +34,9 @@
         android:layout_height="100dp"
         android:hint="@string/licenseplate"
         app:endIconMode="clear_text"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.4"
-        app:layout_constraintWidth_percent="0.9">
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtInput_licensePlate"
@@ -57,8 +44,119 @@
             android:layout_height="wrap_content"
             android:inputType="textCapCharacters"
             android:maxLength="6" />
-
     </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Soort voertuig -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtLay_carVehicleAdd"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Vehicle"
+        app:endIconMode="clear_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtLay_licensePlateAdd">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtInput_vehicle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Merk/model voertuig -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtLay_carModelAdd"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Model"
+        app:endIconMode="clear_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtLay_carVehicleAdd">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtInput_carmodel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Aantal zitplaatsen voertuig -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtLay_CarNrOfSeatsAdd"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Number of seats"
+        app:endIconMode="clear_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtLay_carModelAdd">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtInput_carNrOfSeats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Bouwjaar voertuig -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtLay_CarYearAdd"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Year of manufacture"
+        app:endIconMode="clear_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtLay_CarNrOfSeatsAdd">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtInput_carYear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Kleur voertuig -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtLay_CarColorAdd"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Color"
+        app:endIconMode="clear_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtLay_CarYearAdd">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtInput_carColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Aantal deuren voertuig -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtLay_CarNrOfDoorsAdd"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Number of doors"
+        app:endIconMode="clear_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtLay_CarColorAdd">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtInput_carNrOfDoors"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Buttons -->
     <Button
         android:id="@+id/button_get_licenseplate_rdw"
         android:layout_width="match_parent"
@@ -77,60 +175,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         />
-
-    <TextView
-        android:id="@+id/tv_rdw_voertuigsoort"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="50dp"
-        android:text="Soort voertuig: personenauto "
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtLay_licensePlateAdd" />
-    <TextView
-        android:id="@+id/tv_rdw_merk"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="5dp"
-        android:text="Merk: Lamborghini Diablo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_rdw_voertuigsoort" />
-    <TextView
-        android:id="@+id/tv_rdw_aantal_zitplaatsen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="5dp"
-        android:text="Aantal zitplaatsen: 4"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_rdw_merk" />
-    <TextView
-        android:id="@+id/tv_rdw_aantal_deuren"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="5dp"
-        android:text="Aantal deuren: 4"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_rdw_aantal_zitplaatsen" />
-    <TextView
-        android:id="@+id/rtv_rdw_kleur"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="5dp"
-        android:text="Kleur: zwart"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_rdw_aantal_deuren" />
-    <TextView
-        android:id="@+id/rtv_rdw_inrichting"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="5dp"
-        android:text="Inrichting: hatchback"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rtv_rdw_kleur" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
