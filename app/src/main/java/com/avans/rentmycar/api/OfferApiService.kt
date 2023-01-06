@@ -15,11 +15,15 @@ interface OfferService {
     @POST("/api/v1/bookings/")
     suspend fun createBooking(@Body bookingDTO: BookingDTO): Response<BookingResponse>
 
+    @POST("/api/v1/offers/")
+    suspend fun createOffer(@Body offerDTO: OfferDTO): Response<OfferResponse>
+
     @GET("/api/v1/bookings")
     suspend fun getBookings(): Response<BookingResponse>
 
     @GET("/api/v1/bookings")
     suspend fun getBookingsForUser(@Query("customerId") userId: Long): Response<BookingResponse>
+
 
     companion object {
         fun getApi(): OfferService? {
@@ -32,4 +36,11 @@ interface OfferService {
 class BookingDTO {
     var offerId: Long = 0
     var customerId: Long = 0
+}
+
+class OfferDTO {
+    var startDateTime: String = ""
+    var endDateTime: String = ""
+    var pickupLocation: String = ""
+    var carId: Long = 0
 }
