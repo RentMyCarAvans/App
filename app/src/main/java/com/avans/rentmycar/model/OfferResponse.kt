@@ -1,5 +1,11 @@
 package com.avans.rentmycar.model
 
+data class CreateOfferResponse(
+	val data: OfferData,
+	val message: String,
+	val status: Int
+)
+
 data class OfferResponse(
 	val data: Collection<OfferData>,
 	val message: String,
