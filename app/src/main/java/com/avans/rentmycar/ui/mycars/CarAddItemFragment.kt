@@ -16,17 +16,23 @@
 
 package com.avans.rentmycar.ui.mycars
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.viewModelScope
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.AddCarItemBinding
+import com.avans.rentmycar.model.RdwResponse
 import com.avans.rentmycar.model.RdwResponseItem
+import com.avans.rentmycar.rest.response.BaseResponse
 import com.avans.rentmycar.utils.FieldValidation
+import com.avans.rentmycar.viewmodel.CarViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 
@@ -50,12 +56,13 @@ class CarAddItemFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d(TAG, "onViewCreated()")
         super.onViewCreated(view, savedInstanceState)
 
         val binding = AddCarItemBinding.bind(view)
-        val carAddItemViewModel: CarAddItemViewModel by viewModels()
+        val carViewModel: CarViewModel by viewModels()
 
         binding.buttonGetLicenseplateRdw.setOnClickListener {
             Log.d(TAG, "onViewCreated() => Button GET clicked. Invoke RdwApiService")
@@ -66,15 +73,14 @@ class CarAddItemFragment : Fragment() {
             if (isValidLicensePlate()){
                 // invoke RdwApiService for retrieval of cardetails of the given licenseplate
                 Log.d(TAG, "onViewCreated() => invoke RdwApieService for licenseplate: " + licensePlate)
-                carAddItemViewModel.getRdwCarDetails(kenteken.text.toString())
+                carViewModel.getRdwCarDetails(kenteken.text.toString())
                 Snackbar.make(view, "Car details retrieved at the RDW", Snackbar.LENGTH_LONG)
                 .show()
             }
         }
 
-        // Observer for rdwResponse
-        Log.d(TAG, "onViewCreated() => set observer on rdw response ")
-        carAddItemViewModel.rdwResponse.observe(viewLifecycleOwner) {
+        carViewModel.rdwResponse.observe(viewLifecycleOwner) {
+            Log.d(TAG, "onViewCreated() => observer rdwResponse triggerd")
             bindUI(it)
         }
     }
@@ -94,9 +100,9 @@ class CarAddItemFragment : Fragment() {
         Log.d(TAG, "bindUI() => voertuigsoort: " + it[0].voertuigsoort + " merk: " + it[0].merk)
         binding.rtvRdwInrichting.text = it[0].inrichting
         binding.tvRdwVoertuigsoort.text = it[0].voertuigsoort
-        binding.tvRdwAantalDeuren.text = it[0].aantal_deuren
-        binding.tvRdwAantalZitplaatsen.text = it[0].aantal_zitplaatsen
-        binding.rtvRdwKleur.text = it[0].eerste_kleur
+        binding.tvRdwAantalDeuren.text = it[0].aantalDeuren
+        binding.tvRdwAantalZitplaatsen.text = it[0].aantalZitplaatsen
+        binding.rtvRdwKleur.text = it[0].eersteKleur
     }
 
     private fun isValidLicensePlate(): Boolean {
