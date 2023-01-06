@@ -38,7 +38,6 @@
     <fragment
         android:id="@+id/carDetailFragment"
         android:name="com.avans.rentmycar.ui.mycars.CarDetailFragment"
-        android:label="Edit a car"
         tools:layout="@layout/fragment_mycars_detail">
         <argument
             android:name="id"

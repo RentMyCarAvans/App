@@ -66,7 +66,7 @@ class CarAddItemFragment : Fragment() {
 
         binding.buttonGetLicenseplateRdw.setOnClickListener {
             Log.d(TAG, "onViewCreated() => Button GET clicked. Invoke RdwApiService")
-            val kenteken: TextInputEditText = binding.txtInputLicensePlate
+            val kenteken: TextInputEditText = binding.txtInputCarLicensePlate
             val licensePlate: String = kenteken.text.toString()
 
             // Validate licenseplate before API call
@@ -98,23 +98,25 @@ class CarAddItemFragment : Fragment() {
      */
     fun bindUI(it: List<RdwResponseItem>) {
         Log.d(TAG, "bindUI() => voertuigsoort: " + it[0].voertuigsoort + " merk: " + it[0].merk)
-        binding.txtInputCarmodel.setText(it[0].inrichting)
-        binding.txtInputVehicle.setText(it[0].voertuigsoort)
+        binding.txtInputCarModel.setText(it[0].inrichting)
+        binding.txtInputCarVehicle.setText(it[0].voertuigsoort)
         binding.txtInputCarNrOfDoors.setText(it[0].aantalDeuren)
         binding.txtInputCarNrOfSeats.setText(it[0].aantalZitplaatsen)
+        binding.txtInputCarColor.setText(it[0].eersteKleur)
+        binding.txtInputCarYear.setText(it[0].datumEersteToelating)
     }
 
     private fun isValidLicensePlate(): Boolean {
-        if (binding.txtInputLicensePlate.text.toString().trim().isEmpty()) {
-            binding.txtLayLicensePlateAdd.error = getString(R.string.required_field)
-            binding.txtInputLicensePlate.requestFocus()
+        if (binding.txtInputCarLicensePlate.text.toString().trim().isEmpty()) {
+            binding.txtInputCarLicensePlate.error = getString(R.string.required_field)
+            binding.txtInputCarLicensePlate.requestFocus()
             return false
-        } else if (!FieldValidation.isValidLicensePlate((binding.txtInputLicensePlate.text.toString()))) {
-            binding.txtLayLicensePlateAdd.error = getString(R.string.invalid_license)
-            binding.txtInputLicensePlate.requestFocus()
+        } else if (!FieldValidation.isValidLicensePlate((binding.txtInputCarLicensePlate.text.toString()))) {
+            binding.txtInputCarLicensePlate.error = getString(R.string.invalid_license)
+            binding.txtInputCarLicensePlate.requestFocus()
             return false
         } else {
-            binding.txtLayLicensePlateAdd.isErrorEnabled = false
+            binding.txtLayCarlicensePlateAdd.isErrorEnabled = false
         }
         return true
     }
