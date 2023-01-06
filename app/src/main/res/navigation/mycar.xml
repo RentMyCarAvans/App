@@ -38,7 +38,7 @@
     <fragment
         android:id="@+id/carDetailFragment"
         android:name="com.avans.rentmycar.ui.mycars.CarDetailFragment"
-        android:label="CarDetailFragment"
+        android:label="Edit a car"
         tools:layout="@layout/fragment_mycars_detail">
         <argument
             android:name="id"
@@ -70,6 +70,6 @@
     <fragment
         android:id="@+id/carAddItemFragment"
         android:name="com.avans.rentmycar.ui.mycars.CarAddItemFragment"
-        android:label="CarAddItemFragment"
+        android:label="Add a car"
         tools:layout="@layout/add_car_item"/>
 </navigation>
