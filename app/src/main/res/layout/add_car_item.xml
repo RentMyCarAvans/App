@@ -54,6 +54,8 @@
         android:layout_height="wrap_content"
         android:hint="Vehicle"
         app:endIconMode="clear_text"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtLay_CarlicensePlateAdd">
@@ -72,6 +74,8 @@
         android:layout_height="wrap_content"
         android:hint="Model"
         app:endIconMode="clear_text"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtLay_carVehicleAdd">
@@ -90,6 +94,8 @@
         android:layout_height="wrap_content"
         android:hint="Number of seats"
         app:endIconMode="clear_text"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtLay_carModelAdd">
@@ -109,6 +115,8 @@
         android:layout_height="wrap_content"
         android:hint="Year of manufacture"
         app:endIconMode="clear_text"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtLay_CarNrOfSeatsAdd">
@@ -127,6 +135,8 @@
         android:layout_height="wrap_content"
         android:hint="Color"
         app:endIconMode="clear_text"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtLay_CarYearAdd">
@@ -145,6 +155,8 @@
         android:layout_height="wrap_content"
         android:hint="Number of doors"
         app:endIconMode="clear_text"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtLay_CarColorAdd">

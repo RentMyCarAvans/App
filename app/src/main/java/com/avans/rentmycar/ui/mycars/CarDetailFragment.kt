@@ -95,10 +95,10 @@ class CarDetailFragment : Fragment() {
         Log.d("[RMC]", "onViewCreated() => Selected item with model " + args.brand + " and id " +args.id)
 
         // TODO: Replace with binding
-        // val imageViewCar = view.findViewById<ImageView>(R.id.car_image)
-        //Log.d("[RMC]", "onViewCreated() => imageViewCar: " + imageViewCar)
-        // Glide.with(this).load(carImageUrl).centerCrop().placeholder(R.drawable.audi).into(imageViewCar);
-        //Log.d("[RMC]", "onViewCreated() => after Glice imageViewCar: " + imageViewCar)
+        val imageViewCar = view.findViewById<ImageView>(R.id.iv_car_image)
+        Log.d("[RMC]", "onViewCreated() => imageViewCar: " + imageViewCar)
+        Glide.with(this).load(carImageUrl).centerCrop().placeholder(R.drawable.audi).into(imageViewCar);
+        Log.d("[RMC]", "onViewCreated() => after Glice imageViewCar: " + imageViewCar)
         view.findViewById<TextView>(R.id.tv_car_brand).text = carModel.toString()
         view.findViewById<TextView>(R.id.tv_car_year).text = carYear
         view.findViewById<TextView>(R.id.tv_car_licenseplate).text = carLicensePlate

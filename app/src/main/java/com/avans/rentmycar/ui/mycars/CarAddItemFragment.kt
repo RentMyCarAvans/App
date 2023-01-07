@@ -98,12 +98,12 @@ class CarAddItemFragment : Fragment() {
      */
     fun bindUI(it: List<RdwResponseItem>) {
         Log.d(TAG, "bindUI() => voertuigsoort: " + it[0].voertuigsoort + " merk: " + it[0].merk)
-        binding.txtInputCarModel.setText(it[0].inrichting)
+        binding.txtInputCarModel.setText( it[0].merk + "- " + it[0].handelsbenaming)
         binding.txtInputCarVehicle.setText(it[0].voertuigsoort)
         binding.txtInputCarNrOfDoors.setText(it[0].aantalDeuren)
         binding.txtInputCarNrOfSeats.setText(it[0].aantalZitplaatsen)
         binding.txtInputCarColor.setText(it[0].eersteKleur)
-        binding.txtInputCarYear.setText(it[0].datumEersteToelating)
+        binding.txtInputCarYear.setText(it[0].datumEersteToelating.substring(0,4)) // substring year of date with format yyyymmdd
     }
 
     private fun isValidLicensePlate(): Boolean {

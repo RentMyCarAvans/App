@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="colorOnPrimary">#0084FF</color>
+    <color name="colorPrimaryDark">#1294c8</color>
+    <color name="colorAccent">#FF4081</color>
+
     <style name="circleImageView" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>

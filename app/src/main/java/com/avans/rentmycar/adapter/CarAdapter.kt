@@ -1,6 +1,5 @@
 package com.avans.rentmycar.adapter
 
-import android.content.Context
 import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
-import com.avans.rentmycar.databinding.MycarsItemBinding
+import com.avans.rentmycar.databinding.ItemCarBinding
 import com.avans.rentmycar.model.CarList
 import com.avans.rentmycar.utils.ImageLoader
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -24,10 +23,10 @@ class CarAdapter(
     // It takes a view argument, in which pass the generated class of fragment_list_mycars.xml
     // ie FragmentListMycarsBinding and in the RecyclerView.ViewHolder(binding.root) pass it like this
     inner class ViewHolder(container: View) : RecyclerView.ViewHolder(container) {
-        private val carImage = itemCarBinding.carImage
-        private val carTitle = itemCarBinding.textviewCarTitle
-        private val carDescription1 = itemCarBinding.textviewCarDescription1
-        private val carDescription2 = itemCarBinding.textviewCarDescription2
+        private val carImage = itemCarBinding.imageviewItemCarImage
+        private val carTitle = itemCarBinding.textviewItemOfferCarName
+        private val carDescription1 = itemCarBinding.textviewItemOfferStartdate
+        private val carDescription2 = itemCarBinding.textviewItemOfferLocation
 
         @RequiresApi(Build.VERSION_CODES.O)
         fun bindData(carList: CarList) {
@@ -36,12 +35,12 @@ class CarAdapter(
 
             imageLoader.loadImage("http://placekitten.com/" + random + "/" + random, carImage)
             carTitle.text = carList.model
-            carDescription1.text = "offer: not offered"
+            carDescription1.text = carList.colorType
             carDescription2.text = "year: " + carList.yearOfManufacture.toString() + " mileage: " + carList.mileage
         }
     }
 
-    lateinit var itemCarBinding: MycarsItemBinding
+    lateinit var itemCarBinding: ItemCarBinding
     private val carResponse = mutableListOf<CarList>()
 
     fun setData(carData: Collection<CarList>){
@@ -54,7 +53,7 @@ class CarAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarAdapter.ViewHolder {
         Log.d(TAG, "onCreateViewHolder()")
         itemCarBinding =
-            MycarsItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemCarBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(itemCarBinding.root)
     }
 

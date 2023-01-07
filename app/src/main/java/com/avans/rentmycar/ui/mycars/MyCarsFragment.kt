@@ -55,7 +55,7 @@ class MyCarsFragment : Fragment() {
                 car.colorType,
                 car.mileage.toString(),
                 car.licensePlate,
-                car.createdAt // TODO: Change to carImageURL
+                car.image // TODO: Change to carImageURL
             )
             Log.d(TAG,"onViewCreated() => Clicked on item with model " + car.model + ". Navigate to detailscreen")
             findNavController().navigate(action)
