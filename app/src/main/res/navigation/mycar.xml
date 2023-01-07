@@ -65,10 +65,29 @@
             android:name="carimageurl"
             app:argType="string"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_carDetailFragment_to_mycars"
+            app:destination="@id/mycars" />
     </fragment>
     <fragment
         android:id="@+id/carAddItemFragment"
         android:name="com.avans.rentmycar.ui.mycars.CarAddItemFragment"
         android:label="Add a car"
-        tools:layout="@layout/add_car_item"/>
+        tools:layout="@layout/add_car_item">
+        <action
+            android:id="@+id/action_carAddItemFragment_to_editCarFragment"
+            app:destination="@id/editCarFragment" />
+        <action
+            android:id="@+id/action_carAddItemFragment_to_mycars"
+            app:destination="@id/mycars" />
+    </fragment>
+    <fragment
+        android:id="@+id/editCarFragment"
+        android:name="com.avans.rentmycar.ui.mycars.EditCarFragment"
+        android:label="EditCarFragment"
+        tools:layout="@layout/fragment_edit_car">
+        <action
+            android:id="@+id/action_editCarFragment_to_carAddItemFragment"
+            app:destination="@id/carAddItemFragment" />
+    </fragment>
 </navigation>

@@ -25,13 +25,11 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.viewModelScope
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.AddCarItemBinding
-import com.avans.rentmycar.model.RdwResponse
 import com.avans.rentmycar.model.RdwResponseItem
-import com.avans.rentmycar.rest.response.BaseResponse
 import com.avans.rentmycar.utils.FieldValidation
+import com.avans.rentmycar.utils.SessionManager
 import com.avans.rentmycar.viewmodel.CarViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
@@ -64,7 +62,7 @@ class CarAddItemFragment : Fragment() {
         val binding = AddCarItemBinding.bind(view)
         val carViewModel: CarViewModel by viewModels()
 
-        binding.buttonGetLicenseplateRdw.setOnClickListener {
+        binding.buttonCarGetRdwdetails.setOnClickListener {
             Log.d(TAG, "onViewCreated() => Button GET clicked. Invoke RdwApiService")
             val kenteken: TextInputEditText = binding.txtInputCarLicensePlate
             val licensePlate: String = kenteken.text.toString()
@@ -72,11 +70,17 @@ class CarAddItemFragment : Fragment() {
             // Validate licenseplate before API call
             if (isValidLicensePlate()){
                 // invoke RdwApiService for retrieval of cardetails of the given licenseplate
-                Log.d(TAG, "onViewCreated() => invoke RdwApieService for licenseplate: " + licensePlate)
+                Log.d(TAG, "onViewCreated() => invoke RdwApiService for licenseplate: " + licensePlate)
                 carViewModel.getRdwCarDetails(kenteken.text.toString())
                 Snackbar.make(view, "Car details retrieved at the RDW", Snackbar.LENGTH_LONG)
                 .show()
             }
+        }
+
+        binding.buttonCarSave.setOnClickListener {
+            Log.d(TAG, "onViewCreated() => Button SAVE clicked. Invoke CarApiService")
+            // TODO Add validation for all inputfield
+            createCar()
         }
 
         carViewModel.rdwResponse.observe(viewLifecycleOwner) {
@@ -119,5 +123,52 @@ class CarAddItemFragment : Fragment() {
             binding.txtLayCarlicensePlateAdd.isErrorEnabled = false
         }
         return true
+    }
+
+    private fun createCar() {
+        Log.d(TAG, "createCar()")
+        val carViewModel: CarViewModel by viewModels()
+
+        // Cast inputfields
+        val carColor: TextInputEditText = binding.txtInputCarColor
+        val color: String = carColor.text.toString()
+
+        val carLicensePlate: TextInputEditText = binding.txtInputCarLicensePlate
+        val licensePlate: String = carLicensePlate.text.toString()
+
+        val carModel: TextInputEditText = binding.txtInputCarModel
+        val model: String = carModel.text.toString()
+
+        val carNrOfSeats: TextInputEditText = binding.txtInputCarNrOfSeats
+        val nrOfSeats: String = carNrOfSeats.text.toString()
+
+        val carType: TextInputEditText = binding.txtInputCarVehicle
+        val type: String = carType.text.toString()
+
+        val carVehicleType: TextInputEditText = binding.txtInputCarVehicle
+        val vehicleType: String = carVehicleType.text.toString()
+        val userId = SessionManager.getUserId(requireContext())?.toInt()
+        val user = userId
+        val carYear: TextInputEditText = binding.txtInputCarYear
+        val year: String = carYear.text.toString()
+        Log.d(TAG, "createCar() => colorType = " + color)
+        Log.d(TAG, "createCar() => licensePlate = " + licensePlate)
+        Log.d(TAG, "createCar() => model = " + model)
+        Log.d(TAG, "createCar() => numberOfSeats = " + nrOfSeats.toInt(),)
+        Log.d(TAG, "createCar() => type = " + type)
+        Log.d(TAG, "createCar() => vehicleType = " + vehicleType)
+        Log.d(TAG, "createCar() => yearOfManufacture = " + year.toInt())
+        carViewModel.createCar(
+            colorType = color,
+            image = "", // TODO
+            licensePlate = licensePlate,
+            mileage = 100, // TODO
+            model = model,
+            numberOfSeats = nrOfSeats.toInt(),
+            type = "ICE", // TODO Fill field with ICE, FCEV of BEV
+            userId = 2,
+            vehicleType = vehicleType,
+            yearOfManufacture = year.toInt()
+        )
     }
 }
