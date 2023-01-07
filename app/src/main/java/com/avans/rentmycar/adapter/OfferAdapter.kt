@@ -62,7 +62,21 @@ class OfferAdapter(
             offerStartDate.text = itemView.context.getString(R.string.offer_pickupAfter, startDate)
             offerEndDate.text = itemView.context.getString(R.string.offer_returnBefore, endDate)
             offerLocation.text = offerData.pickupLocation
-            offerDistance.text = offerData.distance.toString() + " m"
+
+            // If te distance < 1000, show the distance in meters
+            // If the distance > 1000, show the distance in kilometers
+            // If the distance is null, show "Calculating distance..."
+            if (offerData.distance < 1000) {
+                offerDistance.text = offerData.distance.toInt().toString() + "m"
+            } else if (offerData.distance > 1000) {
+                val distanceInKm = offerData.distance / 1000
+                // set distanceInKm to 1 decimal
+                offerDistance.text = String.format("%.1f", distanceInKm) + "km"
+            } else {
+                offerDistance.text = "..."
+            }
+
+//            offerDistance.text = offerData.distance.toString() + " m"
 
 //            Log.d("[Home][Adapter]", "bindData() => offer with carname " + offerCarName.text)
         }

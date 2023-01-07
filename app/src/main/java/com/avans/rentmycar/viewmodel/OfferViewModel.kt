@@ -35,7 +35,34 @@ class OfferViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val offerResponse = offerRepository.getOpenOffers()
-                offerResult.value = offerResponse
+
+                // For each offer, use the pickupLocation and calculate the distance to the device location and add it to the offer.distance
+                val userLocation = SessionManager.getUserLocation()
+                val deviceLocation = Location("deviceLocation")
+                deviceLocation.latitude = userLocation.latitude
+                deviceLocation.longitude = userLocation.longitude
+                offerResponse.forEach { offer ->
+                    val pickupLocation = offer.pickupLocation
+                    val pickupLocationGeocode = MapsApiService.getApi()?.getLatLongFromAddress(pickupLocation)?.results?.get(0)?.geometry?.location
+                    val pickupLocationLatLng = LatLng(pickupLocationGeocode?.lat!!, pickupLocationGeocode.lng!!)
+                    val pickupLocationLocation = Location("pickupLocation")
+                    pickupLocationLocation.latitude = pickupLocationLatLng.latitude
+                    pickupLocationLocation.longitude = pickupLocationLatLng.longitude
+                    val distance = deviceLocation.distanceTo(pickupLocationLocation)
+                    offer.distance = distance
+                }
+
+                // Sort the offers by distance
+                val sortedOffers = offerResponse.sortedBy { offer -> offer.distance }
+                offerResult.value = sortedOffers
+
+
+
+
+
+
+
+//                offerResult.value = offerResponse
             } catch (e: Exception) {
                 Log.e("[OfferVM] getOffers", e.message.toString())
             }

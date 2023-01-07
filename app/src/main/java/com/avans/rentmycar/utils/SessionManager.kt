@@ -76,7 +76,6 @@ object SessionManager {
     }
 
     fun getUserLocation(): LatLng {
-        // TODO: Get the user location from the GPS Sensor --> This is nog in MainActivity.kt, need to test!
         return deviceLocation
     }
 
