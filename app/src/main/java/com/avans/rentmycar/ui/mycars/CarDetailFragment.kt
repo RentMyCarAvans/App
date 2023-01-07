@@ -25,11 +25,18 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.avans.rentmycar.R
+import com.avans.rentmycar.databinding.AddCarItemBinding
 import com.avans.rentmycar.databinding.FragmentMycarsDetailBinding
+import com.avans.rentmycar.databinding.MycarsItemBinding
 import com.avans.rentmycar.model.CarList
+import com.avans.rentmycar.viewmodel.CarViewModel
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputEditText
 
 /**
  * [CarDetailFragment] displays the details of the selected item.
@@ -107,6 +114,22 @@ class CarDetailFragment : Fragment() {
         val bar = (activity as AppCompatActivity).supportActionBar
         bar?.title = carModel
 
-    }
+        val binding = FragmentMycarsDetailBinding.bind(view)
+        val carViewModel: CarViewModel by viewModels()
 
+        binding.buttonDeleteCar.setOnClickListener {
+            Log.d(TAG, "onViewCreated() => Button DELETE clicked. Invoke CarApiService")
+            carViewModel.deleteCarById(args.id.toInt())
+                Snackbar.make(view, "Car with id " + args.id + "deleted", Snackbar.LENGTH_LONG)
+                    .show()
+        }
+
+        binding.buttonEditCarimageFab.setOnClickListener {
+            Log.d(TAG, "onViewCreated() => Button EDIT clicked. Go to the Edit fragment")
+            val action =
+                CarDetailFragmentDirections.actionCarDetailFragmentToEditCarFragment(args.color, args.id)
+            view.findNavController().navigate(action)
+
+        }
+    }
 }

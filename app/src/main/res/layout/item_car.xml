@@ -44,7 +44,7 @@
                 >
 
                 <TextView
-                    android:id="@+id/textview_item_offer_car_name"
+                    android:id="@+id/textview_item_car_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -53,41 +53,40 @@
                     android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toEndOf="@+id/imageview_item_car_image"
-                    app:layout_constraintTop_toTopOf="@id/imageview_item_offer_car_image"
+                    app:layout_constraintTop_toTopOf="@id/imageview_item_car_image"
                     tools:text="item_offer_car_name" />
 
                 <TextView
-                    android:id="@+id/textview_item_offer_startdate"
+                    android:id="@+id/textview_item_offer_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
 
                     android:textSize="14sp"
                     app:layout_constraintStart_toEndOf="@+id/imageview_item_car_image"
-                    app:layout_constraintTop_toBottomOf="@id/textview_item_offer_car_name"
+                    app:layout_constraintTop_toBottomOf="@id/textview_item_car_title"
                     tools:text="item_offer_startdate" />
 
                 <TextView
-                    android:id="@+id/textview_item_offer_enddate"
+                    android:id="@+id/textview_item_car_description1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
 
                     android:textSize="14sp"
                     app:layout_constraintStart_toEndOf="@+id/imageview_item_car_image"
-                    app:layout_constraintTop_toBottomOf="@id/textview_item_offer_startdate"
+                    app:layout_constraintTop_toBottomOf="@id/textview_item_offer_description"
                     tools:text="item_offer_enddate" />
 
                 <TextView
-                    android:id="@+id/textview_item_offer_location"
+                    android:id="@+id/textview_item_car_description2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
 
-                    android:layout_marginTop="5dp"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     app:layout_constraintStart_toEndOf="@id/imageview_item_car_image"
-                    app:layout_constraintTop_toBottomOf="@id/textview_item_offer_enddate"
+                    app:layout_constraintTop_toBottomOf="@id/textview_item_car_description1"
                     tools:text="item_offer_location" />
 
             </LinearLayout>

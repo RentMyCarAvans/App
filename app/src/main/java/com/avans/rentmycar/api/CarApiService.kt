@@ -3,6 +3,7 @@ package com.avans.rentmycar.api
 import com.avans.rentmycar.model.CarList
 import com.avans.rentmycar.model.CarRequest
 import com.avans.rentmycar.model.CarResponse
+import com.avans.rentmycar.model.CreateCarResponse
 import com.avans.rentmycar.rest.ApiClient
 import com.avans.rentmycar.rest.request.RegisterUserRequest
 import com.avans.rentmycar.rest.response.UserResponse
@@ -25,7 +26,7 @@ interface CarApiService {
     suspend fun deleteCarById(@Path("id") Id:Int): Response<CarResponse>
 
     @POST("/api/v1/cars")
-    suspend fun createCar(@Body carRequest: CarRequest): Response<CarResponse>
+    suspend fun createCar(@Body carRequest: CarRequest): Response<CreateCarResponse>
 
     companion object {
         fun getApi(): CarApiService? {

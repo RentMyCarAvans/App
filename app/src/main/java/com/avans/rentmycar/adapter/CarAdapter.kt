@@ -6,11 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.core.view.isGone
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.avans.rentmycar.databinding.ItemCarBinding
 import com.avans.rentmycar.model.CarList
 import com.avans.rentmycar.utils.ImageLoader
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class CarAdapter(
     private val imageLoader: ImageLoader,
@@ -23,20 +25,20 @@ class CarAdapter(
     // It takes a view argument, in which pass the generated class of fragment_list_mycars.xml
     // ie FragmentListMycarsBinding and in the RecyclerView.ViewHolder(binding.root) pass it like this
     inner class ViewHolder(container: View) : RecyclerView.ViewHolder(container) {
-        private val carImage = itemCarBinding.imageviewItemCarImage
-        private val carTitle = itemCarBinding.textviewItemOfferCarName
-        private val carDescription1 = itemCarBinding.textviewItemOfferStartdate
-        private val carDescription2 = itemCarBinding.textviewItemOfferLocation
+        // private val carImage = itemCarBinding.imageviewItemCarImage
 
         @RequiresApi(Build.VERSION_CODES.O)
         fun bindData(carList: CarList) {
             // TODO: Replace cute placeholder images with dumb pictures of cars
             val random = (1..10).random() * 100
 
-            imageLoader.loadImage("http://placekitten.com/" + random + "/" + random, carImage)
-            carTitle.text = carList.model
-            carDescription1.text = carList.colorType
-            carDescription2.text = "year: " + carList.yearOfManufacture.toString() + " mileage: " + carList.mileage
+            imageLoader.loadImage("http://placekitten.com/" + random + "/" + random, itemCarBinding.imageviewItemCarImage)
+            itemCarBinding.textviewItemCarTitle.setText(carList.model)
+            // itemCarBinding.textviewItemOfferDescription.isGone// TODO Set to visible if offer is present
+            itemCarBinding.textviewItemOfferDescription.isVisible
+            itemCarBinding.textviewItemOfferDescription.setText(carList.vehicleType)
+            itemCarBinding.textviewItemCarDescription1.setText("licenseplate: " + carList.licensePlate + " color: " + carList.colorType)
+            itemCarBinding.textviewItemCarDescription2.setText("year: " + carList.yearOfManufacture.toString() + " mileage: " + carList.mileage)
         }
     }
 

@@ -68,6 +68,9 @@
         <action
             android:id="@+id/action_carDetailFragment_to_mycars"
             app:destination="@id/mycars" />
+        <action
+            android:id="@+id/action_carDetailFragment_to_editCarFragment"
+            app:destination="@id/editCarFragment" />
     </fragment>
     <fragment
         android:id="@+id/carAddItemFragment"
@@ -89,5 +92,14 @@
         <action
             android:id="@+id/action_editCarFragment_to_carAddItemFragment"
             app:destination="@id/carAddItemFragment" />
+        <action
+            android:id="@+id/action_editCarFragment_to_carDetailFragment"
+            app:destination="@id/carDetailFragment" />
+        <argument
+            android:name="id"
+            app:argType="string" />
+        <argument
+            android:name="color"
+            app:argType="string" />
     </fragment>
 </navigation>

@@ -11,6 +11,11 @@ data class CarResponse(
     @field:Json(name="status") val status: Int
 )
 
+data class CreateCarResponse(
+    @field:Json(name="data") val data: CarList,
+    @field:Json(name="status") val status: Int
+)
+
 @Keep
 @JsonClass(generateAdapter = true)
 data class CarList(

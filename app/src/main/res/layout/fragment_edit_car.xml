@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:layout_marginHorizontal="8dp"
     android:background="@color/white"
-    android:paddingTop="8dp">
+    android:paddingTop="8dp"
+    tools:context=".ui.mycars.EditCarFragment">>
 
     <FrameLayout
         android:id="@+id/layout_add_car_step2"

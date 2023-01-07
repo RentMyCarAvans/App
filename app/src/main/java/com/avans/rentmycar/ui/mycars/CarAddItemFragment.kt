@@ -22,12 +22,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.AddCarItemBinding
 import com.avans.rentmycar.model.RdwResponseItem
+import com.avans.rentmycar.rest.response.BaseResponse
 import com.avans.rentmycar.utils.FieldValidation
 import com.avans.rentmycar.utils.SessionManager
 import com.avans.rentmycar.viewmodel.CarViewModel
@@ -81,11 +84,40 @@ class CarAddItemFragment : Fragment() {
             Log.d(TAG, "onViewCreated() => Button SAVE clicked. Invoke CarApiService")
             // TODO Add validation for all inputfield
             createCar()
+            Log.d(TAG, "onViewCreated() => After calling fun createCar()")
         }
 
         carViewModel.rdwResponse.observe(viewLifecycleOwner) {
             Log.d(TAG, "onViewCreated() => observer rdwResponse triggerd")
+            if (carViewModel.rdwResponse.value!!.isEmpty()){
+                Snackbar.make(view, "An error occurred while fetching your data. Please try again later", Snackbar.LENGTH_LONG)
+                    .show()
+                }
             bindUI(it)
+        }
+
+        carViewModel.carCreateResponse.observe(viewLifecycleOwner) {
+            Log.d(TAG, "onViewCreated() => observer carCreateResponse triggerd")
+            when (it) {
+                is BaseResponse.Loading -> {
+                    Log.d(TAG, "onViewCreated() => observer BaseResponse.Loading")
+
+                }
+                is BaseResponse.Error -> {
+                    Toast.makeText(context, "Error", Toast.LENGTH_LONG).show()
+                    Snackbar.make(view, "An error occurred while fetching your data. Please try again later", Snackbar.LENGTH_LONG)
+                            .show()
+                    Log.d(TAG, "onViewCreated() => observer BaseResponse.Error")
+
+                }
+                is BaseResponse.Success -> {
+                    Log.d(TAG, "onViewCreated() => observer BaseResponse.Success. Return to MyCarsFragment ")
+                    val action = CarDetailFragmentDirections.actionCarDetailFragmentToMycars()
+                    findNavController().navigate(action)
+                    // Snackbar.make(view, "An error occurred while fetching your data. Please try again later", Snackbar.LENGTH_LONG)
+                    //     .show()
+                }
+            }
         }
     }
 
@@ -107,7 +139,7 @@ class CarAddItemFragment : Fragment() {
         binding.txtInputCarNrOfDoors.setText(it[0].aantalDeuren)
         binding.txtInputCarNrOfSeats.setText(it[0].aantalZitplaatsen)
         binding.txtInputCarColor.setText(it[0].eersteKleur)
-        binding.txtInputCarYear.setText(it[0].datumEersteToelating.substring(0,4)) // substring year of date with format yyyymmdd
+        binding.txtInputCarYear.setText(it[0].datumEersteToelating?.substring(0,4)) // substring year of date with format yyyymmdd
     }
 
     private fun isValidLicensePlate(): Boolean {
@@ -170,5 +202,6 @@ class CarAddItemFragment : Fragment() {
             vehicleType = vehicleType,
             yearOfManufacture = year.toInt()
         )
+        Log.d(TAG, "createCar() => After calling viewModel.createCar().")
     }
 }
