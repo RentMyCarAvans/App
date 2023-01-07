@@ -50,4 +50,5 @@
     <string name="the_car">The Car</string>
     <string name="delete">Delete</string>
     <string name="invalid_license">Licenseplate has an invalid pattern. Please provide a valid Dutch licenseplate</string>
+    <string name="location_permission_denied_explanation">Location permission is needed for this functionality</string>
 </resources>

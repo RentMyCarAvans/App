@@ -115,9 +115,9 @@ class HomeDetailFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        if(mapFragment.isAdded) {
-            mapFragment.setMapLocation(offerLat, offerLng)
-        }
+//        if(mapFragment.isAdded) {
+//            mapFragment.setMapLocation(offerLat, offerLng)
+//        }
     }
 
 }
