@@ -1,6 +1,8 @@
 package com.avans.rentmycar.viewmodel
 
+import android.location.Location
 import android.util.Log
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,6 +12,8 @@ import com.avans.rentmycar.model.BookingResponse
 import com.avans.rentmycar.model.GeocodeResponse
 import com.avans.rentmycar.model.OfferData
 import com.avans.rentmycar.repository.OfferRepository
+import com.avans.rentmycar.utils.SessionManager
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
 
 class OfferViewModel : ViewModel() {
@@ -22,6 +26,10 @@ class OfferViewModel : ViewModel() {
     val bookingsResult: MutableLiveData<Collection<BookingData>> = MutableLiveData()
 
     var geocodeResult: MutableLiveData<GeocodeResponse?>? = MutableLiveData()
+
+    var carLocationList: MutableLiveData<Map<Long,LatLng>> = MutableLiveData()
+    var carDistanceList: MutableLiveData<Map<Long,Float>> = MutableLiveData()
+
 
     fun getOffers() {
         viewModelScope.launch {
@@ -67,5 +75,60 @@ class OfferViewModel : ViewModel() {
         }
 
     }
+
+
+    fun getListOfCarLocations() {
+        viewModelScope.launch {
+            Log.d("[OfferVM] getListOfCar", "getListOfCarLocations")
+            try {
+                val offerResponse = offerRepository.getOpenOffers()
+                offerResult.value = offerResponse
+
+                val _carLocationList = mutableMapOf<Long,LatLng>()
+                val _carDistanceList = mutableMapOf<Long,Float>()
+
+                offerResponse.forEach {
+                    val geocodeResponse = MapsApiService.getApi()?.getLatLongFromAddress(it.pickupLocation)
+                    Log.d("[OfferVM] geocodeResp", "geocodeResponse: $geocodeResponse")
+                    val lat = geocodeResponse?.results?.get(0)?.geometry?.location?.lat
+                    val lng = geocodeResponse?.results?.get(0)?.geometry?.location?.lng
+                    Log.d("[OfferVM] lat lng", "lat: $lat, lng: $lng")
+                    if (lat != null && lng != null) {
+                        var latlngToAdd = LatLng(lat, lng)
+                        Log.d("[OfferVM] latlngToAdd", "latlngToAdd: $latlngToAdd")
+                        // Add the latlng to the collection
+                        _carLocationList.put(it.id,latlngToAdd)
+                        carLocationList.value = _carLocationList
+
+                        // Get the distance from the user to the car
+                        val userLocation = SessionManager.getUserLocation()
+                        val userLat = userLocation?.latitude
+                        val userLng = userLocation?.longitude
+
+                        val distance = FloatArray(2)
+                        Location.distanceBetween(
+                            userLat!!,
+                            userLng!!,
+                            latlngToAdd.latitude,
+                            latlngToAdd.longitude,
+                            distance
+                        )
+                        _carDistanceList.put(it.id,distance[0])
+                        carDistanceList.value = _carDistanceList
+
+
+//                        carLocationList.value?.add(latlngToAdd)
+                        Log.d("[OfferVM] carLocList", "carLocationList: ${carLocationList} ")
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("[OfferVM] getCarLoc", e.message.toString())
+            }
+        }
+
+    }
+
+
+
 
 }

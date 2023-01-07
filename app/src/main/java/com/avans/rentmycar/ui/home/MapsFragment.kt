@@ -31,7 +31,9 @@ import com.google.android.material.snackbar.Snackbar
 class MapsFragment : Fragment() {
 
     private lateinit var lastLocation: Location
-    val mapBoundsBuilder = LatLngBounds.Builder()
+    private val mapBoundsBuilder = LatLngBounds.Builder()
+
+    private val boundsPadding = 100
 
 
     private val callback = OnMapReadyCallback { googleMap ->
@@ -62,7 +64,7 @@ class MapsFragment : Fragment() {
 //        mapBoundsBuilder.include(selectedCarLocation)
 
 //        val bounds = mapBoundsBuilder.build()
-//        googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 120))
+//        googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, boundsPadding))
 
     }
 
@@ -86,10 +88,10 @@ class MapsFragment : Fragment() {
             ActivityResultContracts.RequestMultiplePermissions()
         ) { permissions ->
             when {
-                permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
+                permissions.getOrDefault(ACCESS_FINE_LOCATION, false) -> {
                     // Precise location access granted.
                 }
-                permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
+                permissions.getOrDefault(ACCESS_COARSE_LOCATION, false) -> {
                     // Only approximate location access granted.
                 } else -> {
                 // No location access granted.
@@ -131,7 +133,7 @@ class MapsFragment : Fragment() {
                             addDeviceMarker(deviceLocation)
                             mapBoundsBuilder.include(deviceLocation)
                             val bounds = mapBoundsBuilder.build()
-                            googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 120))
+                            googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, boundsPadding))
 
                             // Adjust the bounds to include our location
 //                            val builder = LatLngBounds.Builder()
@@ -161,14 +163,14 @@ class MapsFragment : Fragment() {
 
     }
 
-    fun clearMap() {
+    private fun clearMap() {
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync { googleMap ->
             googleMap.clear()
         }
     }
 
-    fun addDeviceMarker(location: LatLng){
+    private fun addDeviceMarker(location: LatLng){
         Log.d("[MAPS] addDeviceMarker", "Location: $location")
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync { googleMap ->
@@ -189,10 +191,10 @@ class MapsFragment : Fragment() {
 
     fun setMapLocation(latToSet: Double, lngToSet: Double) {
         Log.d("[MAPS]", "setMapLoc called")
-        if (!isAdded()) return
+        if (!isAdded) return
         Log.d("[MAPS]", "setMapLoc called 2")
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-        mapFragment?.getMapAsync({ googleMap ->
+        mapFragment?.getMapAsync { googleMap ->
             val location = LatLng(latToSet, lngToSet)
             Log.d("[MAPS] setMapLocation", "Location: $location")
 
@@ -201,18 +203,18 @@ class MapsFragment : Fragment() {
 
             mapBoundsBuilder.include(location)
 
-                    val bounds = mapBoundsBuilder.build()
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 120))
+            val bounds = mapBoundsBuilder.build()
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, boundsPadding))
 
 
             val myMarkerOptions = MarkerOptions()
                 .position(location)
                 .title("Offer.car.model")
                 .snippet("More information or not?")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
             val carMarker = googleMap.addMarker(myMarkerOptions)
 
-        })
+        }
     }
 
 }

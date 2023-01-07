@@ -1,5 +1,6 @@
 package com.avans.rentmycar.ui.home
 
+import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,14 +14,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.avans.rentmycar.R
 import com.avans.rentmycar.adapter.OfferAdapter
+import com.avans.rentmycar.api.MapsApiService
 import com.avans.rentmycar.databinding.FragmentHomeBinding
 import com.avans.rentmycar.utils.GlideImageLoader
 import com.avans.rentmycar.utils.SessionManager
 import com.avans.rentmycar.viewmodel.OfferViewModel
+import com.google.android.gms.maps.model.LatLng
 
 class HomeFragment : Fragment() {
-
-
 
     private lateinit var _binding: FragmentHomeBinding
     private val binding get() = _binding
@@ -53,21 +54,34 @@ class HomeFragment : Fragment() {
         // Get the id of the logged in user so we can use it to get the correct offers and bookings
         val userId = SessionManager.getUserId(requireContext())
 
+
+        // Get the carLocationList from the viewModel
+        viewModel.carLocationList.observe(viewLifecycleOwner) { carLocationList ->
+            Log.d("[Home] carLocationList", "carLocationList: $carLocationList")
+        }
+
+        viewModel.carDistanceList.observe(viewLifecycleOwner) { carDistanceList ->
+            Log.d("[Home] carDistanceList", "carDistanceList: $carDistanceList")
+            // Sort the carDistanceList bij value
+            val sortedCarDistanceList = carDistanceList.toList().sortedBy { (_, value) -> value }.toMap()
+            Log.d("[Home] sortedCrDistList", "sortedCarDistanceList: $sortedCarDistanceList")
+
+            // Rearrange the offerResult by the sortedCarDistanceList where the key is the offerId
+            val sortedOfferResult = viewModel.offerResult.value?.sortedBy { offer -> sortedCarDistanceList[offer.id] }
+            Log.d("[Home] sortdOffrReslt", "sortedOfferResult: $sortedOfferResult")
+
+            // Set the offerResult to the sortedOfferResult
+            viewModel.offerResult.value = sortedOfferResult
+
+
+        }
+
+        viewModel.getListOfCarLocations()
+
+
+
         // Make all the items in the recyclerview clickable, so the user can click on an item and go to the detail page of the selected offer
         val offerAdapter = OfferAdapter(GlideImageLoader(view.context as AppCompatActivity)) { offer ->
-
-            var carImage = ""
-            carImage = if(offer.car.image == null) {
-                "http://placekitten.com/500/500"
-            } else {
-                offer.car.image
-            }
-
-            // Default waardes voor als er iets niet ingevuld is
-            var latToSend = "51.5837013"
-            var lngToSend = "4.797106"
-
-            viewModel.getGeocodeResponse(offer.pickupLocation)
 
             val action = HomeFragmentDirections.actionHomeFragment2ToHomeDetailFragment2(
                 offer.id,
@@ -75,12 +89,8 @@ class HomeFragment : Fragment() {
                 offer.pickupLocation,
                 offer.startDateTime,
                 offer.endDateTime,
-                carImage,
-                latToSend,
-                lngToSend
+                offer.car.image
             )
-
-            Log.d("[Home][Fragment]", "onViewCreated() => offer with carmodel " + offer.car.model)
 
             //TODO: Andere Fragment maken voor de Booking Details
             findNavController().navigate(action)
@@ -137,10 +147,26 @@ class HomeFragment : Fragment() {
 
     }
 
+    private fun calculateDistance(location: LatLng): Float {
+        val userLocation = SessionManager.getUserLocation()
+        val userLat = userLocation?.latitude
+        val userLng = userLocation?.longitude
+
+        val distance = FloatArray(2)
+        Location.distanceBetween(
+            userLat!!,
+            userLng!!,
+            location.latitude,
+            location.longitude,
+            distance
+        )
+        return distance[0]
+    }
+
     override fun onStart() {
         super.onStart()
         // TODO: Page should remember last state (Available Cars / My Bookings) for navigating back from other pages
-        Log.d("[Home] Offer", "onStart")
+        Log.d("[Home] onStart", "onStart")
 
         // TODO: Kan onderstaande op een andere manier? Dit voelt raar
         val offerAdapter = OfferAdapter(GlideImageLoader(view?.context as AppCompatActivity)) { offer ->
@@ -151,8 +177,6 @@ class HomeFragment : Fragment() {
                 offer.startDateTime,
                 offer.endDateTime,
                 "http://placekitten.com/400/400",
-                "51.5837013",
-                "4.797106"
             )
             findNavController().navigate(action)
         }

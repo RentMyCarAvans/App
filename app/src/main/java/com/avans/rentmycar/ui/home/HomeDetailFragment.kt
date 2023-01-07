@@ -49,7 +49,7 @@ class HomeDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val userId = SessionManager.getUserId(requireContext())
+
 
         val args: HomeDetailFragmentArgs by navArgs()
         val offerId = args.id
@@ -59,8 +59,6 @@ class HomeDetailFragment : Fragment() {
         val offerEndDateTime = args.endDateTime
         val carImageUrl = args.carImageUrl
 
-            offerLat = args.lat.toDouble()
-            offerLng = args.lng.toDouble()
 
         viewModel.getGeocodeResponse(offerPickupLocation)
 
@@ -83,6 +81,7 @@ class HomeDetailFragment : Fragment() {
         binding.textviewHomeDetailOfferPickuplocation.setText(offerPickupLocation)
         binding.textviewHomeDetailOfferDates.setText("$offerStartDateTime - $offerEndDateTime")
 
+
         binding.imageviewHomeDetailCarImage.let {
             Glide.with(this).load(carImageUrl).into(it)
         }
@@ -90,7 +89,7 @@ class HomeDetailFragment : Fragment() {
         // Setup Book Button
         binding.buttonHomeDetailBook.setOnClickListener{
             val offerViewModel = ViewModelProvider(this)[OfferViewModel::class.java]
-            offerViewModel.createBooking(offerId, userId!!)
+            offerViewModel.createBooking(offerId, SessionManager.getUserId(requireContext())!!)
 
             offerViewModel.bookingResult.observe(viewLifecycleOwner) { response ->
                 if (response != null) {
