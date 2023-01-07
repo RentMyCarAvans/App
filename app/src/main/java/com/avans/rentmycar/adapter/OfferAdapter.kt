@@ -6,11 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.recyclerview.widget.RecyclerView
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.ItemOfferBinding
 import com.avans.rentmycar.model.OfferData
 import com.avans.rentmycar.utils.ImageLoader
+import com.google.android.gms.location.LocationServices
 import java.text.SimpleDateFormat
 
 class OfferAdapter(
@@ -24,6 +26,7 @@ class OfferAdapter(
         private val offerStartDate = itemOfferBinding.textviewItemOfferStartdate
         private val offerEndDate = itemOfferBinding.textviewItemOfferEnddate
         private val offerLocation = itemOfferBinding.textviewItemOfferLocation
+        private val offerDistance = itemOfferBinding.textviewItemOfferDistance
 
         @RequiresApi(Build.VERSION_CODES.O)
         fun bindData(offerData: OfferData) {
@@ -44,13 +47,27 @@ class OfferAdapter(
                 offerData.car.image
             }
 
+            // 1. Get the value of the carDistanceList from the viewModel where the key is the offer.id
+            var distance = 0.0
+
+
+            // 2. Set the text of the offerDistance textview to the value of the carDistanceList
+
+
+
+
+
             imageLoader.loadImage(carImage, offerCarImage)
             offerCarName.text = offerData.car.model
             offerStartDate.text = itemView.context.getString(R.string.offer_pickupAfter, startDate)
             offerEndDate.text = itemView.context.getString(R.string.offer_returnBefore, endDate)
             offerLocation.text = offerData.pickupLocation
+            offerDistance.text = offerData.distance.toString() + " m"
+
 //            Log.d("[Home][Adapter]", "bindData() => offer with carname " + offerCarName.text)
         }
+
+
     }
 
     lateinit var itemOfferBinding: ItemOfferBinding
@@ -80,4 +97,16 @@ class OfferAdapter(
     }
 
     override fun getItemCount(): Int = offerData.size
+
+    fun setDistance(value: Map<Long, Float>?) {
+        if (value != null) {
+            for (offer in offerData) {
+                offer.distance = value[offer.id]!!
+            }
+        }
+        notifyDataSetChanged()
+
+    }
+
+
 }

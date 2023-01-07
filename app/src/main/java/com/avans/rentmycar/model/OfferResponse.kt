@@ -17,7 +17,8 @@ data class OfferData(
 	val startDateTime: String,
 	val endDateTime: String,
 	val pickupLocation: String,
-	val car: OfferCarData
+	val car: OfferCarData,
+	var distance: Float
 )
 
 data class OfferCarData(

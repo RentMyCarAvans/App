@@ -2,9 +2,11 @@ package com.avans.rentmycar.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.location.Location
 import android.util.Log
 import com.avans.rentmycar.R
 import com.avans.rentmycar.ui.login.LoginFragment
+import com.google.android.gms.maps.model.LatLng
 
 object SessionManager {
 
@@ -73,6 +75,12 @@ object SessionManager {
         val editor = context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE).edit()
         editor.clear()
         editor.apply()
+    }
+
+    fun getUserLocation(): LatLng {
+        // TODO: Get the user location from the GPS Sensor
+        return LatLng(51.9143325,4.46963)
+
     }
 
 
