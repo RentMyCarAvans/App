@@ -49,7 +49,7 @@ class OfferAdapter(
             offerStartDate.text = itemView.context.getString(R.string.offer_pickupAfter, startDate)
             offerEndDate.text = itemView.context.getString(R.string.offer_returnBefore, endDate)
             offerLocation.text = offerData.pickupLocation
-            Log.d("[Home][Adapter]", "bindData() => offer with carname " + offerCarName.text)
+//            Log.d("[Home][Adapter]", "bindData() => offer with carname " + offerCarName.text)
         }
     }
 

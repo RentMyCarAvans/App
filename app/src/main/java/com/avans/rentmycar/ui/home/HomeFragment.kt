@@ -20,11 +20,11 @@ import com.avans.rentmycar.viewmodel.OfferViewModel
 
 class HomeFragment : Fragment() {
 
-    // Declare viewbinding
+
+
     private lateinit var _binding: FragmentHomeBinding
     private val binding get() = _binding
 
-    // Declare viewmodel
     private val viewModel: OfferViewModel by viewModels()
 
     override fun onCreateView(
@@ -116,7 +116,7 @@ class HomeFragment : Fragment() {
         }
 
         binding.buttonHomeMybookings.setOnClickListener {
-            Log.d("[Home]", "BUTTON My Bookings clicked")
+//            Log.d("[Home]", "BUTTON My Bookings clicked")
 
             binding.buttonHomeAvailablecars.setBackgroundColor(resources.getColor(R.color.blue_500))
             binding.buttonHomeMybookings.setBackgroundColor(resources.getColor(R.color.blue_200))

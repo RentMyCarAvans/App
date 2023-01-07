@@ -1,5 +1,12 @@
 package com.avans.rentmycar.ui.home
 
+import android.Manifest
+import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import android.Manifest.permission.ACCESS_FINE_LOCATION
+import android.annotation.SuppressLint
+import android.content.pm.PackageManager
+import android.location.Location
+import android.os.Build
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
@@ -7,15 +14,26 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
+//import androidx.lifecycle.viewmodel.CreationExtras.Empty.map
+//import androidx.lifecycle.viewmodel.CreationExtras.Empty.map
 import com.avans.rentmycar.R
+import com.google.android.gms.location.LocationServices
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
 class MapsFragment : Fragment() {
+
+
+    // Get the current Location of the device using the FusedLocationProviderClient.
+    private lateinit var lastLocation: Location
+
 
 
 
@@ -43,10 +61,67 @@ class MapsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_maps, container, false)
     }
 
+    @SuppressLint("MissingPermission")
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val locationPermissionRequest = registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            when {
+                permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
+                    // Precise location access granted.
+                }
+                permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
+                    // Only approximate location access granted.
+                } else -> {
+                // No location access granted.
+            }
+            }
+        }
+
+        locationPermissionRequest.launch(arrayOf(ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION))
+
+        // Get the current location of the device
+        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+
+        // Check if the user has granted permission to access the device location
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (requireActivity().checkSelfPermission(ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                    if (location != null) {
+                        lastLocation = location
+                        Log.d("[MAPS] lastLocation", lastLocation.toString())
+                        val currentLatLng = LatLng(location.latitude, location.longitude)
+//                        setMapLocation(currentLatLng.latitude, currentLatLng.longitude)
+                        val mapFragment =
+                            childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+                        mapFragment?.getMapAsync { googleMap ->
+                            val location = LatLng(currentLatLng.latitude, currentLatLng.longitude)
+                            Log.d("[MAPS]", "Location: $location")
+
+                            googleMap.addMarker(MarkerOptions().position(location))
+                            // Change the marker icon
+
+                            // Adjust Zoom level
+                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 13.0f))
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+
+
+
+
+
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
+
     }
 
     // Create a method to set the location of the map
@@ -62,9 +137,11 @@ class MapsFragment : Fragment() {
             Log.d("[MAPS]", "Location: $location")
 
             // remove all other markers
-            googleMap.clear()
+//            googleMap.clear()
 
             googleMap.addMarker(MarkerOptions().position(location))
+//            googleMap.addMarker(MarkerOptions().position(location).icon(
+//                BitmapDescriptorFactory.fromResource(R.drawable.car_black_24dp)))
             // Adjust Zoom level
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 13.0f))
         })
