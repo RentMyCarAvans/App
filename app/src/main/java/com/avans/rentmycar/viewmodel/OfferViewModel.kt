@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.avans.rentmycar.api.MapsApiService
 import com.avans.rentmycar.model.BookingData
 import com.avans.rentmycar.model.BookingResponse
+import com.avans.rentmycar.model.CreateBookingResponse
 import com.avans.rentmycar.model.GeocodeResponse
 import com.avans.rentmycar.model.OfferData
 import com.avans.rentmycar.repository.OfferRepository
@@ -24,6 +25,8 @@ class OfferViewModel : ViewModel() {
 
     val bookingResult: MutableLiveData<BookingResponse?> = MutableLiveData()
     val bookingsResult: MutableLiveData<Collection<BookingData>> = MutableLiveData()
+
+    val createBookingResult: MutableLiveData<CreateBookingResponse?> = MutableLiveData()
 
     var geocodeResult: MutableLiveData<GeocodeResponse?>? = MutableLiveData()
 
@@ -103,9 +106,16 @@ class OfferViewModel : ViewModel() {
     fun createBooking(offerId: Long, customerId: Long) {
         viewModelScope.launch {
             try {
+                val createBookingResponse = offerRepository.createBooking(offerId, customerId)
+                createBookingResult.value = createBookingResponse
+                Log.d("[OfferVM] crBookingResp", createBookingResponse.toString())
+                Log.d("[OfferVM] crBookingResu", createBookingResult.value.toString())
+
                 val bookingResponse = offerRepository.createBooking(offerId, customerId)
                 bookingResult.value = bookingResponse
             } catch (e: Exception) {
+                Log.d("[OfferVM] bookingresult", createBookingResult.value.toString())
+                Log.e("[OfferVM] crBookingResu", e.message.toString())
                 Log.e("[OfferVM] createBooking", e.message.toString())
             }
         }

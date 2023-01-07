@@ -4,7 +4,9 @@ import android.util.Log
 import com.avans.rentmycar.api.BookingDTO
 import com.avans.rentmycar.api.OfferDTO
 import com.avans.rentmycar.api.OfferService
-import com.avans.rentmycar.model.*
+import com.avans.rentmycar.model.BookingData
+import com.avans.rentmycar.model.CreateBookingResponse
+import com.avans.rentmycar.model.OfferData
 
 class OfferRepository {
 
@@ -24,12 +26,12 @@ class OfferRepository {
     }
 
 
-    suspend fun createBooking(offerId: Long, customerId: Long): BookingResponse? {
+
+    suspend fun createBooking(offerId: Long, customerId: Long): CreateBookingResponse? {
         Log.d("[OfferRep] crBooking", "offerId: $offerId, customerId: $customerId")
         val bookingDTO = BookingDTO()
         bookingDTO.offerId = offerId
         bookingDTO.customerId = customerId
-        Log.d("[OfferRep] crBooking", "bookingDTO: $bookingDTO")
         return OfferService.getApi()?.createBooking(bookingDTO)?.body()
     }
 
@@ -48,6 +50,7 @@ class OfferRepository {
         return OfferService.getApi()?.createOffer(offerDTO)?.body()
     }
 
+}
 
 
 }

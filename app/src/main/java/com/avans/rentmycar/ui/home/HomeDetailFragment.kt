@@ -91,14 +91,22 @@ class HomeDetailFragment : Fragment() {
             val offerViewModel = ViewModelProvider(this)[OfferViewModel::class.java]
             offerViewModel.createBooking(offerId, SessionManager.getUserId(requireContext())!!)
 
-            offerViewModel.bookingResult.observe(viewLifecycleOwner) { response ->
+            offerViewModel.createBookingResult.observe(viewLifecycleOwner) { response ->
                 if (response != null) {
+                    Log.d("[HDF] Response", "Response: $response")
+                    Log.d("[HDF] Resp.status", "Resp.status: " + response.status)
                     if (response.status == 201) {
                         Snackbar.make(view, "Booking created successfully", Snackbar.LENGTH_LONG)
                             .show()
                         val action =
                             HomeDetailFragmentDirections.actionHomeDetailFragmentToHomeFragment()
                         view.findNavController().navigate(action)
+                    }
+
+                }
+                if(response == null){
+                    Snackbar.make(view, "Booking failed", Snackbar.LENGTH_LONG).show()
+                    Log.e("[HDF]", "--- BOOKING FAILED ---")
                     } else {
                         Snackbar.make(view, "Booking failed", Snackbar.LENGTH_LONG).show()
                     }
