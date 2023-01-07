@@ -111,6 +111,10 @@ class HomeFragment : Fragment() {
             viewModel.getOffersByColor("Blue")
         }
 
+        binding.btnBottomSheetModal.setOnClickListener {
+            HomeBottomSheetDialogFragment().show(childFragmentManager, "HomeBottomSheetDialogFragment")
+        }
+
 
         viewModel.bookingsResult.observe(viewLifecycleOwner) {
             Log.d("[Home]", "Bookings: $it")

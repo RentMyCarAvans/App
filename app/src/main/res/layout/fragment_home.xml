@@ -74,6 +74,7 @@
         android:id="@+id/button_home_minimumseats"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="10sp"
         android:text="Minimum 4 seats"
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -84,12 +85,28 @@
         android:id="@+id/button_home_carblue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="10sp"
+
         android:text="Color: Blue"
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/button_home_minimumseats"
+        app:layout_constraintEnd_toStartOf="@id/btnBottomSheetModal"
+        />
+    <Button
+        android:id="@+id/btnBottomSheetModal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10sp"
+
+        android:text="MODAL"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/button_home_carblue"
         app:layout_constraintEnd_toEndOf="parent"
         />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
