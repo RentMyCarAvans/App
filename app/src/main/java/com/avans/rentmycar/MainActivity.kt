@@ -1,7 +1,15 @@
 package com.avans.rentmycar
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.pm.PackageManager
+import android.location.Location
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -10,8 +18,16 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.avans.rentmycar.databinding.ActivityMainBinding
+import com.avans.rentmycar.utils.SessionManager
 import com.bumptech.glide.annotation.GlideModule
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 
 
 @GlideModule
@@ -22,14 +38,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
 
 
+    @SuppressLint("MissingPermission")
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-
-
-
-
 
         val navHostFragment = supportFragmentManager.findFragmentById(
             R.id.nav_host_container
@@ -55,10 +68,63 @@ class MainActivity : AppCompatActivity() {
                 bottomNavigationView.visibility = View.VISIBLE
             }
         }
+
+
+
+        val locationPermissionRequest = registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            when {
+                permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
+                    // Precise location access granted.
+                }
+                permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
+                    // Only approximate location access granted.
+                } else -> {
+                // No location access granted.
+                // Show snack bar with explanation.
+                val snackbar = Snackbar.make(
+                    findViewById(android.R.id.content),
+                    "Location access is required to show nearby cars.",
+                    Snackbar.LENGTH_INDEFINITE
+                )
+                snackbar.show()
+
+            }
+            }
+        }
+
+        locationPermissionRequest.launch(arrayOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ))
+
+        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        // Check if the user has granted permission to access the device location
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                fusedLocationClient.lastLocation.addOnSuccessListener { deviceLocation: Location? ->
+                    if (deviceLocation != null) {
+                        var lastLocation = deviceLocation
+                        Log.d("[MAPS] lastLocation", lastLocation.toString())
+                        val currentLatLng = LatLng(deviceLocation.latitude, deviceLocation.longitude)
+                        SessionManager.setDeviceLocation(currentLatLng)
+                    }
+                }
+            }
+        }
+
+
+
+
+
     }
 
         override fun onSupportNavigateUp(): Boolean {
             return navController.navigateUp(appBarConfiguration)
         }
+
+
 
 }

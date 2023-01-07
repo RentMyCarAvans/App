@@ -2,14 +2,12 @@ package com.avans.rentmycar.utils
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.location.Location
-import android.util.Log
 import com.avans.rentmycar.R
-import com.avans.rentmycar.ui.login.LoginFragment
 import com.google.android.gms.maps.model.LatLng
 
 object SessionManager {
 
+    private lateinit var deviceLocation: LatLng
     const val USER_TOKEN = "user_token"
     const val USER_ID = "user_id"
 
@@ -78,9 +76,12 @@ object SessionManager {
     }
 
     fun getUserLocation(): LatLng {
-        // TODO: Get the user location from the GPS Sensor
-        return LatLng(51.9143325,4.46963)
+        // TODO: Get the user location from the GPS Sensor --> This is nog in MainActivity.kt, need to test!
+        return deviceLocation
+    }
 
+    fun setDeviceLocation(deviceLocation: LatLng) {
+        this.deviceLocation = deviceLocation
     }
 
 
