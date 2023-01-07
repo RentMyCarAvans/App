@@ -2,12 +2,13 @@ package com.avans.rentmycar.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import com.avans.rentmycar.R
 import com.google.android.gms.maps.model.LatLng
 
 object SessionManager {
 
-    private lateinit var deviceLocation: LatLng
+    private var deviceLocation: LatLng = LatLng(51.925959,3.9226572)
     const val USER_TOKEN = "user_token"
     const val USER_ID = "user_id"
 
@@ -80,6 +81,7 @@ object SessionManager {
     }
 
     fun setDeviceLocation(deviceLocation: LatLng) {
+        Log.d("[SM] setDeviceLocation", "setDeviceLocation: $deviceLocation")
         this.deviceLocation = deviceLocation
     }
 

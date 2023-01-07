@@ -21,6 +21,7 @@ import com.avans.rentmycar.databinding.ActivityMainBinding
 import com.avans.rentmycar.utils.SessionManager
 import com.bumptech.glide.annotation.GlideModule
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -77,9 +78,11 @@ class MainActivity : AppCompatActivity() {
             when {
                 permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
                     // Precise location access granted.
+                    Log.d("[Main]", "Precise location access granted.")
                 }
                 permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
                     // Only approximate location access granted.
+                    Log.d("[Main]", "Only approximate location access granted.")
                 } else -> {
                 // No location access granted.
                 // Show snack bar with explanation.
@@ -101,23 +104,26 @@ class MainActivity : AppCompatActivity() {
 
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        // Check if the user has granted permission to access the device location
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Log.d(TAG, "Checking if location permission is granted")
             if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                fusedLocationClient.lastLocation.addOnSuccessListener { deviceLocation: Location? ->
-                    if (deviceLocation != null) {
-                        var lastLocation = deviceLocation
-                        Log.d("[MAPS] lastLocation", lastLocation.toString())
-                        val currentLatLng = LatLng(deviceLocation.latitude, deviceLocation.longitude)
-                        SessionManager.setDeviceLocation(currentLatLng)
+                Log.d(TAG, "Location permission is granted")
+
+                fusedLocationClient.getCurrentLocation(PRIORITY_HIGH_ACCURACY, null
+
+                ).addOnSuccessListener { location: Location? ->
+                    if (location != null) {
+                        Log.d("[Main] getCurLoc", "Location: ${location.latitude}, ${location.longitude}")
+                        SessionManager.setDeviceLocation(LatLng(location.latitude, location.longitude))
+                    } else {
+                        Log.e("[Main] getCurLoc", "Location is null")
                     }
                 }
+
             }
+        } else {
+            Log.w("[Main] Location", "Location permission not granted")
         }
-
-
-
-
 
     }
 

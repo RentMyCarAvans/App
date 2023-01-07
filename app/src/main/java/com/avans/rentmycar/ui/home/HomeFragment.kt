@@ -180,7 +180,12 @@ class HomeFragment : Fragment() {
             findNavController().navigate(action)
         }
         viewModel.getOffers()
-        offerAdapter.setData(viewModel.offerResult.value ?: emptyList())
+
+        viewModel.offerResult.observe(viewLifecycleOwner) {
+            offerAdapter.setData(it)
+        }
+
+//        offerAdapter.setData(viewModel.offerResult.value ?: emptyList())
     }
 
 }
