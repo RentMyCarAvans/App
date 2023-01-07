@@ -23,7 +23,7 @@
 
             <ImageView
                 android:id="@+id/imageview_item_offer_car_image"
-                android:layout_width="150dp"
+                android:layout_width="175dp"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 app:layout_constraintStart_toStartOf="parent"

@@ -36,7 +36,8 @@ class OfferViewModel : ViewModel() {
             try {
                 val offerResponse = offerRepository.getOpenOffers()
 
-                // For each offer, use the pickupLocation and calculate the distance to the device location and add it to the offer.distance
+                // TODO: Refactor this sorting and that of getOffers() to a separate function
+
                 val userLocation = SessionManager.getUserLocation()
                 val deviceLocation = Location("deviceLocation")
                 deviceLocation.latitude = userLocation.latitude
@@ -174,7 +175,81 @@ class OfferViewModel : ViewModel() {
 
     }
 
+    fun getOffersBySeats(i: Int) {
+        viewModelScope.launch {
+            try {
+                val offerResponse = offerRepository.getOpenOffers()
 
+                // Filter all offers by the number of seats of the car
+                val filteredOffers = offerResponse.filter { offer -> offer.car.numberOfSeats >= i }
+
+                // TODO: Refactor this sorting and that of getOffers() to a separate function
+
+                val userLocation = SessionManager.getUserLocation()
+                val deviceLocation = Location("deviceLocation")
+                deviceLocation.latitude = userLocation.latitude
+                deviceLocation.longitude = userLocation.longitude
+                filteredOffers.forEach { offer ->
+                    val pickupLocation = offer.pickupLocation
+                    val pickupLocationGeocode = MapsApiService.getApi()?.getLatLongFromAddress(pickupLocation)?.results?.get(0)?.geometry?.location
+                    val pickupLocationLatLng = LatLng(pickupLocationGeocode?.lat!!, pickupLocationGeocode.lng!!)
+                    val pickupLocationLocation = Location("pickupLocation")
+                    pickupLocationLocation.latitude = pickupLocationLatLng.latitude
+                    pickupLocationLocation.longitude = pickupLocationLatLng.longitude
+                    val distance = deviceLocation.distanceTo(pickupLocationLocation)
+                    offer.distance = distance
+                }
+
+                // Sort the offers by distance
+                val sortedOffers = filteredOffers.sortedBy { offer -> offer.distance }
+
+
+
+                offerResult.value = sortedOffers
+
+            } catch (e: Exception) {
+                Log.e("[OVM] getOffersBySeats", e.message.toString())
+            }
+        }
+    }
+
+    fun getOffersByColor(s: String) {
+        viewModelScope.launch {
+            try {
+                val offerResponse = offerRepository.getOpenOffers()
+
+                // Filter all offers by the number of seats of the car
+                val filteredOffers = offerResponse.filter { offer -> offer.car.colorType == s }
+
+                // TODO: Refactor this sorting and that of getOffers() to a separate function
+
+                val userLocation = SessionManager.getUserLocation()
+                val deviceLocation = Location("deviceLocation")
+                deviceLocation.latitude = userLocation.latitude
+                deviceLocation.longitude = userLocation.longitude
+                filteredOffers.forEach { offer ->
+                    val pickupLocation = offer.pickupLocation
+                    val pickupLocationGeocode = MapsApiService.getApi()?.getLatLongFromAddress(pickupLocation)?.results?.get(0)?.geometry?.location
+                    val pickupLocationLatLng = LatLng(pickupLocationGeocode?.lat!!, pickupLocationGeocode.lng!!)
+                    val pickupLocationLocation = Location("pickupLocation")
+                    pickupLocationLocation.latitude = pickupLocationLatLng.latitude
+                    pickupLocationLocation.longitude = pickupLocationLatLng.longitude
+                    val distance = deviceLocation.distanceTo(pickupLocationLocation)
+                    offer.distance = distance
+                }
+
+                // Sort the offers by distance
+                val sortedOffers = filteredOffers.sortedBy { offer -> offer.distance }
+
+
+
+                offerResult.value = sortedOffers
+
+            } catch (e: Exception) {
+                Log.e("[OVM] getOffersBySeats", e.message.toString())
+            }
+        }
+    }
 
 
 }

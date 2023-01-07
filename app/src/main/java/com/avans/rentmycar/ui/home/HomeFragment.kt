@@ -103,6 +103,14 @@ class HomeFragment : Fragment() {
             offerAdapter.setData(it)
         }
 
+        binding.buttonHomeMinimumseats.setOnClickListener {
+            viewModel.getOffersBySeats(4)
+        }
+
+        binding.buttonHomeCarblue.setOnClickListener {
+            viewModel.getOffersByColor("Blue")
+        }
+
 
         viewModel.bookingsResult.observe(viewLifecycleOwner) {
             Log.d("[Home]", "Bookings: $it")
