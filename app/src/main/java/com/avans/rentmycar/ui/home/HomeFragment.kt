@@ -55,27 +55,27 @@ class HomeFragment : Fragment() {
 
 
         // Get the carLocationList from the viewModel
-        viewModel.carLocationList.observe(viewLifecycleOwner) { carLocationList ->
-            Log.d("[Home] carLocationList", "carLocationList: $carLocationList")
-        }
-
-        viewModel.carDistanceList.observe(viewLifecycleOwner) { carDistanceList ->
-            Log.d("[Home] carDistanceList", "carDistanceList: $carDistanceList")
-            // Sort the carDistanceList bij value
-            val sortedCarDistanceList = carDistanceList.toList().sortedBy { (_, value) -> value }.toMap()
-            Log.d("[Home] sortedCrDistList", "sortedCarDistanceList: $sortedCarDistanceList")
-
-            // Rearrange the offerResult by the sortedCarDistanceList where the key is the offerId
-            val sortedOfferResult = viewModel.offerResult.value?.sortedBy { offer -> sortedCarDistanceList[offer.id] }
-            Log.d("[Home] sortdOffrReslt", "sortedOfferResult: $sortedOfferResult")
-
-            // Set the offerResult to the sortedOfferResult
-            viewModel.offerResult.value = sortedOfferResult
-
-
-        }
-
-        viewModel.getListOfCarLocations()
+//        viewModel.carLocationList.observe(viewLifecycleOwner) { carLocationList ->
+//            Log.d("[Home] carLocationList", "carLocationList: $carLocationList")
+//        }
+//
+//        viewModel.carDistanceList.observe(viewLifecycleOwner) { carDistanceList ->
+//            Log.d("[Home] carDistanceList", "carDistanceList: $carDistanceList")
+//            // Sort the carDistanceList bij value
+//            val sortedCarDistanceList = carDistanceList.toList().sortedBy { (_, value) -> value }.toMap()
+//            Log.d("[Home] sortedCrDistList", "sortedCarDistanceList: $sortedCarDistanceList")
+//
+//            // Rearrange the offerResult by the sortedCarDistanceList where the key is the offerId
+//            val sortedOfferResult = viewModel.offerResult.value?.sortedBy { offer -> sortedCarDistanceList[offer.id] }
+//            Log.d("[Home] sortdOffrReslt", "sortedOfferResult: $sortedOfferResult")
+//
+//            // Set the offerResult to the sortedOfferResult
+//            viewModel.offerResult.value = sortedOfferResult
+//
+//
+//        }
+//
+//        viewModel.getListOfCarLocations()
 
 
 

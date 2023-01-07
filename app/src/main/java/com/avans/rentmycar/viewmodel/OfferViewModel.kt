@@ -73,7 +73,26 @@ class OfferViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val getBookingResponse = offerRepository.getBookings(userId)
-                bookingsResult.value = getBookingResponse
+
+                // TODO: Refactor this sorting and that of getOffers() to a separate function
+                val userLocation = SessionManager.getUserLocation()
+                val deviceLocation = Location("deviceLocation")
+                deviceLocation.latitude = userLocation.latitude
+                deviceLocation.longitude = userLocation.longitude
+                getBookingResponse.forEach { booking ->
+                    val pickupLocation = booking.offer.pickupLocation
+                    val pickupLocationGeocode = MapsApiService.getApi()?.getLatLongFromAddress(pickupLocation)?.results?.get(0)?.geometry?.location
+                    val pickupLocationLatLng = LatLng(pickupLocationGeocode?.lat!!, pickupLocationGeocode.lng!!)
+                    val pickupLocationLocation = Location("pickupLocation")
+                    pickupLocationLocation.latitude = pickupLocationLatLng.latitude
+                    pickupLocationLocation.longitude = pickupLocationLatLng.longitude
+                    val distance = deviceLocation.distanceTo(pickupLocationLocation)
+                    booking.offer.distance = distance
+                }
+
+                val sortedBookings = getBookingResponse.sortedBy { booking -> booking.offer.distance }
+                bookingsResult.value = sortedBookings
+
             } catch (e: Exception) {
                 Log.e("[OfferVM] getB error", e.message.toString())
             }
