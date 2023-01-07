@@ -45,8 +45,8 @@
     <string name="home_availablecars">Available Cars</string>
     <string name="home_mybookings">My Bookings</string>
     <string name="home_myoffers">My Offers (werkt nog niet)</string>
-    <string name="offer_pickupAfter">Pickup after: %1$s</string>
-    <string name="offer_returnBefore">Return before: %1$s</string>
+    <string name="offer_pickupAfter">From: %1$s</string>
+    <string name="offer_returnBefore">To: %1$s</string>
     <string name="the_car">The Car</string>
     <string name="delete">Delete</string>
     <string name="invalid_license">Licenseplate has an invalid pattern. Please provide a valid Dutch licenseplate</string>

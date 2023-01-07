@@ -6,6 +6,7 @@ import com.avans.rentmycar.api.OfferDTO
 import com.avans.rentmycar.api.OfferService
 import com.avans.rentmycar.model.BookingData
 import com.avans.rentmycar.model.CreateBookingResponse
+import com.avans.rentmycar.model.CreateOfferResponse
 import com.avans.rentmycar.model.OfferData
 
 class OfferRepository {
@@ -53,4 +54,4 @@ class OfferRepository {
 }
 
 
-}
+

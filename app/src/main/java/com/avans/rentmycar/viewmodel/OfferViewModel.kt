@@ -58,6 +58,8 @@ class OfferViewModel : ViewModel() {
 
                 // Sort the offers by distance
                 val sortedOffers = offerResponse.sortedBy { offer -> offer.distance }
+
+
                 offerResult.value = sortedOffers
 
 
@@ -111,8 +113,8 @@ class OfferViewModel : ViewModel() {
                 Log.d("[OfferVM] crBookingResp", createBookingResponse.toString())
                 Log.d("[OfferVM] crBookingResu", createBookingResult.value.toString())
 
-                val bookingResponse = offerRepository.createBooking(offerId, customerId)
-                bookingResult.value = bookingResponse
+//                val bookingResponse = offerRepository.createBooking(offerId, customerId)
+//                bookingResult.value = createBookingResponse
             } catch (e: Exception) {
                 Log.d("[OfferVM] bookingresult", createBookingResult.value.toString())
                 Log.e("[OfferVM] crBookingResu", e.message.toString())
@@ -259,6 +261,27 @@ class OfferViewModel : ViewModel() {
                 Log.e("[OVM] getOffersBySeats", e.message.toString())
             }
         }
+    }
+
+
+    suspend fun calculateDistanceAndSortByDistance(data: Collection<OfferData>): Collection<OfferData> {
+        val userLocation = SessionManager.getUserLocation()
+        val deviceLocation = Location("deviceLocation")
+        deviceLocation.latitude = userLocation.latitude
+        deviceLocation.longitude = userLocation.longitude
+        data.forEach { offer ->
+            val pickupLocation = offer.pickupLocation
+            val pickupLocationGeocode = MapsApiService.getApi()?.getLatLongFromAddress(pickupLocation)?.results?.get(0)?.geometry?.location
+            val pickupLocationLatLng = LatLng(pickupLocationGeocode?.lat!!, pickupLocationGeocode.lng!!)
+            val pickupLocationLocation = Location("pickupLocation")
+            pickupLocationLocation.latitude = pickupLocationLatLng.latitude
+            pickupLocationLocation.longitude = pickupLocationLatLng.longitude
+            val distance = deviceLocation.distanceTo(pickupLocationLocation)
+            offer.distance = distance
+        }
+        val sortedOffers = data.sortedBy { offer -> offer.distance }
+        return sortedOffers
+
     }
 
 

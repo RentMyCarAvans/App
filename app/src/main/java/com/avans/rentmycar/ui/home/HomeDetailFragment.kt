@@ -41,14 +41,14 @@ class HomeDetailFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        childFragmentManager.beginTransaction().replace(R.id.frameLayout_home_detail_map, mapFragment).commit()
+        childFragmentManager.beginTransaction()
+            .replace(R.id.frameLayout_home_detail_map, mapFragment).commit()
         _binding = FragmentHomeDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
 
         val args: HomeDetailFragmentArgs by navArgs()
@@ -64,12 +64,12 @@ class HomeDetailFragment : Fragment() {
 
         viewModel.geocodeResult?.observe(viewLifecycleOwner) {
             val geocodeResponse = viewModel.geocodeResult!!.value
-            if(geocodeResponse != null) {
+            if (geocodeResponse != null) {
                 offerLat = geocodeResponse.results?.get(0)?.geometry?.location?.lat!!
                 offerLng = geocodeResponse.results.get(0)?.geometry?.location?.lng!!
             }
 
-            if(mapFragment.isAdded) {
+            if (mapFragment.isAdded) {
                 mapFragment.setMapLocation(offerLat, offerLng)
             }
 
@@ -87,7 +87,7 @@ class HomeDetailFragment : Fragment() {
         }
 
         // Setup Book Button
-        binding.buttonHomeDetailBook.setOnClickListener{
+        binding.buttonHomeDetailBook.setOnClickListener {
             val offerViewModel = ViewModelProvider(this)[OfferViewModel::class.java]
             offerViewModel.createBooking(offerId, SessionManager.getUserId(requireContext())!!)
 
@@ -104,20 +104,22 @@ class HomeDetailFragment : Fragment() {
                     }
 
                 }
-                if(response == null){
+                if (response == null) {
                     Snackbar.make(view, "Booking failed", Snackbar.LENGTH_LONG).show()
                     Log.e("[HDF]", "--- BOOKING FAILED ---")
-                    } else {
-                        Snackbar.make(view, "Booking failed", Snackbar.LENGTH_LONG).show()
-                    }
+                } else {
+                    Snackbar.make(view, "Booking failed", Snackbar.LENGTH_LONG).show()
                 }
             }
         }
+
 
         // Set the title of the actionbar
         val bar = (activity as AppCompatActivity).supportActionBar
         bar?.title = offerCarModel
     }
+
+
 
 
     override fun onStart() {
