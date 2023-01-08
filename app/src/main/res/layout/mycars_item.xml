@@ -35,15 +35,26 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/textview_car_offer_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Offer: 12-01-2023 16:00 - 12-01-2023:23:00"
+        android:typeface="normal"
+        app:layout_constraintEnd_toEndOf="@+id/textview_car_title"
+        app:layout_constraintStart_toStartOf="@+id/textview_car_title"
+        app:layout_constraintTop_toBottomOf="@+id/textview_car_title" />
+
+    <TextView
         android:id="@+id/textview_car_description1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Internal Combustion Engine"
         android:typeface="normal"
-        app:layout_constraintEnd_toEndOf="@+id/textview_car_title"
-        app:layout_constraintStart_toStartOf="@+id/textview_car_title"
-        app:layout_constraintTop_toBottomOf="@+id/textview_car_title" />
+        app:layout_constraintEnd_toEndOf="@+id/textview_car_offer_description"
+        app:layout_constraintStart_toStartOf="@+id/textview_car_offer_description"
+        app:layout_constraintTop_toBottomOf="@+id/textview_car_offer_description" />
 
     <TextView
         android:id="@+id/textview_car_description2"

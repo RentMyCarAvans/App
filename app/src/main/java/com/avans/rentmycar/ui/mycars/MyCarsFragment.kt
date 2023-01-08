@@ -15,6 +15,7 @@ import com.avans.rentmycar.databinding.FragmentMycarsBinding
 import com.avans.rentmycar.utils.GlideImageLoader
 import com.avans.rentmycar.utils.SessionManager
 import com.avans.rentmycar.adapter.CarAdapter
+
 import com.avans.rentmycar.viewmodel.CarViewModel
 
 /**
@@ -55,7 +56,7 @@ class MyCarsFragment : Fragment() {
                 car.colorType,
                 car.mileage.toString(),
                 car.licensePlate,
-                car.createdAt // TODO: Change to carImageURL
+                car.image // TODO: Change to carImageURL
             )
             Log.d(TAG,"onViewCreated() => Clicked on item with model " + car.model + ". Navigate to detailscreen")
             findNavController().navigate(action)
