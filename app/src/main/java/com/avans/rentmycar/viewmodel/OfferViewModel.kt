@@ -226,6 +226,7 @@ class OfferViewModel : ViewModel() {
     }
 
     fun getOffersByColor(s: String) {
+        Log.d("[OfferVM] getOByClr", "getOffersByColor")
         viewModelScope.launch {
             try {
                 val offerResponse = offerRepository.getOpenOffers()

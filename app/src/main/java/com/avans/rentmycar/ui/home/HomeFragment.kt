@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +20,7 @@ import com.avans.rentmycar.api.MapsApiService
 import com.avans.rentmycar.databinding.FragmentHomeBinding
 import com.avans.rentmycar.utils.GlideImageLoader
 import com.avans.rentmycar.utils.SessionManager
+import com.avans.rentmycar.viewmodel.HomeViewModel
 import com.avans.rentmycar.viewmodel.OfferViewModel
 import com.google.android.gms.maps.model.LatLng
 
@@ -41,6 +44,16 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentHomeBinding.bind(view)
+
+
+        // create object of SharedViewModel
+        val model = ViewModelProvider(requireActivity()).get(HomeViewModel::class.java)
+        // observing the change in the message declared in SharedViewModel
+
+
+        model.checkboxBlue.observe(viewLifecycleOwner, Observer {
+            Log.i("[Home] MODEL", "model.checkboxBlue.value: ${model.checkboxBlue.value}")
+        })
 
         // Set the title of the actionbar
         val bar = (activity as AppCompatActivity).supportActionBar
@@ -100,6 +113,7 @@ class HomeFragment : Fragment() {
         binding.recyclerviewHomeFragmentOffers.adapter = offerAdapter
 
         viewModel.offerResult.observe(viewLifecycleOwner) {
+            Log.d("[Home] offerResult", "offerResult changed to: $it")
             offerAdapter.setData(it)
         }
 

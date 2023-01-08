@@ -49,5 +49,12 @@
     <string name="the_car">De Auto</string>
     <string name="delete">Verwijderen</string>
     <string name="invalid_license">Het kentekenformaat is onjuist. Voer een geldig Nederlands kenteken in</string>
-    <string name="location_permission_denied_explanation">Location permission is needed for this functionality</string>
+    <string name="location_permission_denied_explanation">Toegang tot locatie is van belang bij deze app</string>
+    <string name="filter_by">Filter op …</string>
+    <string name="minimum_number_of_seats">Minimum aantal zitplaatsen</string>
+    <string name="maximum_distance_from_my_location_in_km">Maximum afstand van mijn locatie in km</string>
+    <string name="fuel_type">Fuel Type</string>
+    <string name="fcev">FCEV</string>
+    <string name="bev">BEV</string>
+    <string name="ice">ICE</string>
 </resources>

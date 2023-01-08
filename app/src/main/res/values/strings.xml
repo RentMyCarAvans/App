@@ -51,4 +51,12 @@
     <string name="delete">Delete</string>
     <string name="invalid_license">Licenseplate has an invalid pattern. Please provide a valid Dutch licenseplate</string>
     <string name="location_permission_denied_explanation">Location permission is needed for this functionality</string>
+    <string name="filter_by">Filter by ...</string>
+    <string name="filter">Filter</string>
+    <string name="minimum_number_of_seats">Minimum number of seats</string>
+    <string name="maximum_distance_from_my_location_in_km">Maximum distance from my location in km</string>
+    <string name="fuel_type">Fuel Type</string>
+    <string name="fcev">FCEV</string>
+    <string name="bev">BEV</string>
+    <string name="ice">ICE</string>
 </resources>
