@@ -21,6 +21,9 @@ class OfferAdapter(
     private val clickListener: (OfferData) -> Unit) :
     RecyclerView.Adapter<OfferAdapter.OfferViewHolder>() {
 
+    lateinit var itemOfferBinding: ItemOfferBinding
+
+
     inner class OfferViewHolder(container: View) : RecyclerView.ViewHolder(container) {
         private val offerCarImage = itemOfferBinding.imageviewItemOfferCarImage
         private val offerCarName = itemOfferBinding.textviewItemOfferCarName
@@ -48,15 +51,7 @@ class OfferAdapter(
                 offerData.car.image
             }
 
-            // 1. Get the value of the carDistanceList from the viewModel where the key is the offer.id
-            var distance = 0.0
-
-
-            // 2. Set the text of the offerDistance textview to the value of the carDistanceList
-
-
-
-
+//            var distance = 0.0
 
             imageLoader.loadImage(carImage, offerCarImage)
             offerCarName.text = offerData.car.model
@@ -85,7 +80,7 @@ class OfferAdapter(
 
     }
 
-    lateinit var itemOfferBinding: ItemOfferBinding
+//    lateinit var itemOfferBinding: ItemOfferBinding
 
     private val offerData = mutableListOf<OfferData>()
 
@@ -113,15 +108,15 @@ class OfferAdapter(
 
     override fun getItemCount(): Int = offerData.size
 
-    fun setDistance(value: Map<Long, Float>?) {
-        if (value != null) {
-            for (offer in offerData) {
-                offer.distance = value[offer.id]!!
-            }
-        }
-        notifyDataSetChanged()
-
-    }
+//    fun setDistance(value: Map<Long, Float>?) {
+//        if (value != null) {
+//            for (offer in offerData) {
+//                offer.distance = value[offer.id]!!
+//            }
+//        }
+//        notifyDataSetChanged()
+//
+//    }
 
 
 }

@@ -1,12 +1,10 @@
 package com.avans.rentmycar.ui.home
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import com.avans.rentmycar.R
 import com.avans.rentmycar.viewmodel.OfferViewModel
@@ -32,7 +30,6 @@ class HomeBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
         val viewModel = ViewModelProvider(requireActivity())[OfferViewModel::class.java]
 
-        // TODO: Order this file so all the fields are prefilled from the model here at the top
         val iceCheckbox = view.findViewById<View>(R.id.checkbox_home_sheet_ice) as CheckBox
         val bevCheckbox = view.findViewById<View>(R.id.checkbox_home_sheet_bev) as CheckBox
         val fvecCheckbox = view.findViewById<View>(R.id.checkbox_home_sheet_fcev) as CheckBox
@@ -64,8 +61,7 @@ class HomeBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
         }
 
-
-
+    // TODO: Create a button to clear the filters
 
     }
 

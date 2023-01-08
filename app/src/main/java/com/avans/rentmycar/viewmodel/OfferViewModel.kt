@@ -14,6 +14,7 @@ import com.avans.rentmycar.model.OfferData
 import com.avans.rentmycar.repository.OfferRepository
 import com.avans.rentmycar.utils.SessionManager
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
 class OfferViewModel : ViewModel() {
@@ -28,7 +29,6 @@ class OfferViewModel : ViewModel() {
     val createBookingResult: MutableLiveData<CreateBookingResponse?> = MutableLiveData()
     var geocodeResult: MutableLiveData<GeocodeResponse?>? = MutableLiveData()
 
-//    val bookingResult: MutableLiveData<BookingResponse?> = MutableLiveData()
 
     // ===== Variables for the API calls =====
     // TODO: Use these
@@ -55,67 +55,46 @@ class OfferViewModel : ViewModel() {
 
 
     // ===== Filter Setters =====
-    // TODO: Remove the Log statements
-    // TODO: Check if these functions can be combined into one generic function
     fun setCheckboxFuelTypeIceFilter(boolean: Boolean) {
-        Log.d("[OVM] chBevFilter", "storing checkboxFuelTypeIceFilter!: $boolean")
         checkboxFuelTypeIceFilter.value = boolean
     }
 
     fun setCheckboxFuelTypeBevFilter(boolean: Boolean) {
-        Log.d("[OVM] chBevFilter", "storing checkboxFuelTypeBevFilter!: $boolean")
         checkboxFuelTypeBevFilter.value = boolean
     }
 
     fun setCheckboxFuelTypeFcevFilter(boolean: Boolean) {
-        Log.d("[OVM] chBevFilter", "storing checkboxFuelTypeFcevFilter!: $boolean")
         checkboxFuelTypeFcevFilter.value = boolean
     }
 
     fun setNumberOfSeatsFilter(number: Int) {
-        Log.d("[OVM] setNumbOfSeatsF", "storing numberOfSeatsFilter!: $number")
         numberOfSeatsFilter.value = number
     }
 
     fun setMaxDistanceInKmFilter(number: Float) {
-        Log.d("[OVM] setMaxDistanceF", "storing setMaxDistanceInKmFilter!: $number")
         maxDistanceInKmFilter.value = number
     }
 
 
     // ===== Offers =====
-    // TODO: Remove the Log statements
     fun setOfferCollection(offers: Collection<OfferData>) {
-        Log.d("[OVM] setOfferColl", "setOfferCollection: $offers")
-        Log.d("[OVM] setOfferColl.val", "offerCollection.value: ${offerCollection.value}")
 
-        // Filter offers where offer.car.numberOfSeats >= numberOfSeatsFilter.value
         var filteredOffers = offers.filter { it.car.numberOfSeats >= numberOfSeatsFilter.value!! }
+        filteredOffers = filteredOffers.filter { it.distance <= (maxDistanceInKmFilter.value!! * 1000) }
 
-        // If checkboxFuelTypeIceFilte is false, remove all ICE cars from the list
         if (!checkboxFuelTypeIceFilter.value!!) {
             filteredOffers = filteredOffers.filter { it.car.type != "ICE" }
         }
 
-        // If checkboxFuelTypeBevFilte is false, remove all BEV cars from the list
         if (!checkboxFuelTypeBevFilter.value!!) {
             filteredOffers = filteredOffers.filter { it.car.type != "BEV" }
         }
 
-        // If checkboxFuelTypeFcevFilte is false, remove all FCEV cars from the list
         if (!checkboxFuelTypeFcevFilter.value!!) {
             filteredOffers = filteredOffers.filter { it.car.type != "FCEV" }
         }
 
-
-        Log.d("[OVM] setOfferColl", "filteredOffers: $filteredOffers")
-
-
-//        offerCollection.value = offers
         offerCollection.value = filteredOffers
-
-        Log.d("[OVM] setOfferColl.val", "offerCollection.value na filteredOffers: ${offerCollection.value}")
-
     }
 
     fun getOfferWithId(id: Long): OfferData? {
@@ -128,45 +107,43 @@ class OfferViewModel : ViewModel() {
 
     // ===== Repository Interaction =====
     fun getOffers() {
+        // TODO: Trigger a loading screen / spinner on the HomeFragment
         viewModelScope.launch {
             try {
                 val offerResponse = offerRepository.getOpenOffers()
-                setOfferCollection(offerResponse)
-
-                // TODO: Refactor this sorting and that of getOffers() to a separate function
-
-                val userLocation = SessionManager.getUserLocation()
-                val deviceLocation = Location("deviceLocation")
-                deviceLocation.latitude = userLocation.latitude
-                deviceLocation.longitude = userLocation.longitude
-                offerResponse.forEach { offer ->
-                    val pickupLocation = offer.pickupLocation
-                    val pickupLocationGeocode = MapsApiService.getApi()?.getLatLongFromAddress(pickupLocation)?.results?.get(0)?.geometry?.location
-                    val pickupLocationLatLng = LatLng(pickupLocationGeocode?.lat!!, pickupLocationGeocode.lng!!)
-                    val pickupLocationLocation = Location("pickupLocation")
-                    pickupLocationLocation.latitude = pickupLocationLatLng.latitude
-                    pickupLocationLocation.longitude = pickupLocationLatLng.longitude
-                    val distance = deviceLocation.distanceTo(pickupLocationLocation)
-                    offer.distance = distance
-                }
-
-                // Sort the offers by distance
-                val sortedOffers = offerResponse.sortedBy { offer -> offer.distance }
-
-
-                offerResult.value = sortedOffers
-
-
-
-
-
-
-
-//                offerResult.value = offerResponse
+                setOfferCollection(updateOfferDataWithDistance(offerResponse))
             } catch (e: Exception) {
                 Log.e("[OfferVM] getOffers", e.message.toString())
             }
         }
+    }
+
+
+    suspend fun updateOfferDataWithDistance(offers: Collection<OfferData>): Collection<OfferData> {
+        // TODO: Refactor this sorting and that of getOffers() to a separate function
+
+        val userLocation = SessionManager.getUserLocation()
+        val deviceLocation = Location("deviceLocation")
+        deviceLocation.latitude = userLocation.latitude
+        deviceLocation.longitude = userLocation.longitude
+        offers.forEach { offer ->
+            val pickupLocation = offer.pickupLocation
+            val pickupLocationGeocode = MapsApiService.getApi()?.getLatLongFromAddress(pickupLocation)?.results?.get(0)?.geometry?.location
+            val pickupLocationLatLng = LatLng(pickupLocationGeocode?.lat!!, pickupLocationGeocode.lng!!)
+            val pickupLocationLocation = Location("pickupLocation")
+            pickupLocationLocation.latitude = pickupLocationLatLng.latitude
+            pickupLocationLocation.longitude = pickupLocationLatLng.longitude
+            val distance = deviceLocation.distanceTo(pickupLocationLocation)
+            offer.distance = distance
+        }
+
+        // Sort the offers by distance
+        val sortedOffers = offers.sortedBy { offer -> offer.distance }
+
+        return sortedOffers
+
+//        offerResult.value = sortedOffers
+//        setOfferCollection(sortedOffers)
     }
 
     fun getBookings(userId: Long) {
@@ -230,154 +207,152 @@ class OfferViewModel : ViewModel() {
     }
 
 
-    fun getListOfCarLocations() {
-        viewModelScope.launch {
-            Log.d("[OfferVM] getListOfCar", "getListOfCarLocations")
-            try {
-                val offerResponse = offerRepository.getOpenOffers()
-                offerResult.value = offerResponse
+//    fun getListOfCarLocations() {
+//        viewModelScope.launch {
+//            Log.d("[OfferVM] getListOfCar", "getListOfCarLocations")
+//            try {
+//                val offerResponse = offerRepository.getOpenOffers()
+//                offerResult.value = offerResponse
+//
+//                val _carLocationList = mutableMapOf<Long,LatLng>()
+//                val _carDistanceList = mutableMapOf<Long,Float>()
+//
+//                offerResponse.forEach {
+//                    val geocodeResponse = MapsApiService.getApi()?.getLatLongFromAddress(it.pickupLocation)
+//                    Log.d("[OfferVM] geocodeResp", "geocodeResponse: $geocodeResponse")
+//                    val lat = geocodeResponse?.results?.get(0)?.geometry?.location?.lat
+//                    val lng = geocodeResponse?.results?.get(0)?.geometry?.location?.lng
+//                    Log.d("[OfferVM] lat lng", "lat: $lat, lng: $lng")
+//                    if (lat != null && lng != null) {
+//                        var latlngToAdd = LatLng(lat, lng)
+//                        Log.d("[OfferVM] latlngToAdd", "latlngToAdd: $latlngToAdd")
+//                        // Add the latlng to the collection
+//                        _carLocationList.put(it.id,latlngToAdd)
+//                        carLocationList.value = _carLocationList
+//
+//                        // Get the distance from the user to the car
+//                        val userLocation = SessionManager.getUserLocation()
+//                        val userLat = userLocation?.latitude
+//                        val userLng = userLocation?.longitude
+//
+//                        val distance = FloatArray(2)
+//                        Location.distanceBetween(
+//                            userLat!!,
+//                            userLng!!,
+//                            latlngToAdd.latitude,
+//                            latlngToAdd.longitude,
+//                            distance
+//                        )
+//                        _carDistanceList.put(it.id,distance[0])
+//                        carDistanceList.value = _carDistanceList
+//
+//
+////                        carLocationList.value?.add(latlngToAdd)
+//                        Log.d("[OfferVM] carLocList", "carLocationList: ${carLocationList} ")
+//                    }
+//                }
+//            } catch (e: Exception) {
+//                Log.e("[OfferVM] getCarLoc", e.message.toString())
+//            }
+//        }
+//
+//    }
 
-                val _carLocationList = mutableMapOf<Long,LatLng>()
-                val _carDistanceList = mutableMapOf<Long,Float>()
+//    fun getOffersBySeats(i: Int) {
+//        viewModelScope.launch {
+//            try {
+//                val offerResponse = offerRepository.getOpenOffers()
+//
+//                // Filter all offers by the number of seats of the car
+//                val filteredOffers = offerResponse.filter { offer -> offer.car.numberOfSeats >= i }
+//
+//
+//                val userLocation = SessionManager.getUserLocation()
+//                val deviceLocation = Location("deviceLocation")
+//                deviceLocation.latitude = userLocation.latitude
+//                deviceLocation.longitude = userLocation.longitude
+//                filteredOffers.forEach { offer ->
+//                    val pickupLocation = offer.pickupLocation
+//                    val pickupLocationGeocode = MapsApiService.getApi()?.getLatLongFromAddress(pickupLocation)?.results?.get(0)?.geometry?.location
+//                    val pickupLocationLatLng = LatLng(pickupLocationGeocode?.lat!!, pickupLocationGeocode.lng!!)
+//                    val pickupLocationLocation = Location("pickupLocation")
+//                    pickupLocationLocation.latitude = pickupLocationLatLng.latitude
+//                    pickupLocationLocation.longitude = pickupLocationLatLng.longitude
+//                    val distance = deviceLocation.distanceTo(pickupLocationLocation)
+//                    offer.distance = distance
+//                }
+//
+//                // Sort the offers by distance
+//                val sortedOffers = filteredOffers.sortedBy { offer -> offer.distance }
+//
+//
+//
+//                offerResult.value = sortedOffers
+//
+//            } catch (e: Exception) {
+//                Log.e("[OVM] getOffersBySeats", e.message.toString())
+//            }
+//        }
+//    }
 
-                offerResponse.forEach {
-                    val geocodeResponse = MapsApiService.getApi()?.getLatLongFromAddress(it.pickupLocation)
-                    Log.d("[OfferVM] geocodeResp", "geocodeResponse: $geocodeResponse")
-                    val lat = geocodeResponse?.results?.get(0)?.geometry?.location?.lat
-                    val lng = geocodeResponse?.results?.get(0)?.geometry?.location?.lng
-                    Log.d("[OfferVM] lat lng", "lat: $lat, lng: $lng")
-                    if (lat != null && lng != null) {
-                        var latlngToAdd = LatLng(lat, lng)
-                        Log.d("[OfferVM] latlngToAdd", "latlngToAdd: $latlngToAdd")
-                        // Add the latlng to the collection
-                        _carLocationList.put(it.id,latlngToAdd)
-                        carLocationList.value = _carLocationList
-
-                        // Get the distance from the user to the car
-                        val userLocation = SessionManager.getUserLocation()
-                        val userLat = userLocation?.latitude
-                        val userLng = userLocation?.longitude
-
-                        val distance = FloatArray(2)
-                        Location.distanceBetween(
-                            userLat!!,
-                            userLng!!,
-                            latlngToAdd.latitude,
-                            latlngToAdd.longitude,
-                            distance
-                        )
-                        _carDistanceList.put(it.id,distance[0])
-                        carDistanceList.value = _carDistanceList
-
-
-//                        carLocationList.value?.add(latlngToAdd)
-                        Log.d("[OfferVM] carLocList", "carLocationList: ${carLocationList} ")
-                    }
-                }
-            } catch (e: Exception) {
-                Log.e("[OfferVM] getCarLoc", e.message.toString())
-            }
-        }
-
-    }
-
-    fun getOffersBySeats(i: Int) {
-        viewModelScope.launch {
-            try {
-                val offerResponse = offerRepository.getOpenOffers()
-
-                // Filter all offers by the number of seats of the car
-                val filteredOffers = offerResponse.filter { offer -> offer.car.numberOfSeats >= i }
-
-                // TODO: Refactor this sorting and that of getOffers() to a separate function
-
-                val userLocation = SessionManager.getUserLocation()
-                val deviceLocation = Location("deviceLocation")
-                deviceLocation.latitude = userLocation.latitude
-                deviceLocation.longitude = userLocation.longitude
-                filteredOffers.forEach { offer ->
-                    val pickupLocation = offer.pickupLocation
-                    val pickupLocationGeocode = MapsApiService.getApi()?.getLatLongFromAddress(pickupLocation)?.results?.get(0)?.geometry?.location
-                    val pickupLocationLatLng = LatLng(pickupLocationGeocode?.lat!!, pickupLocationGeocode.lng!!)
-                    val pickupLocationLocation = Location("pickupLocation")
-                    pickupLocationLocation.latitude = pickupLocationLatLng.latitude
-                    pickupLocationLocation.longitude = pickupLocationLatLng.longitude
-                    val distance = deviceLocation.distanceTo(pickupLocationLocation)
-                    offer.distance = distance
-                }
-
-                // Sort the offers by distance
-                val sortedOffers = filteredOffers.sortedBy { offer -> offer.distance }
-
-
-
-                offerResult.value = sortedOffers
-
-            } catch (e: Exception) {
-                Log.e("[OVM] getOffersBySeats", e.message.toString())
-            }
-        }
-    }
-
-    fun getOffersByColor(s: String) {
-        Log.d("[OfferVM] getOByClr", "getOffersByColor")
-        viewModelScope.launch {
-            try {
-                val offerResponse = offerRepository.getOpenOffers()
-
-                // Filter all offers by the number of seats of the car
-                val filteredOffers = offerResponse.filter { offer -> offer.car.colorType == s }
-
-                // TODO: Refactor this sorting and that of getOffers() to a separate function
-
-                val userLocation = SessionManager.getUserLocation()
-                val deviceLocation = Location("deviceLocation")
-                deviceLocation.latitude = userLocation.latitude
-                deviceLocation.longitude = userLocation.longitude
-                filteredOffers.forEach { offer ->
-                    val pickupLocation = offer.pickupLocation
-                    val pickupLocationGeocode = MapsApiService.getApi()?.getLatLongFromAddress(pickupLocation)?.results?.get(0)?.geometry?.location
-                    val pickupLocationLatLng = LatLng(pickupLocationGeocode?.lat!!, pickupLocationGeocode.lng!!)
-                    val pickupLocationLocation = Location("pickupLocation")
-                    pickupLocationLocation.latitude = pickupLocationLatLng.latitude
-                    pickupLocationLocation.longitude = pickupLocationLatLng.longitude
-                    val distance = deviceLocation.distanceTo(pickupLocationLocation)
-                    offer.distance = distance
-                }
-
-                // Sort the offers by distance
-                val sortedOffers = filteredOffers.sortedBy { offer -> offer.distance }
-
-
-
-                offerResult.value = sortedOffers
-
-            } catch (e: Exception) {
-                Log.e("[OVM] getOffersBySeats", e.message.toString())
-            }
-        }
-    }
+//    fun getOffersByColor(s: String) {
+//        Log.d("[OfferVM] getOByClr", "getOffersByColor")
+//        viewModelScope.launch {
+//            try {
+//                val offerResponse = offerRepository.getOpenOffers()
+//
+//                // Filter all offers by the number of seats of the car
+//                val filteredOffers = offerResponse.filter { offer -> offer.car.colorType == s }
+//
+//
+//                val userLocation = SessionManager.getUserLocation()
+//                val deviceLocation = Location("deviceLocation")
+//                deviceLocation.latitude = userLocation.latitude
+//                deviceLocation.longitude = userLocation.longitude
+//                filteredOffers.forEach { offer ->
+//                    val pickupLocation = offer.pickupLocation
+//                    val pickupLocationGeocode = MapsApiService.getApi()?.getLatLongFromAddress(pickupLocation)?.results?.get(0)?.geometry?.location
+//                    val pickupLocationLatLng = LatLng(pickupLocationGeocode?.lat!!, pickupLocationGeocode.lng!!)
+//                    val pickupLocationLocation = Location("pickupLocation")
+//                    pickupLocationLocation.latitude = pickupLocationLatLng.latitude
+//                    pickupLocationLocation.longitude = pickupLocationLatLng.longitude
+//                    val distance = deviceLocation.distanceTo(pickupLocationLocation)
+//                    offer.distance = distance
+//                }
+//
+//                // Sort the offers by distance
+//                val sortedOffers = filteredOffers.sortedBy { offer -> offer.distance }
+//
+//
+//
+//                offerResult.value = sortedOffers
+//
+//            } catch (e: Exception) {
+//                Log.e("[OVM] getOffersBySeats", e.message.toString())
+//            }
+//        }
+//    }
 
 
-    suspend fun calculateDistanceAndSortByDistance(data: Collection<OfferData>): Collection<OfferData> {
-        val userLocation = SessionManager.getUserLocation()
-        val deviceLocation = Location("deviceLocation")
-        deviceLocation.latitude = userLocation.latitude
-        deviceLocation.longitude = userLocation.longitude
-        data.forEach { offer ->
-            val pickupLocation = offer.pickupLocation
-            val pickupLocationGeocode = MapsApiService.getApi()?.getLatLongFromAddress(pickupLocation)?.results?.get(0)?.geometry?.location
-            val pickupLocationLatLng = LatLng(pickupLocationGeocode?.lat!!, pickupLocationGeocode.lng!!)
-            val pickupLocationLocation = Location("pickupLocation")
-            pickupLocationLocation.latitude = pickupLocationLatLng.latitude
-            pickupLocationLocation.longitude = pickupLocationLatLng.longitude
-            val distance = deviceLocation.distanceTo(pickupLocationLocation)
-            offer.distance = distance
-        }
-        val sortedOffers = data.sortedBy { offer -> offer.distance }
-        return sortedOffers
-
-    }
+//    suspend fun calculateDistanceAndSortByDistance(data: Collection<OfferData>): Collection<OfferData> {
+//        val userLocation = SessionManager.getUserLocation()
+//        val deviceLocation = Location("deviceLocation")
+//        deviceLocation.latitude = userLocation.latitude
+//        deviceLocation.longitude = userLocation.longitude
+//        data.forEach { offer ->
+//            val pickupLocation = offer.pickupLocation
+//            val pickupLocationGeocode = MapsApiService.getApi()?.getLatLongFromAddress(pickupLocation)?.results?.get(0)?.geometry?.location
+//            val pickupLocationLatLng = LatLng(pickupLocationGeocode?.lat!!, pickupLocationGeocode.lng!!)
+//            val pickupLocationLocation = Location("pickupLocation")
+//            pickupLocationLocation.latitude = pickupLocationLatLng.latitude
+//            pickupLocationLocation.longitude = pickupLocationLatLng.longitude
+//            val distance = deviceLocation.distanceTo(pickupLocationLocation)
+//            offer.distance = distance
+//        }
+//        val sortedOffers = data.sortedBy { offer -> offer.distance }
+//        return sortedOffers
+//
+//    }
 
 
 }

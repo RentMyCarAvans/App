@@ -12,6 +12,8 @@ import com.avans.rentmycar.model.OfferData
 class OfferRepository {
 
     suspend fun getOpenOffers(): Collection<OfferData> {
+        // TODO: Should the distance be calculated here?
+        Log.d("[OfferRepo] getOpenOff", "getOpenOffers called")
         return OfferService.getApi()?.getOpenOffers()?.body()?.data ?: emptyList()
     }
 

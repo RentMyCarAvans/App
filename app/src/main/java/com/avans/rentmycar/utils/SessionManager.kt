@@ -3,12 +3,15 @@ package com.avans.rentmycar.utils
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import com.avans.rentmycar.R
 import com.google.android.gms.maps.model.LatLng
 
 object SessionManager {
 
-    private var deviceLocation: LatLng = LatLng(51.925959,3.9226572)
+    private var deviceLocation: LatLng = LatLng(51.925959,3.9226572) // TODO: Refactor code so this default is not needed
+    var deviceLocationHasBeenSet: MutableLiveData<Boolean> = MutableLiveData(false)
+
     const val USER_TOKEN = "user_token"
     const val USER_ID = "user_id"
 
@@ -76,12 +79,16 @@ object SessionManager {
         editor.apply()
     }
 
+    // ===== Device location =====
     fun getUserLocation(): LatLng {
+        Log.d("[SM] getUserLocation", "getUserLocation() called")
         return deviceLocation
     }
 
     fun setDeviceLocation(deviceLocation: LatLng) {
         Log.d("[SM] setDeviceLocation", "setDeviceLocation: $deviceLocation")
+        deviceLocationHasBeenSet.value = true
+        Log.d("[SM] setDeviceLocation", "deviceLocationHasBeenSet: $deviceLocationHasBeenSet")
         this.deviceLocation = deviceLocation
     }
 

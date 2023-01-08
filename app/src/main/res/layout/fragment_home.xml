@@ -58,55 +58,38 @@
         android:layout_height="wrap_content"
         android:background="@color/blue_500"
 
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btnBottomSheetModal"
+        android:layout_marginBottom="110dp"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="120dp"
         app:layout_constraintTop_toBottomOf="@+id/textview_home_title"
         app:layout_constraintVertical_bias="0.0" />
 
     </LinearLayout>
 
-
-
-
     <Button
-        android:id="@+id/button_home_minimumseats"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="10sp"
-        android:text="Minimum 4 seats"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button_home_carblue"
-        />
-    <Button
-        android:id="@+id/button_home_carblue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="10sp"
-
-        android:text="Color: Blue"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/button_home_minimumseats"
-        app:layout_constraintEnd_toStartOf="@id/btnBottomSheetModal"
-        />
-    <Button
+        android:layout_marginHorizontal="20dp"
         android:id="@+id/btnBottomSheetModal"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="10sp"
 
         android:text="@string/filter_by"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/button_home_carblue"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         />
 
 
-
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progressIndicator_home_fragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:indeterminate="true" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

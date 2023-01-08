@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-
+        // ===== Check for permission for the device location =====
         val locationPermissionRequest = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
         ) { permissions ->
@@ -104,6 +104,7 @@ class MainActivity : AppCompatActivity() {
 
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
+        // ===== Get the device location =====
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             Log.d(TAG, "Checking if location permission is granted")
             if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {

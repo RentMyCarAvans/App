@@ -104,6 +104,8 @@
         android:value="50"
         android:valueFrom="1"
         android:valueTo="100"
+        android:stepSize="1"
+        app:tickVisible="false"
         app:labelBehavior="visible"
         app:layout_constraintBottom_toTopOf="@id/textView_home_sheet_maxdistance"
         app:layout_constraintEnd_toEndOf="parent"
