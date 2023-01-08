@@ -12,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentOfferBinding
 import com.avans.rentmycar.viewmodel.CarViewModel
+import com.google.android.material.snackbar.Snackbar
 
 /**
  * A simple [Fragment] subclass.
@@ -52,6 +53,8 @@ class OfferCarFragment : Fragment() {
             Log.d(TAG, "onViewCreated() => Button SAVE clicked. Invoke CarApiService")
             // TODO Add validation for all inputfield
             updateCar()
+            Snackbar.make(view, "Offer on car with licenseplate " + args.licenseplate + " created", Snackbar.LENGTH_LONG)
+                .show()
             Log.d(TAG, "onViewCreated() => Offer made for car " + args.licenseplate + ". Return to home")
             findNavController().navigate(R.id.action_offerCarFragment_to_mycars)
         }
