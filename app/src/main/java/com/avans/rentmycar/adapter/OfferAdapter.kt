@@ -1,21 +1,19 @@
 package com.avans.rentmycar.adapter
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.recyclerview.widget.RecyclerView
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.ItemOfferBinding
 import com.avans.rentmycar.model.OfferData
 import com.avans.rentmycar.utils.ImageLoader
-import com.google.android.gms.location.LocationServices
 import java.text.SimpleDateFormat
 
-// TODO: Move these constructor arguments to fields on the class?
 class OfferAdapter(
     private val imageLoader: ImageLoader,
     private val clickListener: (OfferData) -> Unit) :
@@ -32,6 +30,7 @@ class OfferAdapter(
         private val offerLocation = itemOfferBinding.textviewItemOfferLocation
         private val offerDistance = itemOfferBinding.textviewItemOfferDistance
 
+        @SuppressLint("SetTextI18n")
         @RequiresApi(Build.VERSION_CODES.O)
         fun bindData(offerData: OfferData) {
 
@@ -51,20 +50,15 @@ class OfferAdapter(
                 offerData.car.image
             }
 
-//            var distance = 0.0
-
             imageLoader.loadImage(carImage, offerCarImage)
             offerCarName.text = offerData.car.model
             offerStartDate.text = itemView.context.getString(R.string.offer_pickupAfter, startDate)
             offerEndDate.text = itemView.context.getString(R.string.offer_returnBefore, endDate)
             offerLocation.text = offerData.pickupLocation
 
-            // If te distance < 1000, show the distance in meters
-            // If the distance > 1000, show the distance in kilometers
-            // If the distance is null, show "Calculating distance..."
-            if (offerData.distance < 1000) {
+            if (offerData.distance < 1000) { // If the distance < 1000, show the distance in meters
                 offerDistance.text = offerData.distance.toInt().toString() + "m"
-            } else if (offerData.distance > 1000) {
+            } else if (offerData.distance > 1000) { // If the distance > 1000, show the distance in kilometers
                 val distanceInKm = offerData.distance / 1000
                 // set distanceInKm to 1 decimal
                 offerDistance.text = String.format("%.1f", distanceInKm) + "km"
@@ -72,22 +66,17 @@ class OfferAdapter(
                 offerDistance.text = "..."
             }
 
-//            offerDistance.text = offerData.distance.toString() + " m"
-
-//            Log.d("[Home][Adapter]", "bindData() => offer with carname " + offerCarName.text)
         }
-
 
     }
 
-//    lateinit var itemOfferBinding: ItemOfferBinding
 
     private val offerData = mutableListOf<OfferData>()
 
     fun setData(offerData: Collection<OfferData>) {
         this.offerData.clear()
         this.offerData.addAll(offerData)
-        notifyDataSetChanged()
+        notifyDataSetChanged() // TODO: Improve this if we have time left
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OfferViewHolder {
@@ -100,23 +89,12 @@ class OfferAdapter(
     override fun onBindViewHolder(holder: OfferViewHolder, position: Int) {
         holder.itemView.setOnClickListener {
             clickListener(offerData[position])
-            Log.d("[Home][Adapter]", "onBindViewHolder() => Clicked on offer with id: " + offerData[position].id)
-            Log.d("OfferAdapter", "Clicked on offer with id: " + offerData[position].id)
+            Log.d("[OfferAdapter]", "onBindViewHolder() => Clicked on offer with id: " + offerData[position].id)
+            Log.d("[OfferAdapter]", "Clicked on offer with id: " + offerData[position].id)
         }
         holder.bindData(offerData[position])
     }
 
     override fun getItemCount(): Int = offerData.size
-
-//    fun setDistance(value: Map<Long, Float>?) {
-//        if (value != null) {
-//            for (offer in offerData) {
-//                offer.distance = value[offer.id]!!
-//            }
-//        }
-//        notifyDataSetChanged()
-//
-//    }
-
 
 }

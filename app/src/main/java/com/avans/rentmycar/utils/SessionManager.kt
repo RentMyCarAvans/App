@@ -9,7 +9,7 @@ import com.google.android.gms.maps.model.LatLng
 
 object SessionManager {
 
-    private var deviceLocation: LatLng = LatLng(51.925959,3.9226572) // TODO: Refactor code so this default is not needed
+    private var deviceLocation: LatLng = LatLng(51.925959,3.9226572) // TODO: Figuer out if the SessionManager is the right place for this
     var deviceLocationHasBeenSet: MutableLiveData<Boolean> = MutableLiveData(false)
 
     const val USER_TOKEN = "user_token"
@@ -80,8 +80,8 @@ object SessionManager {
     }
 
     // ===== Device location =====
-    fun getUserLocation(): LatLng {
-        Log.d("[SM] getUserLocation", "getUserLocation() called")
+    fun getDeviceLocation(): LatLng {
+        Log.d("[SM] getDeviceLocation", "getDeviceLocation() called")
         return deviceLocation
     }
 
