@@ -16,17 +16,24 @@
 
 package com.avans.rentmycar.ui.mycars
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.AddCarItemBinding
 import com.avans.rentmycar.model.RdwResponseItem
+import com.avans.rentmycar.rest.response.BaseResponse
 import com.avans.rentmycar.utils.FieldValidation
+import com.avans.rentmycar.utils.SessionManager
+import com.avans.rentmycar.viewmodel.CarViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 
@@ -50,32 +57,67 @@ class CarAddItemFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d(TAG, "onViewCreated()")
         super.onViewCreated(view, savedInstanceState)
 
         val binding = AddCarItemBinding.bind(view)
-        val carAddItemViewModel: CarAddItemViewModel by viewModels()
+        val carViewModel: CarViewModel by viewModels()
 
-        binding.buttonGetLicenseplateRdw.setOnClickListener {
+        binding.buttonCarGetRdwdetails.setOnClickListener {
             Log.d(TAG, "onViewCreated() => Button GET clicked. Invoke RdwApiService")
-            val kenteken: TextInputEditText = binding.txtInputLicensePlate
+            val kenteken: TextInputEditText = binding.txtInputCarLicensePlate
             val licensePlate: String = kenteken.text.toString()
 
             // Validate licenseplate before API call
             if (isValidLicensePlate()){
                 // invoke RdwApiService for retrieval of cardetails of the given licenseplate
-                Log.d(TAG, "onViewCreated() => invoke RdwApieService for licenseplate: " + licensePlate)
-                carAddItemViewModel.getRdwCarDetails(kenteken.text.toString())
+                Log.d(TAG, "onViewCreated() => invoke RdwApiService for licenseplate: " + licensePlate)
+                carViewModel.getRdwCarDetails(kenteken.text.toString())
                 Snackbar.make(view, "Car details retrieved at the RDW", Snackbar.LENGTH_LONG)
                 .show()
             }
         }
 
-        // Observer for rdwResponse
-        Log.d(TAG, "onViewCreated() => set observer on rdw response ")
-        carAddItemViewModel.rdwResponse.observe(viewLifecycleOwner) {
+        binding.buttonCarSave.setOnClickListener {
+            Log.d(TAG, "onViewCreated() => Button SAVE clicked. Invoke CarApiService")
+            // TODO Add validation for all inputfield
+            createCar()
+            Log.d(TAG, "onViewCreated() => After calling fun createCar()")
+        }
+
+        carViewModel.rdwResponse.observe(viewLifecycleOwner) {
+            Log.d(TAG, "onViewCreated() => observer rdwResponse triggerd")
+            if (carViewModel.rdwResponse.value!!.isEmpty()){
+                Snackbar.make(view, "Error saving Car. Please try again later", Snackbar.LENGTH_LONG)
+                    .show()
+                }
             bindUI(it)
+        }
+
+        carViewModel.carCreateResponse.observe(viewLifecycleOwner) {
+            Log.d(TAG, "onViewCreated() => observer carCreateResponse triggerd")
+            when (it) {
+                is BaseResponse.Loading -> {
+                    Log.d(TAG, "onViewCreated() => observer BaseResponse.Loading")
+
+                }
+                is BaseResponse.Error -> {
+                    Toast.makeText(context, "Error", Toast.LENGTH_LONG).show()
+                    Snackbar.make(view, "An error occurred while fetching your data. Please try again later", Snackbar.LENGTH_LONG)
+                            .show()
+                    Log.d(TAG, "onViewCreated() => observer BaseResponse.Error")
+
+                }
+                is BaseResponse.Success -> {
+                    Log.d(TAG, "onViewCreated() => observer BaseResponse.Success. Return to MyCarsFragment ")
+                    val action = CarDetailFragmentDirections.actionCarDetailFragmentToMycars()
+                    findNavController().navigate(action)
+                    // Snackbar.make(view, "An error occurred while fetching your data. Please try again later", Snackbar.LENGTH_LONG)
+                    //     .show()
+                }
+            }
         }
     }
 
@@ -92,25 +134,82 @@ class CarAddItemFragment : Fragment() {
      */
     fun bindUI(it: List<RdwResponseItem>) {
         Log.d(TAG, "bindUI() => voertuigsoort: " + it[0].voertuigsoort + " merk: " + it[0].merk)
-        binding.rtvRdwInrichting.text = it[0].inrichting
-        binding.tvRdwVoertuigsoort.text = it[0].voertuigsoort
-        binding.tvRdwAantalDeuren.text = it[0].aantal_deuren
-        binding.tvRdwAantalZitplaatsen.text = it[0].aantal_zitplaatsen
-        binding.rtvRdwKleur.text = it[0].eerste_kleur
+        binding.txtInputCarModel.setText( it[0].merk + "- " + it[0].handelsbenaming)
+        binding.txtInputCarVehicle.setText(it[0].voertuigsoort)
+        binding.txtInputCarNrOfDoors.setText(it[0].aantalDeuren)
+        binding.txtInputCarNrOfSeats.setText(it[0].aantalZitplaatsen)
+        binding.txtInputCarColor.setText(it[0].eersteKleur)
+        binding.txtInputCarYear.setText(it[0].datumEersteToelating?.substring(0,4)) // substring year of date with format yyyymmdd
     }
 
     private fun isValidLicensePlate(): Boolean {
-        if (binding.txtInputLicensePlate.text.toString().trim().isEmpty()) {
-            binding.txtLayLicensePlateAdd.error = getString(R.string.required_field)
-            binding.txtInputLicensePlate.requestFocus()
+        if (binding.txtInputCarLicensePlate.text.toString().trim().isEmpty()) {
+            binding.txtInputCarLicensePlate.error = getString(R.string.required_field)
+            binding.txtInputCarLicensePlate.requestFocus()
             return false
-        } else if (!FieldValidation.isValidLicensePlate((binding.txtInputLicensePlate.text.toString()))) {
-            binding.txtLayLicensePlateAdd.error = getString(R.string.invalid_license)
-            binding.txtInputLicensePlate.requestFocus()
+        } else if (!FieldValidation.isValidLicensePlate((binding.txtInputCarLicensePlate.text.toString()))) {
+            binding.txtInputCarLicensePlate.error = getString(R.string.invalid_license)
+            binding.txtInputCarLicensePlate.requestFocus()
             return false
         } else {
-            binding.txtLayLicensePlateAdd.isErrorEnabled = false
+            binding.txtLayCarlicensePlateAdd.isErrorEnabled = false
         }
         return true
+    }
+
+    private fun createCar() {
+        Log.d(TAG, "createCar()")
+        val carViewModel: CarViewModel by viewModels()
+
+        // Cast inputfields
+        val carColor: TextInputEditText = binding.txtInputCarColor
+        val color: String = carColor.text.toString()
+
+        val carLicensePlate: TextInputEditText = binding.txtInputCarLicensePlate
+        val licensePlate: String = carLicensePlate.text.toString()
+
+        val carModel: TextInputEditText = binding.txtInputCarModel
+        val model: String = carModel.text.toString()
+
+        val carNrOfSeats: TextInputEditText = binding.txtInputCarNrOfSeats
+        val nrOfSeats: String = carNrOfSeats.text.toString()
+
+        val carType: TextInputEditText = binding.txtInputCarVehicle
+        val type: String = carType.text.toString()
+
+        val carVehicleType: TextInputEditText = binding.txtInputCarVehicle
+        val vehicleType: String = carVehicleType.text.toString()
+        val userId = SessionManager.getUserId(requireContext())?.toInt()
+        val user = userId
+        val carYear: TextInputEditText = binding.txtInputCarYear
+        val year: String = carYear.text.toString()
+        Log.d(TAG, "createCar() => colorType = " + color)
+        Log.d(TAG, "createCar() => licensePlate = " + licensePlate)
+        Log.d(TAG, "createCar() => model = " + model)
+        Log.d(TAG, "createCar() => numberOfSeats = " + nrOfSeats.toInt(),)
+        Log.d(TAG, "createCar() => type = " + type)
+        Log.d(TAG, "createCar() => vehicleType = " + vehicleType)
+        Log.d(TAG, "createCar() => yearOfManufacture = " + year.toInt())
+        var mType: String
+        when (vehicleType) {
+            "Beinze" -> mType = "ICE"
+            "Diesel" -> mType = "BEV"
+            else -> {
+                mType = "FCEV"
+            }
+        }
+        carViewModel.createCar(
+            colorType = color,
+            image = "", // TODO
+            licensePlate = licensePlate,
+            mileage = 100, // TODO
+            model = model,
+            numberOfSeats = nrOfSeats.toInt(),
+            type = mType,
+            userId = 2,
+            vehicleType = vehicleType,
+            yearOfManufacture = year.toInt()
+        )
+        Log.d(TAG, "createCar() => After calling viewModel.createCar().")
     }
 }

@@ -6,44 +6,15 @@
     android:layout_height="match_parent"
     android:layout_marginHorizontal="8dp"
     android:background="@color/white"
-    android:paddingTop="8dp">
+    android:paddingTop="8dp"
+    tools:context=".ui.mycars.EditCarFragment">>
 
     <FrameLayout
-        android:id="@+id/layout_add_car"
+        android:id="@+id/layout_add_car_step2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="180dp"
-        tools:layout_editor_absoluteY="100dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/txtLay_CarlicensePlateAdd"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:baselineAligned="false"
-            android:hint="@string/licenseplate"
-            app:endIconMode="clear_text"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/txtInput_carLicensePlate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textCapCharacters"
-                android:maxLength="6" />
-        </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Soort voertuig -->
     <com.google.android.material.textfield.TextInputLayout
@@ -57,7 +28,7 @@
         android:paddingTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtLay_CarlicensePlateAdd">
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtInput_carVehicle"
@@ -167,23 +138,36 @@
             android:inputType="number" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- Mileage -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtLay_CarMileageAdd"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Mileage"
+        app:endIconMode="clear_text"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtLay_CarNrOfDoorsAdd">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtInput_carMileage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+    </com.google.android.material.textfield.TextInputLayout>
+
     <!-- Buttons -->
     <Button
-        android:id="@+id/button_car_save"
+        android:id="@+id/button_get_licenseplate_rdw"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Save"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
-
-    <Button
-        android:id="@+id/button_car_get_rdwdetails"
-        android:layout_width="90dp"
-        android:layout_height="68dp"
-        android:text="GET"
-        app:layout_constraintStart_toEndOf="@+id/txtLay_CarlicensePlateAdd"
-        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -38,7 +38,6 @@
     <fragment
         android:id="@+id/carDetailFragment"
         android:name="com.avans.rentmycar.ui.mycars.CarDetailFragment"
-        android:label="CarDetailFragment"
         tools:layout="@layout/fragment_mycars_detail">
         <argument
             android:name="id"
@@ -66,10 +65,95 @@
             android:name="carimageurl"
             app:argType="string"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_carDetailFragment_to_mycars"
+            app:destination="@id/mycars" />
+        <action
+            android:id="@+id/action_carDetailFragment_to_editCarFragment"
+            app:destination="@id/editCarFragment" />
+        <action
+            android:id="@+id/action_carDetailFragment_to_offerCarFragment"
+            app:destination="@id/offerCarFragment" />
     </fragment>
     <fragment
         android:id="@+id/carAddItemFragment"
         android:name="com.avans.rentmycar.ui.mycars.CarAddItemFragment"
-        android:label="CarAddItemFragment"
-        tools:layout="@layout/add_car_item"/>
+        android:label="Add a car"
+        tools:layout="@layout/add_car_item">
+        <action
+            android:id="@+id/action_carAddItemFragment_to_editCarFragment"
+            app:destination="@id/editCarFragment" />
+        <action
+            android:id="@+id/action_carAddItemFragment_to_mycars"
+            app:destination="@id/mycars" />
+    </fragment>
+    <fragment
+        android:id="@+id/editCarFragment"
+        android:name="com.avans.rentmycar.ui.mycars.EditCarFragment"
+        android:label="Edit my car"
+        tools:layout="@layout/fragment_edit_car">
+        <action
+            android:id="@+id/action_editCarFragment_to_carAddItemFragment"
+            app:destination="@id/carAddItemFragment" />
+        <action
+            android:id="@+id/action_editCarFragment_to_carDetailFragment"
+            app:destination="@id/carDetailFragment" />
+        <argument
+            android:name="id"
+            app:argType="string" />
+        <argument
+            android:name="color"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="brand"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="mileage"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="licenseplate"
+            app:argType="string" />
+        <argument
+            android:name="numberofseats"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="year"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="carimageurl"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/offerCarFragment"
+        android:name="com.avans.rentmycar.ui.offer.OfferCarFragment"
+        android:label="Make an offer"
+        tools:layout="@layout/fragment_offer" >
+        <action
+            android:id="@+id/action_offerCarFragment_to_carDetailFragment"
+            app:destination="@id/carDetailFragment" />
+        <argument
+            android:name="id"
+            app:argType="string" />
+        <argument
+            android:name="startdate"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="enddate"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="location"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="licenseplate"
+            app:argType="string" />
+    </fragment>
 </navigation>
