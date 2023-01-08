@@ -180,7 +180,6 @@ class CarAddItemFragment : Fragment() {
         val carVehicleType: TextInputEditText = binding.txtInputCarVehicle
         val vehicleType: String = carVehicleType.text.toString()
         val userId = SessionManager.getUserId(requireContext())?.toInt()
-        val user = userId
         val carYear: TextInputEditText = binding.txtInputCarYear
         val year: String = carYear.text.toString()
         Log.d(TAG, "createCar() => colorType = " + color)
@@ -206,7 +205,7 @@ class CarAddItemFragment : Fragment() {
             model = model,
             numberOfSeats = nrOfSeats.toInt(),
             type = mType,
-            userId = 2,
+            userId = userId!!,
             vehicleType = vehicleType,
             yearOfManufacture = year.toInt()
         )
