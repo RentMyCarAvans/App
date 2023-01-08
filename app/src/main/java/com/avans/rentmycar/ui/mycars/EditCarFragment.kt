@@ -6,8 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentEditCarBinding
+import com.avans.rentmycar.viewmodel.CarViewModel
+import com.google.android.material.snackbar.Snackbar
 
 /**
  * A simple [Fragment] subclass.
@@ -39,7 +44,18 @@ class EditCarFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val args: EditCarFragmentArgs by navArgs()
+        val carViewModel: CarViewModel by viewModels()
+
         bindUI(args)
+
+        binding.buttonCarUpdate.setOnClickListener {
+            Log.d(TAG, "onViewCreated() => Button UPDATE clicked. Invoke CarApiService")
+            carViewModel.updateCar()
+            Snackbar.make(view, "Car " + args.brand + " with licenseplate " + args.licenseplate + " updated", Snackbar.LENGTH_LONG)
+                .show()
+            Log.d(TAG, "onViewCreated() => Car " + args.brand + " with licenseplate " + args.licenseplate + " updated. Return to home")
+            findNavController().navigate(R.id.action_editCarFragment_to_mycars)
+        }
     }
 
     /**

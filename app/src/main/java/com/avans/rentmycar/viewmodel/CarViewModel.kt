@@ -119,6 +119,11 @@ class CarViewModel : ViewModel() {
                 )
                 carCreateResponse.value = BaseResponse.Error(ex.message)
             }
-        }    }
+        }
+    }
+
+    fun updateCar(){
+        Log.d("[RMC][CarViewModel]", "updateCar() ")
+    }
 
 }
