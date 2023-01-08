@@ -90,7 +90,7 @@ class CarAddItemFragment : Fragment() {
         carViewModel.rdwResponse.observe(viewLifecycleOwner) {
             Log.d(TAG, "onViewCreated() => observer rdwResponse triggerd")
             if (carViewModel.rdwResponse.value!!.isEmpty()){
-                Snackbar.make(view, "An error occurred while fetching your data. Please try again later", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Error saving Car. Please try again later", Snackbar.LENGTH_LONG)
                     .show()
                 }
             bindUI(it)
@@ -190,6 +190,14 @@ class CarAddItemFragment : Fragment() {
         Log.d(TAG, "createCar() => type = " + type)
         Log.d(TAG, "createCar() => vehicleType = " + vehicleType)
         Log.d(TAG, "createCar() => yearOfManufacture = " + year.toInt())
+        var mType: String
+        when (vehicleType) {
+            "Beinze" -> mType = "ICE"
+            "Diesel" -> mType = "BEV"
+            else -> {
+                mType = "FCEV"
+            }
+        }
         carViewModel.createCar(
             colorType = color,
             image = "", // TODO
@@ -197,7 +205,7 @@ class CarAddItemFragment : Fragment() {
             mileage = 100, // TODO
             model = model,
             numberOfSeats = nrOfSeats.toInt(),
-            type = "ICE", // TODO Fill field with ICE, FCEV of BEV
+            type = mType,
             userId = 2,
             vehicleType = vehicleType,
             yearOfManufacture = year.toInt()

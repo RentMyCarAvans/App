@@ -15,6 +15,7 @@ import com.avans.rentmycar.databinding.FragmentMycarsBinding
 import com.avans.rentmycar.utils.GlideImageLoader
 import com.avans.rentmycar.utils.SessionManager
 import com.avans.rentmycar.adapter.CarAdapter
+
 import com.avans.rentmycar.viewmodel.CarViewModel
 
 /**

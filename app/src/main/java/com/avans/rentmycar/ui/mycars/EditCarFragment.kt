@@ -33,35 +33,27 @@ class EditCarFragment : Fragment() {
         // Inflate the layout for this fragment
         Log.d("[RMC][EditCarFragment]","onCreateView()")
         _binding = FragmentEditCarBinding.inflate(inflater, container, false)
-        // TODO Figure out why this is not working. The data is NOT being showed on the UI. Instead, you HAVE to use binding.root
-        // return inflater.inflate(R.layout.fragment_edit_car, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val args: EditCarFragmentArgs by navArgs()
-        //bindUI(args.color, args.brand, args.mileage?.toInt(), args.licenseplate, args.numberofseats?.toInt(), args.year?.toInt(), args.carimageurl)
-        bindUI2(args)
+        bindUI(args)
     }
 
     /**
      * Binds views with the passed in item data.
      */
-    fun bindUI(color:String?, brand:String?, mileage:Int?, licensePlate:String?, nrOfSeats:Int?, year:Int?, carImageUrl:String?) {
-        Log.d(TAG, "bindUI() => color: "+color )
-        binding.txtInputCarNrOfDoors.setText(color)
-        binding.txtInputCarColor.setText(color).toString()
-        binding.txtInputCarModel.setText("Tesla").toString()
-        this.binding.txtInputCarVehicle.setText("Auto").toString()
-        binding.txtInputCarVehicle.setText("Porsche 911 Turbo")
-        binding.txtInputCarVehicle.setText("koppppppp")
-    }
-    fun bindUI2(args: EditCarFragmentArgs) {
+    fun bindUI(args: EditCarFragmentArgs) {
+        Log.d("[RMC][EditCarFragment]","bindUI()")
         binding.txtInputCarNrOfDoors.setText(args.numberofseats)
         binding.txtInputCarColor.setText(args.color)
         binding.txtInputCarModel.setText(args.brand)
-        binding.txtInputCarVehicle.setText(args.year)
+        binding.txtInputCarVehicle.setText("Personenauto")  // TODO Is not in navArgs and database
+        binding.txtInputCarYear.setText(args.year)
+        binding.txtInputCarNrOfSeats.setText(args.numberofseats)
+        binding.txtInputCarMileage.setText(args.mileage)
 
     }
 
