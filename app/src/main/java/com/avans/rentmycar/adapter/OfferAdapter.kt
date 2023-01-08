@@ -12,6 +12,7 @@ import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.ItemOfferBinding
 import com.avans.rentmycar.model.OfferData
 import com.avans.rentmycar.utils.ImageLoader
+import com.avans.rentmycar.utils.SessionManager
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -66,6 +67,12 @@ class OfferAdapter(
                 offerDistance.text = String.format("%.1f", distanceInKm) + "km"
             } else {
                 offerDistance.text = "..."
+            }
+
+            Log.d("[OfferAdapter locPerm]", "Location permission: ${SessionManager.getLocationPermissionGranted()}")
+
+            if(!SessionManager.getLocationPermissionGranted()){
+                itemOfferBinding.textviewItemOfferDistance.visibility = View.GONE
             }
 
         }

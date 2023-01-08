@@ -98,7 +98,13 @@ class OfferViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val offerResponse = offerRepository.getOpenOffers()
-                setOfferCollection(updateOfferDataWithDistance(offerResponse))
+
+                if(SessionManager.getLocationPermissionGranted()) {
+                    setOfferCollection(updateOfferDataWithDistance(offerResponse))
+                } else {
+                    setOfferCollection(offerResponse)
+                }
+
             } catch (e: Exception) {
                 Log.e("[OfferVM] getOffers", e.message.toString())
             }
@@ -184,5 +190,7 @@ class OfferViewModel : ViewModel() {
         }
 
     }
+
+
 
 }

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import androidx.lifecycle.ViewModelProvider
 import com.avans.rentmycar.R
+import com.avans.rentmycar.utils.SessionManager
 import com.avans.rentmycar.viewmodel.OfferViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.slider.Slider
@@ -28,6 +29,8 @@ class HomeBottomSheetDialogFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+
         val viewModel = ViewModelProvider(requireActivity())[OfferViewModel::class.java]
 
         val iceCheckbox = view.findViewById<View>(R.id.checkbox_home_sheet_ice) as CheckBox
@@ -36,6 +39,13 @@ class HomeBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
         val numberOfSeatsSlider = view.findViewById<View>(R.id.slider_home_sheet_seats) as Slider
         val maxdistanceSlider = view.findViewById<View>(R.id.slider_home_sheet_maxdistance) as Slider
+
+        if(!SessionManager.getLocationPermissionGranted()){
+            maxdistanceSlider.isEnabled = false
+            maxdistanceSlider.visibility = View.GONE
+            view.findViewById<View>(R.id.divider_home_sheet_distance).visibility = View.GONE
+            view.findViewById<View>(R.id.textView_home_sheet_maxdistance).visibility = View.GONE
+        }
 
         iceCheckbox.isChecked = viewModel.checkboxFuelTypeIceFilter.value ?: true
         bevCheckbox.isChecked = viewModel.checkboxFuelTypeBevFilter.value ?: true

@@ -19,6 +19,7 @@ import com.avans.rentmycar.databinding.FragmentHomeBinding
 import com.avans.rentmycar.utils.GlideImageLoader
 import com.avans.rentmycar.utils.SessionManager
 import com.avans.rentmycar.viewmodel.OfferViewModel
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
 
 class HomeFragment : Fragment() {
@@ -81,15 +82,18 @@ class HomeFragment : Fragment() {
         binding.recyclerviewHomeFragmentOffers.adapter = offerAdapter
 
         val model = ViewModelProvider(requireActivity())[OfferViewModel::class.java]
-        model.offerCollection.observe(viewLifecycleOwner, {
+        model.offerCollection.observe(viewLifecycleOwner) {
 
             offerAdapter.setData(it)
-            if(it.size == 0) {
+            if (it.isEmpty()) {
+                Log.d("[Home]", "No offers found")
                 // TODO: Show a text message that there are no offers available. For now, just show a snackbar
-                view?.let { it1 -> Snackbar.make(it1, "No offers found", Snackbar.LENGTH_LONG).show() }
+                view?.let { it1 ->
+                    Snackbar.make(it1, "No offers found", Snackbar.LENGTH_LONG).show()
+                }
             }
             binding.progressIndicatorHomeFragment.visibility = View.GONE
-        })
+        }
 
 
         // TODO: This should be in the Bookings fragment when it has been coded
@@ -125,16 +129,22 @@ class HomeFragment : Fragment() {
             }
         }
 
-        // Get the offers from the database if the devicelocation is available
-        SessionManager.deviceLocationHasBeenSet.observe(viewLifecycleOwner, {
-            if(SessionManager.deviceLocationHasBeenSet.value == false) {
-                Log.w("[Home] SM Deviceloc", "Device location has not been set yet, so we will do that now")
+        // Get the offers from the database. With location if the devicelocation is available, else with mock location
+        SessionManager.deviceLocationHasBeenSet.observe(viewLifecycleOwner) {
+            if (SessionManager.locationPermissionHasBeenGranted.value == false && SessionManager.deviceLocationHasBeenSet.value == false) {
+                Log.d("[Home] DeviceLocation", "Location permission has not been granted. Setting mock location")
+                SessionManager.setDeviceLocation(LatLng(51.925959, 3.9226572))
+            } else if (SessionManager.deviceLocationHasBeenSet.value == false && SessionManager.locationPermissionHasBeenGranted.value == true) {
+                Log.w(
+                    "[Home] SM Deviceloc",
+                    "Device location has not been set yet, so we wait for that"
+                )
                 binding.progressIndicatorHomeFragment.visibility = View.VISIBLE
             } else {
                 Log.i("[Home] SM Deviceloc", "Device location has been set, so we can start!")
                 model.getOffers()
             }
-        })
+        }
 
     }
 
