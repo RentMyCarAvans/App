@@ -81,7 +81,7 @@ class HomeFragment : Fragment() {
         binding.recyclerviewHomeFragmentOffers.adapter = offerAdapter
 
         val model = ViewModelProvider(requireActivity())[OfferViewModel::class.java]
-        model.offerCollection.observe(viewLifecycleOwner, Observer {
+        model.offerCollection.observe(viewLifecycleOwner, {
 
             offerAdapter.setData(it)
             if(it.size == 0) {
@@ -126,7 +126,7 @@ class HomeFragment : Fragment() {
         }
 
         // Get the offers from the database if the devicelocation is available
-        SessionManager.deviceLocationHasBeenSet.observe(viewLifecycleOwner, Observer {
+        SessionManager.deviceLocationHasBeenSet.observe(viewLifecycleOwner, {
             if(SessionManager.deviceLocationHasBeenSet.value == false) {
                 Log.w("[Home] SM Deviceloc", "Device location has not been set yet, so we will do that now")
                 binding.progressIndicatorHomeFragment.visibility = View.VISIBLE

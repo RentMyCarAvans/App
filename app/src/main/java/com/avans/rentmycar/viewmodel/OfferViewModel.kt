@@ -114,8 +114,10 @@ class OfferViewModel : ViewModel() {
         deviceLocation.longitude = userLocation.longitude
         offers.forEach { offer ->
             val pickupLocation = offer.pickupLocation
-            val pickupLocationGeocode = MapsApiService.getApi()?.getLatLongFromAddress(pickupLocation)?.results?.get(0)?.geometry?.location
-            val pickupLocationLatLng = LatLng(pickupLocationGeocode?.lat!!, pickupLocationGeocode.lng!!)
+            val pickupLocationGeocode = MapsApiService.getApi()
+                ?.getLatLongFromAddress(pickupLocation)?.results?.get(0)?.geometry?.location
+            val pickupLocationLatLng =
+                LatLng(pickupLocationGeocode?.lat!!, pickupLocationGeocode.lng!!)
             val pickupLocationLocation = Location("pickupLocation")
             pickupLocationLocation.latitude = pickupLocationLatLng.latitude
             pickupLocationLocation.longitude = pickupLocationLatLng.longitude
@@ -123,8 +125,7 @@ class OfferViewModel : ViewModel() {
             offer.distance = distance
         }
 
-        val sortedOffers = offers.sortedBy { offer -> offer.distance }
-        return sortedOffers
+        return offers.sortedBy { offer -> offer.distance }
     }
 
     fun getBookings(userId: Long) {

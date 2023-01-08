@@ -5,8 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.avans.rentmycar.R
-import com.avans.rentmycar.databinding.FragmentHomeBinding
 import com.avans.rentmycar.databinding.FragmentHomeDetailBinding
 import com.avans.rentmycar.utils.SessionManager
 import com.avans.rentmycar.viewmodel.OfferViewModel
@@ -122,11 +119,11 @@ class HomeDetailFragment : Fragment() {
 
 
 
-    override fun onStart() {
-        super.onStart()
-//        if(mapFragment.isAdded) {
-//            mapFragment.setMapLocation(offerLat, offerLng)
-//        }
-    }
+//    override fun onStart() {
+//        super.onStart()
+////        if(mapFragment.isAdded) {
+////            mapFragment.setMapLocation(offerLat, offerLng)
+////        }
+//    }
 
 }

@@ -13,6 +13,7 @@ import com.avans.rentmycar.databinding.ItemOfferBinding
 import com.avans.rentmycar.model.OfferData
 import com.avans.rentmycar.utils.ImageLoader
 import java.text.SimpleDateFormat
+import java.util.*
 
 class OfferAdapter(
     private val imageLoader: ImageLoader,
@@ -35,11 +36,12 @@ class OfferAdapter(
         fun bindData(offerData: OfferData) {
 
             // Convert the datetime strings to a more readable format
-            val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-            val formatter = SimpleDateFormat("dd-MM-yyyy HH:mm")
+            val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+            val formatter = SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault())
 
-            val startDate: String = formatter.format(parser.parse(offerData.startDateTime))
-            val endDate: String = formatter.format(parser.parse(offerData.endDateTime))
+            val startDate: String? = parser.parse(offerData.startDateTime)
+                ?.let { formatter.format(it) }
+            val endDate: String? = parser.parse(offerData.endDateTime)?.let { formatter.format(it) }
 
             // TODO: Replace cute placeholder images with dumb pictures of cars
             val random = (1..10).random() * 100
