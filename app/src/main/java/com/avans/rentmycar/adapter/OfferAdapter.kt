@@ -15,6 +15,7 @@ import com.avans.rentmycar.utils.ImageLoader
 import com.google.android.gms.location.LocationServices
 import java.text.SimpleDateFormat
 
+// TODO: Move these constructor arguments to fields on the class?
 class OfferAdapter(
     private val imageLoader: ImageLoader,
     private val clickListener: (OfferData) -> Unit) :

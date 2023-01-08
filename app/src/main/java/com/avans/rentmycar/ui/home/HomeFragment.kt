@@ -1,6 +1,5 @@
 package com.avans.rentmycar.ui.home
 
-import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,20 +8,15 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.avans.rentmycar.R
 import com.avans.rentmycar.adapter.OfferAdapter
-import com.avans.rentmycar.api.MapsApiService
 import com.avans.rentmycar.databinding.FragmentHomeBinding
 import com.avans.rentmycar.utils.GlideImageLoader
 import com.avans.rentmycar.utils.SessionManager
-import com.avans.rentmycar.viewmodel.HomeViewModel
 import com.avans.rentmycar.viewmodel.OfferViewModel
-import com.google.android.gms.maps.model.LatLng
 
 class HomeFragment : Fragment() {
 
@@ -46,14 +40,6 @@ class HomeFragment : Fragment() {
         val binding = FragmentHomeBinding.bind(view)
 
 
-        // create object of SharedViewModel
-        val model = ViewModelProvider(requireActivity()).get(HomeViewModel::class.java)
-        // observing the change in the message declared in SharedViewModel
-
-
-        model.checkboxBlue.observe(viewLifecycleOwner, Observer {
-            Log.i("[Home] MODEL", "model.checkboxBlue.value: ${model.checkboxBlue.value}")
-        })
 
         // Set the title of the actionbar
         val bar = (activity as AppCompatActivity).supportActionBar
@@ -66,35 +52,10 @@ class HomeFragment : Fragment() {
         // Get the id of the logged in user so we can use it to get the correct offers and bookings
         val userId = SessionManager.getUserId(requireContext())
 
-
-        // Get the carLocationList from the viewModel
-//        viewModel.carLocationList.observe(viewLifecycleOwner) { carLocationList ->
-//            Log.d("[Home] carLocationList", "carLocationList: $carLocationList")
-//        }
-//
-//        viewModel.carDistanceList.observe(viewLifecycleOwner) { carDistanceList ->
-//            Log.d("[Home] carDistanceList", "carDistanceList: $carDistanceList")
-//            // Sort the carDistanceList bij value
-//            val sortedCarDistanceList = carDistanceList.toList().sortedBy { (_, value) -> value }.toMap()
-//            Log.d("[Home] sortedCrDistList", "sortedCarDistanceList: $sortedCarDistanceList")
-//
-//            // Rearrange the offerResult by the sortedCarDistanceList where the key is the offerId
-//            val sortedOfferResult = viewModel.offerResult.value?.sortedBy { offer -> sortedCarDistanceList[offer.id] }
-//            Log.d("[Home] sortdOffrReslt", "sortedOfferResult: $sortedOfferResult")
-//
-//            // Set the offerResult to the sortedOfferResult
-//            viewModel.offerResult.value = sortedOfferResult
-//
-//
-//        }
-//
-//        viewModel.getListOfCarLocations()
-
-
-
         // Make all the items in the recyclerview clickable, so the user can click on an item and go to the detail page of the selected offer
         val offerAdapter = OfferAdapter(GlideImageLoader(view.context as AppCompatActivity)) { offer ->
 
+            // TODO: Only pass the ID and let the DetailsFragment fetch the data from the Collection
             val action = HomeFragmentDirections.actionHomeFragment2ToHomeDetailFragment2(
                 offer.id,
                 offer.car.model,
@@ -117,14 +78,14 @@ class HomeFragment : Fragment() {
             offerAdapter.setData(it)
         }
 
-        binding.buttonHomeMinimumseats.setOnClickListener {
-            viewModel.getOffersBySeats(4)
+        // Get the offers from the viewModel and pass it to the adapter
+        viewModel.offerCollection.observe(viewLifecycleOwner) {
+            // TODO: This is the fastest one! But it needs sorting
+            Log.d("[Home] offerCollection", "offerCollection changed to: $it")
+            offerAdapter.setData(it)
         }
 
-        binding.buttonHomeCarblue.setOnClickListener {
-            viewModel.getOffersByColor("Blue")
-        }
-
+        // Show the filter options
         binding.btnBottomSheetModal.setOnClickListener {
             HomeBottomSheetDialogFragment().show(childFragmentManager, "HomeBottomSheetDialogFragment")
         }
@@ -172,44 +133,46 @@ class HomeFragment : Fragment() {
 
     }
 
-    private fun calculateDistance(location: LatLng): Float {
-        val userLocation = SessionManager.getUserLocation()
-        val userLat = userLocation?.latitude
-        val userLng = userLocation?.longitude
-
-        val distance = FloatArray(2)
-        Location.distanceBetween(
-            userLat!!,
-            userLng!!,
-            location.latitude,
-            location.longitude,
-            distance
-        )
-        return distance[0]
-    }
+//    private fun calculateDistance(location: LatLng): Float {
+//        val userLocation = SessionManager.getUserLocation()
+//        val userLat = userLocation?.latitude
+//        val userLng = userLocation?.longitude
+//
+//        val distance = FloatArray(2)
+//        Location.distanceBetween(
+//            userLat!!,
+//            userLng!!,
+//            location.latitude,
+//            location.longitude,
+//            distance
+//        )
+//        return distance[0]
+//    }
 
     override fun onStart() {
         super.onStart()
         // TODO: Page should remember last state (Available Cars / My Bookings) for navigating back from other pages
         Log.d("[Home] onStart", "onStart")
 
-        // TODO: Kan onderstaande op een andere manier? Dit voelt raar
-        val offerAdapter = OfferAdapter(GlideImageLoader(view?.context as AppCompatActivity)) { offer ->
-            val action = HomeFragmentDirections.actionHomeFragment2ToHomeDetailFragment2(
-                offer.id,
-                offer.car.model,
-                offer.pickupLocation,
-                offer.startDateTime,
-                offer.endDateTime,
-                "http://placekitten.com/400/400",
-            )
-            findNavController().navigate(action)
-        }
-        viewModel.getOffers()
+        // TODO: Check if this is needed
 
-        viewModel.offerResult.observe(viewLifecycleOwner) {
-            offerAdapter.setData(it)
-        }
+//        // TODO: Kan onderstaande op een andere manier? Dit voelt raar
+//        val offerAdapter = OfferAdapter(GlideImageLoader(view?.context as AppCompatActivity)) { offer ->
+//            val action = HomeFragmentDirections.actionHomeFragment2ToHomeDetailFragment2(
+//                offer.id,
+//                offer.car.model,
+//                offer.pickupLocation,
+//                offer.startDateTime,
+//                offer.endDateTime,
+//                "http://placekitten.com/400/400",
+//            )
+//            findNavController().navigate(action)
+//        }
+//        viewModel.getOffers()
+//
+//        viewModel.offerResult.observe(viewLifecycleOwner) {
+//            offerAdapter.setData(it)
+//        }
 
 //        offerAdapter.setData(viewModel.offerResult.value ?: emptyList())
     }

@@ -2,7 +2,6 @@ package com.avans.rentmycar.viewmodel
 
 import android.location.Location
 import android.util.Log
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,25 +18,90 @@ import kotlinx.coroutines.launch
 
 class OfferViewModel : ViewModel() {
 
+    // Declare the repository
     private val offerRepository = OfferRepository()
 
+    // ===== Results of the API calls =====
+    // TODO: Refactor this
     val offerResult: MutableLiveData<Collection<OfferData>> = MutableLiveData()
-
-    val bookingResult: MutableLiveData<BookingResponse?> = MutableLiveData()
     val bookingsResult: MutableLiveData<Collection<BookingData>> = MutableLiveData()
-
     val createBookingResult: MutableLiveData<CreateBookingResponse?> = MutableLiveData()
-
     var geocodeResult: MutableLiveData<GeocodeResponse?>? = MutableLiveData()
 
+//    val bookingResult: MutableLiveData<BookingResponse?> = MutableLiveData()
+
+    // ===== Variables for the API calls =====
+    // TODO: Use these
+    val offerCollection = MutableLiveData<Collection<OfferData>>()
+
+
+    // ===== Lists for sorting =====
+    // TODO: Refactor this and remove it
     var carLocationList: MutableLiveData<Map<Long,LatLng>> = MutableLiveData()
     var carDistanceList: MutableLiveData<Map<Long,Float>> = MutableLiveData()
 
 
+
+    // ===== Filter options =====
+    // Checkbox Filters
+    val checkboxFuelTypeIceFilter = MutableLiveData<Boolean>()
+    val checkboxFuelTypeBevFilter = MutableLiveData<Boolean>()
+    val checkboxFuelTypeFcevFilter = MutableLiveData<Boolean>()
+
+    // Slider Filters
+    val numberOfSeatsFilter = MutableLiveData<Int>()
+    val maxDistanceInKmFilter = MutableLiveData<Float>()
+
+
+
+    // ===== Filter Setters =====
+    // TODO: Remove the Log statements
+    // TODO: Check if these functions can be combined into one generic function
+    fun setCheckboxFuelTypeIceFilter(boolean: Boolean) {
+        Log.d("[OVM] chBevFilter", "storing checkboxFuelTypeIceFilter!: $boolean")
+        checkboxFuelTypeIceFilter.value = boolean
+    }
+
+    fun setCheckboxFuelTypeBevFilter(boolean: Boolean) {
+        Log.d("[OVM] chBevFilter", "storing checkboxFuelTypeBevFilter!: $boolean")
+        checkboxFuelTypeBevFilter.value = boolean
+    }
+
+    fun setCheckboxFuelTypeFcevFilter(boolean: Boolean) {
+        Log.d("[OVM] chBevFilter", "storing checkboxFuelTypeFcevFilter!: $boolean")
+        checkboxFuelTypeFcevFilter.value = boolean
+    }
+
+    fun setNumberOfSeatsFilter(number: Int) {
+        Log.d("[OVM] setNumbOfSeatsF", "storing numberOfSeatsFilter!: $number")
+        numberOfSeatsFilter.value = number
+    }
+
+    fun setMaxDistanceInKmFilter(number: Float) {
+        Log.d("[OVM] setMaxDistanceF", "storing setMaxDistanceInKmFilter!: $number")
+        maxDistanceInKmFilter.value = number
+    }
+
+
+    // ===== Offers =====
+    // TODO: Remove the Log statements
+    fun setOfferCollection(offers: Collection<OfferData>) {
+        Log.d("[OVM] setOfferColl", "setOfferCollection: $offers")
+        offerCollection.value = offers
+    }
+
+    fun getOfferWithId(id: Long): OfferData? {
+        Log.d("[OVM] getOfferWithId", "getOfferWithId: $id")
+        return offerCollection.value?.find { it.id == id }
+    }
+
+
+    // ===== Repository Interaction =====
     fun getOffers() {
         viewModelScope.launch {
             try {
                 val offerResponse = offerRepository.getOpenOffers()
+                setOfferCollection(offerResponse)
 
                 // TODO: Refactor this sorting and that of getOffers() to a separate function
 
