@@ -82,15 +82,18 @@ class HomeFragment : Fragment() {
         binding.recyclerviewHomeFragmentOffers.adapter = offerAdapter
 
         val model = ViewModelProvider(requireActivity())[OfferViewModel::class.java]
-        model.offerCollection.observe(viewLifecycleOwner, {
+        model.offerCollection.observe(viewLifecycleOwner) {
 
             offerAdapter.setData(it)
-            if(it.size == 0) {
+            if (it.isEmpty()) {
+                Log.d("[Home]", "No offers found")
                 // TODO: Show a text message that there are no offers available. For now, just show a snackbar
-                view?.let { it1 -> Snackbar.make(it1, "No offers found", Snackbar.LENGTH_LONG).show() }
+                view?.let { it1 ->
+                    Snackbar.make(it1, "No offers found", Snackbar.LENGTH_LONG).show()
+                }
             }
             binding.progressIndicatorHomeFragment.visibility = View.GONE
-        })
+        }
 
 
         // TODO: This should be in the Bookings fragment when it has been coded

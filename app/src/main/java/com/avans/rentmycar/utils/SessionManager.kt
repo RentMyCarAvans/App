@@ -93,6 +93,7 @@ object SessionManager {
 
     fun getDeviceLocation(): LatLng {
         Log.d("[SM] getDeviceLocation", "getDeviceLocation() called")
+        Log.d("[SM] getDeviceLocation", "deviceLocationHasBeenSet.value: ${deviceLocationHasBeenSet.value}")
         return deviceLocation
     }
 
