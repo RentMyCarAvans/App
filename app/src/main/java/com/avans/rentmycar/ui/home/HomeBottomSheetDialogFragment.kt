@@ -60,6 +60,8 @@ class HomeBottomSheetDialogFragment : BottomSheetDialogFragment() {
             viewModel.setNumberOfSeatsFilter(numberOfSeatsSlider.value.toInt())
             viewModel.setMaxDistanceInKmFilter(maxdistanceSlider.value)
 
+            viewModel.getOffers()
+
         }
 
 

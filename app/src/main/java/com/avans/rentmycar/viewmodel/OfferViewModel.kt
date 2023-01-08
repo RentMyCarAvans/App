@@ -44,13 +44,13 @@ class OfferViewModel : ViewModel() {
 
     // ===== Filter options =====
     // Checkbox Filters
-    val checkboxFuelTypeIceFilter = MutableLiveData<Boolean>()
-    val checkboxFuelTypeBevFilter = MutableLiveData<Boolean>()
-    val checkboxFuelTypeFcevFilter = MutableLiveData<Boolean>()
+    val checkboxFuelTypeIceFilter: MutableLiveData<Boolean> = MutableLiveData(false)
+    val checkboxFuelTypeBevFilter: MutableLiveData<Boolean> = MutableLiveData(false)
+    val checkboxFuelTypeFcevFilter: MutableLiveData<Boolean> = MutableLiveData(false)
 
     // Slider Filters
-    val numberOfSeatsFilter = MutableLiveData<Int>()
-    val maxDistanceInKmFilter = MutableLiveData<Float>()
+    val numberOfSeatsFilter: MutableLiveData<Int> = MutableLiveData(2)
+    val maxDistanceInKmFilter: MutableLiveData<Float> = MutableLiveData(100.0f)
 
 
 
@@ -87,13 +87,39 @@ class OfferViewModel : ViewModel() {
     // TODO: Remove the Log statements
     fun setOfferCollection(offers: Collection<OfferData>) {
         Log.d("[OVM] setOfferColl", "setOfferCollection: $offers")
-        offerCollection.value = offers
+        Log.d("[OVM] setOfferColl.val", "offerCollection.value: ${offerCollection.value}")
+
+        // Filter offers where offer.car.numberOfSeats >= numberOfSeatsFilter.value
+        var filteredOffers = offers.filter { it.car.numberOfSeats >= numberOfSeatsFilter.value!! }
+
+//        if (checkboxFuelTypeIceFilter.value!!) {
+//            filteredOffers = filteredOffers.filter { it.car.type == "ICE" }
+//        }
+//
+//        if (checkboxFuelTypeBevFilter.value!!) {
+//            filteredOffers = filteredOffers.filter { it.car.type == "BEV" }
+//        }
+//
+//        if (checkboxFuelTypeFcevFilter.value!!) {
+//            filteredOffers = filteredOffers.filter { it.car.type == "FCEV" }
+//        }
+
+        Log.d("[OVM] setOfferColl", "filteredOffers: $filteredOffers")
+
+
+//        offerCollection.value = offers
+        offerCollection.value = filteredOffers
+
+        Log.d("[OVM] setOfferColl.val", "offerCollection.value na filteredOffers: ${offerCollection.value}")
+
     }
 
     fun getOfferWithId(id: Long): OfferData? {
         Log.d("[OVM] getOfferWithId", "getOfferWithId: $id")
         return offerCollection.value?.find { it.id == id }
     }
+
+
 
 
     // ===== Repository Interaction =====
