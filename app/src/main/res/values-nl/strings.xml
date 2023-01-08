@@ -49,4 +49,6 @@
     <string name="the_car">De Auto</string>
     <string name="delete">Verwijderen</string>
     <string name="invalid_license">Het kentekenformaat is onjuist. Voer een geldig Nederlands kenteken in</string>
+    <string name="enddate">Einddatum</string>
+    <string name="startdate">Startdatum</string>
 </resources>
