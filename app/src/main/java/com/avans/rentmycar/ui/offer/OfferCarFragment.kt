@@ -52,7 +52,7 @@ class OfferCarFragment : Fragment() {
         binding.buttonCarSave.setOnClickListener {
             Log.d(TAG, "onViewCreated() => Button SAVE clicked. Invoke CarApiService")
             // TODO Add validation for all inputfield
-            updateCar()
+            createOffer()
             Snackbar.make(view, "Offer on car with licenseplate " + args.licenseplate + " created", Snackbar.LENGTH_LONG)
                 .show()
             Log.d(TAG, "onViewCreated() => Offer made for car " + args.licenseplate + ". Return to home")
@@ -71,61 +71,9 @@ class OfferCarFragment : Fragment() {
         binding.textviewOfferCarLicensePlate.text = (args.licenseplate)
     }
 
-    private fun updateCar() {
-        Log.d(TAG, "updateCar()")
+    private fun createOffer() {
+        Log.d(TAG, "createOffer()")
         val carViewModel: CarViewModel by viewModels()
 
-        // Cast inputfields
-        /*
-        val carColor: TextInputEditText = binding.txtInputCarColor
-        val color: String = carColor.text.toString()
-
-        val carLicensePlate: TextInputEditText = binding.txtInputCarLicensePlate
-        val licensePlate: String = carLicensePlate.text.toString()
-
-        val carModel: TextInputEditText = binding.txtInputCarModel
-        val model: String = carModel.text.toString()
-
-        val carNrOfSeats: TextInputEditText = binding.txtInputCarNrOfSeats
-        val nrOfSeats: String = carNrOfSeats.text.toString()
-
-        val carType: TextInputEditText = binding.txtInputCarVehicle
-        val type: String = carType.text.toString()
-
-        val carVehicleType: TextInputEditText = binding.txtInputCarVehicle
-        val vehicleType: String = carVehicleType.text.toString()
-        val userId = SessionManager.getUserId(requireContext())?.toInt()
-        val carYear: TextInputEditText = binding.txtInputCarYear
-        val year: String = carYear.text.toString()
-        Log.d(TAG, "createCar() => colorType = " + color)
-        Log.d(TAG, "createCar() => licensePlate = " + licensePlate)
-        Log.d(TAG, "createCar() => model = " + model)
-        Log.d(TAG, "createCar() => numberOfSeats = " + nrOfSeats.toInt(),)
-        Log.d(TAG, "createCar() => type = " + type)
-        Log.d(TAG, "createCar() => vehicleType = " + vehicleType)
-        Log.d(TAG, "createCar() => yearOfManufacture = " + year.toInt())
-        var mType: String
-        when (vehicleType) {
-            "Beinze" -> mType = "ICE"
-            "Diesel" -> mType = "BEV"
-            else -> {
-                mType = "FCEV"
-            }
-        }
-        carViewModel.createCar(
-            colorType = color,
-            image = "", // TODO
-            licensePlate = licensePlate,
-            mileage = 100, // TODO
-            model = model,
-            numberOfSeats = nrOfSeats.toInt(),
-            type = mType,
-            userId = userId!!,
-            vehicleType = vehicleType,
-            yearOfManufacture = year.toInt()
-        )
-        Log.d(TAG, "createCar() => After calling viewModel.createCar().")
-
-         */
     }
 }

@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentEditCarBinding
+import com.avans.rentmycar.utils.SessionManager
 import com.avans.rentmycar.viewmodel.CarViewModel
 import com.google.android.material.snackbar.Snackbar
 
@@ -50,7 +51,7 @@ class EditCarFragment : Fragment() {
 
         binding.buttonCarUpdate.setOnClickListener {
             Log.d(TAG, "onViewCreated() => Button UPDATE clicked. Invoke CarApiService")
-            carViewModel.updateCar()
+            updateCar(args.licenseplate, args.id)
             Snackbar.make(view, "Car " + args.brand + " with licenseplate " + args.licenseplate + " updated", Snackbar.LENGTH_LONG)
                 .show()
             Log.d(TAG, "onViewCreated() => Car " + args.brand + " with licenseplate " + args.licenseplate + " updated. Return to home")
@@ -73,21 +74,65 @@ class EditCarFragment : Fragment() {
 
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment EditCarFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            EditCarFragment().apply {
-                arguments = Bundle().apply {
-                }
+    private fun updateCar(licensePlate: String, Id: String) {
+        Log.d(TAG, "updateCar()")
+        val carViewModel: CarViewModel by viewModels()
+
+        // Cast inputfields
+        val carColor = binding.txtInputCarColor
+        val color: String = carColor.text.toString()
+
+        val carModel = binding.txtInputCarModel
+        val model: String = carModel.text.toString()
+
+        val carNrOfSeats = binding.txtInputCarNrOfSeats
+        val nrOfSeats: String = carNrOfSeats.text.toString()
+
+        val carType = binding.txtInputCarVehicle
+        val type: String = carType.text.toString()
+
+        val carVehicleType = binding.txtInputCarVehicle
+        val vehicleType: String = carVehicleType.text.toString()
+
+        val carYear = binding.txtInputCarYear
+        val year: String = carYear.text.toString()
+
+        val carMileage = binding.txtInputCarMileage
+        val mileage: String = carMileage.text.toString()
+
+        val userId = SessionManager.getUserId(requireContext())?.toInt()
+        Log.d(TAG, "updateCar() => id = " + Id)
+        Log.d(TAG, "updateCar() => colorType = " + color)
+        Log.d(TAG, "updateCar() => licensePlate = " + licensePlate)
+        Log.d(TAG, "updateCar() => mileage = " + mileage.toInt())
+        Log.d(TAG, "updateCar() => model = " + model)
+        Log.d(TAG, "updateCar() => numberOfSeats = " + nrOfSeats.toInt(),)
+        Log.d(TAG, "updateCar() => type = " + type)
+        Log.d(TAG, "updateCar() => vehicleType = " + vehicleType)
+        Log.d(TAG, "updateCar() => yearOfManufacture = " + year.toInt())
+        var mType: String
+        when (vehicleType) {
+            "Beinze" -> mType = "ICE"
+            "Diesel" -> mType = "BEV"
+            else -> {
+                mType = "FCEV"
             }
+        }
+        if (mileage != null) {
+            carViewModel.updateCar(
+                id = Id.toInt(),
+                colorType = color,
+                image = "", // TODO
+                licensePlate = licensePlate,
+                mileage = mileage.toInt(),
+                model = model,
+                numberOfSeats = nrOfSeats.toInt(),
+                type = mType,
+                userId = userId!!,
+                vehicleType = vehicleType,
+                yearOfManufacture = year.toInt()
+            )
+        }
+        Log.d(TAG, "updateCar() => After calling viewModel.updateCar().")
     }
 }

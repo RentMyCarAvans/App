@@ -122,8 +122,55 @@ class CarViewModel : ViewModel() {
         }
     }
 
-    fun updateCar(){
-        Log.d("[RMC][CarViewModel]", "updateCar() ")
+    fun updateCar(id: Int, colorType: String?, image: String, licensePlate: String, mileage: Int, model: String, numberOfSeats: Int, type: String, userId: Int, vehicleType: String, yearOfManufacture: Int) {
+        carCreateResponse.value = BaseResponse.Loading()
+        viewModelScope.launch {
+            try {
+                Log.d(TAG, "updateCar() => id = " + id)
+                Log.d(TAG, "updateCar() => colorType = " + colorType)
+                Log.d(TAG, "updateCar() => image = " + image)
+                Log.d(TAG, "updateCar() => licensePlate = " + licensePlate)
+                Log.d(TAG, "updateCar() => mileage = " + mileage)
+                Log.d(TAG, "updateCar() => model = " + model)
+                Log.d(TAG, "updateCar() => numberOfSeats = " + numberOfSeats)
+                Log.d(TAG, "updateCar() => type = " + type)
+                Log.d(TAG, "updateCar() => userId = " + userId)
+                Log.d(TAG, "updateCar() => vehicleType = " + vehicleType)
+                Log.d(TAG, "updateCar() => yearOfManufacture = " + yearOfManufacture)
+                val carRequest = CarRequest(colorType = colorType,
+                    image = image,
+                    licensePlate = licensePlate,
+                    mileage = mileage,
+                    model = model,
+                    numberOfSeats = numberOfSeats,
+                    type = type,
+                    userId = userId,
+                    vehicleType = vehicleType,
+                    yearOfManufacture = yearOfManufacture)
+                Log.d(TAG, "updateCar() => carRequest = " + carRequest)
+                Log.d(TAG, "updateCar() => carRequest = " + carRequest.toString())
+                val response = carRepository.updateCar(id, carRequest = carRequest)
+                Log.d("[RMC][CarViewModel]", "updateCar() => carRepository called with reponse: " + response.toString())
+
+                // Return to CarFragmain
+                if (response?.status == 201) {
+                    Log.d("[RMC][CarViewModel]", "updateCar() => Responsecode 201")
+
+                    // carCreateResponse.value = BaseResponse.Success(response.body())
+                    carCreateResponse.value = BaseResponse.Success()
+                } else {
+                    Log.d("[RMC][CarViewModel]", "updateCar() => Error. Status: "+response?.status)
+
+                    // carCreateResponse.value = BaseResponse.Error(response?.message())
+                    carCreateResponse.value = BaseResponse.Error(response?.status.toString())
+                }
+
+            } catch (ex: Exception) {
+                Log.d("[RMC][CarViewModel]", "updateCar() => Exception: " + BaseResponse.Error(ex.message).toString()
+                )
+                carCreateResponse.value = BaseResponse.Error(ex.message)
+            }
+        }
     }
 
 }
