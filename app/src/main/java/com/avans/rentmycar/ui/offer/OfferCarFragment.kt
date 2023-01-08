@@ -11,8 +11,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentOfferBinding
+import com.avans.rentmycar.utils.SessionManager
 import com.avans.rentmycar.viewmodel.CarViewModel
+import com.avans.rentmycar.viewmodel.OfferViewModel
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputEditText
 
 /**
  * A simple [Fragment] subclass.
@@ -52,7 +55,7 @@ class OfferCarFragment : Fragment() {
         binding.buttonCarSave.setOnClickListener {
             Log.d(TAG, "onViewCreated() => Button SAVE clicked. Invoke CarApiService")
             // TODO Add validation for all inputfield
-            createOffer()
+            createOffer(args.id.toInt())
             Snackbar.make(view, "Offer on car with licenseplate " + args.licenseplate + " created", Snackbar.LENGTH_LONG)
                 .show()
             Log.d(TAG, "onViewCreated() => Offer made for car " + args.licenseplate + ". Return to home")
@@ -71,9 +74,28 @@ class OfferCarFragment : Fragment() {
         binding.textviewOfferCarLicensePlate.text = (args.licenseplate)
     }
 
-    private fun createOffer() {
+    private fun createOffer(id: Int) {
         Log.d(TAG, "createOffer()")
-        val carViewModel: CarViewModel by viewModels()
+        val offerViewModel: OfferViewModel by viewModels()
 
+        // Cast inputfields
+        val offerStartDate: TextInputEditText = binding.txtInputOfferCarStartDate
+        val startDate: String = offerStartDate.text.toString()
+
+        val offerEndDate: TextInputEditText = binding.txtInputOfferCarEndDate
+        val endDate: String = offerEndDate.text.toString()
+
+        val offerLocation: TextInputEditText = binding.txtInputOfferCarLocation
+        val location: String = offerLocation.text.toString()
+
+        val carId : Long = id.toLong()
+
+        Log.d(TAG, "createOffer() => startDate = " + startDate)
+        Log.d(TAG, "createOffer() => endDate = " + endDate)
+        Log.d(TAG, "createOffer() => location = " + location)
+        Log.d(TAG, "createOffer() => carId = " + carId)
+
+        offerViewModel.createOffer(startDate, endDate, location, carId)
+        Log.d(TAG, "createOffer() => After calling viewModel.createOffer().")
     }
 }
