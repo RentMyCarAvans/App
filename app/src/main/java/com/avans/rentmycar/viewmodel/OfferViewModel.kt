@@ -44,9 +44,9 @@ class OfferViewModel : ViewModel() {
 
     // ===== Filter options =====
     // Checkbox Filters
-    val checkboxFuelTypeIceFilter: MutableLiveData<Boolean> = MutableLiveData(false)
-    val checkboxFuelTypeBevFilter: MutableLiveData<Boolean> = MutableLiveData(false)
-    val checkboxFuelTypeFcevFilter: MutableLiveData<Boolean> = MutableLiveData(false)
+    val checkboxFuelTypeIceFilter: MutableLiveData<Boolean> = MutableLiveData(true)
+    val checkboxFuelTypeBevFilter: MutableLiveData<Boolean> = MutableLiveData(true)
+    val checkboxFuelTypeFcevFilter: MutableLiveData<Boolean> = MutableLiveData(true)
 
     // Slider Filters
     val numberOfSeatsFilter: MutableLiveData<Int> = MutableLiveData(2)
@@ -92,17 +92,21 @@ class OfferViewModel : ViewModel() {
         // Filter offers where offer.car.numberOfSeats >= numberOfSeatsFilter.value
         var filteredOffers = offers.filter { it.car.numberOfSeats >= numberOfSeatsFilter.value!! }
 
-//        if (checkboxFuelTypeIceFilter.value!!) {
-//            filteredOffers = filteredOffers.filter { it.car.type == "ICE" }
-//        }
-//
-//        if (checkboxFuelTypeBevFilter.value!!) {
-//            filteredOffers = filteredOffers.filter { it.car.type == "BEV" }
-//        }
-//
-//        if (checkboxFuelTypeFcevFilter.value!!) {
-//            filteredOffers = filteredOffers.filter { it.car.type == "FCEV" }
-//        }
+        // If checkboxFuelTypeIceFilte is false, remove all ICE cars from the list
+        if (!checkboxFuelTypeIceFilter.value!!) {
+            filteredOffers = filteredOffers.filter { it.car.type != "ICE" }
+        }
+
+        // If checkboxFuelTypeBevFilte is false, remove all BEV cars from the list
+        if (!checkboxFuelTypeBevFilter.value!!) {
+            filteredOffers = filteredOffers.filter { it.car.type != "BEV" }
+        }
+
+        // If checkboxFuelTypeFcevFilte is false, remove all FCEV cars from the list
+        if (!checkboxFuelTypeFcevFilter.value!!) {
+            filteredOffers = filteredOffers.filter { it.car.type != "FCEV" }
+        }
+
 
         Log.d("[OVM] setOfferColl", "filteredOffers: $filteredOffers")
 

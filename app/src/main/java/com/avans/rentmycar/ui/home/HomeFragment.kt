@@ -19,6 +19,7 @@ import com.avans.rentmycar.databinding.FragmentHomeBinding
 import com.avans.rentmycar.utils.GlideImageLoader
 import com.avans.rentmycar.utils.SessionManager
 import com.avans.rentmycar.viewmodel.OfferViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class HomeFragment : Fragment() {
 
@@ -92,6 +93,15 @@ class HomeFragment : Fragment() {
         model.offerCollection.observe(viewLifecycleOwner, Observer {
             // updating data in displayMsg
             offerAdapter.setData(it)
+
+            Log.d("[Home] offerColl size", "offerCollection size changed to: ${it.size}")
+
+            if(it.size == 0) {
+                // TODO: Show a message that there are no offers available
+                // For now, just show a snackbar
+                Snackbar.make(view, "No offers found", Snackbar.LENGTH_LONG).show()
+            }
+
         })
 
         // Show the filter options
@@ -140,6 +150,8 @@ class HomeFragment : Fragment() {
         }
 
 
+        model.getOffers()
+
     }
 
 //    private fun calculateDistance(location: LatLng): Float {
@@ -158,32 +170,32 @@ class HomeFragment : Fragment() {
 //        return distance[0]
 //    }
 
-    override fun onStart() {
-        super.onStart()
-        // TODO: Page should remember last state (Available Cars / My Bookings) for navigating back from other pages
-        Log.d("[Home] onStart", "onStart")
-
-        // TODO: Check if this is needed
-
-//        // TODO: Kan onderstaande op een andere manier? Dit voelt raar
-//        val offerAdapter = OfferAdapter(GlideImageLoader(view?.context as AppCompatActivity)) { offer ->
-//            val action = HomeFragmentDirections.actionHomeFragment2ToHomeDetailFragment2(
-//                offer.id,
-//                offer.car.model,
-//                offer.pickupLocation,
-//                offer.startDateTime,
-//                offer.endDateTime,
-//                "http://placekitten.com/400/400",
-//            )
-//            findNavController().navigate(action)
-//        }
-//        viewModel.getOffers()
+//    override fun onStart() {
+//        super.onStart()
+//        // TODO: Page should remember last state (Available Cars / My Bookings) for navigating back from other pages
+//        Log.d("[Home] onStart", "onStart")
 //
-//        viewModel.offerResult.observe(viewLifecycleOwner) {
-//            offerAdapter.setData(it)
-//        }
-
-//        offerAdapter.setData(viewModel.offerResult.value ?: emptyList())
-    }
+//        // TODO: Check if this is needed
+//
+////        // TODO: Kan onderstaande op een andere manier? Dit voelt raar
+////        val offerAdapter = OfferAdapter(GlideImageLoader(view?.context as AppCompatActivity)) { offer ->
+////            val action = HomeFragmentDirections.actionHomeFragment2ToHomeDetailFragment2(
+////                offer.id,
+////                offer.car.model,
+////                offer.pickupLocation,
+////                offer.startDateTime,
+////                offer.endDateTime,
+////                "http://placekitten.com/400/400",
+////            )
+////            findNavController().navigate(action)
+////        }
+////        viewModel.getOffers()
+////
+////        viewModel.offerResult.observe(viewLifecycleOwner) {
+////            offerAdapter.setData(it)
+////        }
+//
+////        offerAdapter.setData(viewModel.offerResult.value ?: emptyList())
+//    }
 
 }

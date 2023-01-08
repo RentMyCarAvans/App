@@ -40,9 +40,9 @@ class HomeBottomSheetDialogFragment : BottomSheetDialogFragment() {
         val numberOfSeatsSlider = view.findViewById<View>(R.id.slider_home_sheet_seats) as Slider
         val maxdistanceSlider = view.findViewById<View>(R.id.slider_home_sheet_maxdistance) as Slider
 
-        iceCheckbox.isChecked = viewModel.checkboxFuelTypeIceFilter.value ?: false
-        bevCheckbox.isChecked = viewModel.checkboxFuelTypeBevFilter.value ?: false
-        fvecCheckbox.isChecked = viewModel.checkboxFuelTypeFcevFilter.value ?: false
+        iceCheckbox.isChecked = viewModel.checkboxFuelTypeIceFilter.value ?: true
+        bevCheckbox.isChecked = viewModel.checkboxFuelTypeBevFilter.value ?: true
+        fvecCheckbox.isChecked = viewModel.checkboxFuelTypeFcevFilter.value ?: true
 
         numberOfSeatsSlider.value = viewModel.numberOfSeatsFilter.value?.toFloat() ?: 4f
         maxdistanceSlider.value = viewModel.maxDistanceInKmFilter.value?.toFloat() ?: 50f
