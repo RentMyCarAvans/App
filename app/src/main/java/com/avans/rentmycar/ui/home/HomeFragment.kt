@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,14 +19,13 @@ import com.avans.rentmycar.databinding.FragmentHomeBinding
 import com.avans.rentmycar.utils.GlideImageLoader
 import com.avans.rentmycar.utils.SessionManager
 import com.avans.rentmycar.viewmodel.OfferViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class HomeFragment : Fragment() {
 
-    // Declare viewbinding
     private lateinit var _binding: FragmentHomeBinding
     private val binding get() = _binding
 
-    // Declare viewmodel
     private val viewModel: OfferViewModel by viewModels()
 
     override fun onCreateView(
@@ -32,7 +33,6 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        //show actionbar
         (activity as AppCompatActivity?)!!.supportActionBar!!.show()
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
@@ -40,53 +40,59 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val binding = FragmentHomeBinding.bind(view)
-
-        // Set the title of the actionbar
-        val bar = (activity as AppCompatActivity).supportActionBar
-        bar?.title = getString(R.string.offers_title)
 
         // Set the TopButton colors to the default when the fragment is loaded
+        // TODO: Replace this with a MD3 component
         binding.buttonHomeAvailablecars.setBackgroundColor(resources.getColor(R.color.blue_200))
         binding.buttonHomeMybookings.setBackgroundColor(resources.getColor(R.color.blue_500))
 
+        // Set the title of the actionbar
+        // TODO: Can this be done in the activity? Or in the navigation graph?
+        val bar = (activity as AppCompatActivity).supportActionBar
+        bar?.title = getString(R.string.offers_title)
+    }
+
+    override fun onStart() {
+        super.onStart()
+
         // Get the id of the logged in user so we can use it to get the correct offers and bookings
+        // TODO: Move this to the BookingsFragment for it is not needed here now because we do not filter offers on userId
         val userId = SessionManager.getUserId(requireContext())
 
         // Make all the items in the recyclerview clickable, so the user can click on an item and go to the detail page of the selected offer
-        val offerAdapter = OfferAdapter(GlideImageLoader(view.context as AppCompatActivity)) { offer ->
+        val offerAdapter = OfferAdapter(GlideImageLoader(view?.context as AppCompatActivity)) { offer ->
 
-            var carImage = ""
-            carImage = if(offer.car.image == null) {
-                "http://placekitten.com/500/500"
-            } else {
-                offer.car.image
-            }
-
+            // TODO: Only pass the ID and let the DetailsFragment fetch the data from the Collection
             val action = HomeFragmentDirections.actionHomeFragment2ToHomeDetailFragment2(
                 offer.id,
                 offer.car.model,
                 offer.pickupLocation,
                 offer.startDateTime,
                 offer.endDateTime,
-                carImage,
-
+                offer.car.image
             )
-
-            Log.d("[Home][Fragment]", "onViewCreated() => offer with carmodel " + offer.car.model)
 
             //TODO: Andere Fragment maken voor de Booking Details
             findNavController().navigate(action)
         }
 
         binding.recyclerviewHomeFragmentOffers.layoutManager =
-            LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
+            LinearLayoutManager(view?.context, RecyclerView.VERTICAL, false)
         binding.recyclerviewHomeFragmentOffers.adapter = offerAdapter
 
-        viewModel.offerResult.observe(viewLifecycleOwner) {
-            offerAdapter.setData(it)
-        }
+        val model = ViewModelProvider(requireActivity())[OfferViewModel::class.java]
+        model.offerCollection.observe(viewLifecycleOwner, {
 
+            offerAdapter.setData(it)
+            if(it.size == 0) {
+                // TODO: Show a text message that there are no offers available. For now, just show a snackbar
+                view?.let { it1 -> Snackbar.make(it1, "No offers found", Snackbar.LENGTH_LONG).show() }
+            }
+            binding.progressIndicatorHomeFragment.visibility = View.GONE
+        })
+
+
+        // TODO: This should be in the Bookings fragment when it has been coded
         viewModel.bookingsResult.observe(viewLifecycleOwner) {
             Log.d("[Home]", "Bookings: $it")
             val offersFromMyBookings = viewModel.bookingsResult.value?.map { it.offer } ?: emptyList()
@@ -95,62 +101,41 @@ class HomeFragment : Fragment() {
         }
 
 
-
-        //TODO: Zorgen dat de lijst herlaadt na klikken op de knop
-
-        binding.buttonHomeAvailablecars.setOnClickListener {
-            Log.d("[Home]", "BUTTON Available Cars clicked")
-
-            binding.buttonHomeAvailablecars.setBackgroundColor(resources.getColor(R.color.blue_200))
-            binding.buttonHomeMybookings.setBackgroundColor(resources.getColor(R.color.blue_500))
-
-            viewModel.getOffers()
-            Log.d("[Home] offrRes", viewModel.offerResult.value.toString())
-            offerAdapter.setData(viewModel.offerResult.value ?: emptyList())
-
+        // Filter options
+        binding.btnBottomSheetModal.setOnClickListener {
+            HomeBottomSheetDialogFragment().show(childFragmentManager, "HomeBottomSheetDialogFragment")
         }
 
-        binding.buttonHomeMybookings.setOnClickListener {
-            Log.d("[Home]", "BUTTON My Bookings clicked")
+        // Topbar navigation button Available cars
+        binding.buttonHomeAvailablecars.setOnClickListener {
+            binding.buttonHomeAvailablecars.setBackgroundColor(resources.getColor(R.color.blue_200))
+            binding.buttonHomeMybookings.setBackgroundColor(resources.getColor(R.color.blue_500))
+            model.getOffers()
+        }
 
+        // Topbar navigation button My bookings
+        binding.buttonHomeMybookings.setOnClickListener {
             binding.buttonHomeAvailablecars.setBackgroundColor(resources.getColor(R.color.blue_500))
             binding.buttonHomeMybookings.setBackgroundColor(resources.getColor(R.color.blue_200))
-
             if (userId != null) {
                 viewModel.getBookings(userId)
-                // TODO: Find out why this doesn't work the first time and returns null, but works the second time
-                Log.d("[Home] bkngSres", viewModel.bookingsResult.value.toString())
-
                 // TODO: Maybe create a new layout for My Bookings?
-                // Extracting the Offers from My Bookings to display them in the recyclerview
                 val offersFromMyBookings = viewModel.bookingsResult.value?.map { it.offer } ?: emptyList()
-
                 offerAdapter.setData(offersFromMyBookings)
             }
         }
 
+        // Get the offers from the database if the devicelocation is available
+        SessionManager.deviceLocationHasBeenSet.observe(viewLifecycleOwner, {
+            if(SessionManager.deviceLocationHasBeenSet.value == false) {
+                Log.w("[Home] SM Deviceloc", "Device location has not been set yet, so we will do that now")
+                binding.progressIndicatorHomeFragment.visibility = View.VISIBLE
+            } else {
+                Log.i("[Home] SM Deviceloc", "Device location has been set, so we can start!")
+                model.getOffers()
+            }
+        })
 
-    }
-
-    override fun onStart() {
-        super.onStart()
-        // TODO: Page should remember last state (Available Cars / My Bookings) for navigating back from other pages
-        Log.d("[Home] Offer", "onStart")
-
-        // TODO: Kan onderstaande op een andere manier? Dit voelt raar
-        val offerAdapter = OfferAdapter(GlideImageLoader(view?.context as AppCompatActivity)) { offer ->
-            val action = HomeFragmentDirections.actionHomeFragment2ToHomeDetailFragment2(
-                offer.id,
-                offer.car.model,
-                offer.pickupLocation,
-                offer.startDateTime,
-                offer.endDateTime,
-                "http://placekitten.com/400/400"
-            )
-            findNavController().navigate(action)
-        }
-        viewModel.getOffers()
-        offerAdapter.setData(viewModel.offerResult.value ?: emptyList())
     }
 
 }

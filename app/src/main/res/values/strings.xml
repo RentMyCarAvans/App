@@ -45,11 +45,21 @@
     <string name="home_availablecars">Available Cars</string>
     <string name="home_mybookings">My Bookings</string>
     <string name="home_myoffers">My Offers (werkt nog niet)</string>
-    <string name="offer_pickupAfter">Pickup after: %1$s</string>
-    <string name="offer_returnBefore">Return before: %1$s</string>
+    <string name="offer_pickupAfter">From: %1$s</string>
+    <string name="offer_returnBefore">To: %1$s</string>
     <string name="the_car">The Car</string>
     <string name="delete">Delete</string>
     <string name="invalid_license">Licenseplate has an invalid pattern. Please provide a valid Dutch licenseplate</string>
     <string name="enddate">Enddate</string>
     <string name="startdate">Startdate</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="location_permission_denied_explanation">Location permission is needed for this functionality</string>
+    <string name="filter_by">Filter</string>
+    <string name="filter">Apply Filter</string>
+    <string name="minimum_number_of_seats">Minimum number of seats</string>
+    <string name="maximum_distance_from_my_location_in_km">Maximum distance from my location in km</string>
+    <string name="fuel_type">Fuel Type</string>
+    <string name="fcev">FCEV</string>
+    <string name="bev">BEV</string>
+    <string name="ice">ICE</string>
 </resources>

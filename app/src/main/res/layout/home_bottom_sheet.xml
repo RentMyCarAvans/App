@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    app:behavior_hideable="false">
+
+
+    <CheckBox
+        android:id="@+id/checkbox_home_sheet_ice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ice"
+        app:layout_constraintBottom_toTopOf="@id/textView_home_sheet_fueltype"
+        app:layout_constraintEnd_toStartOf="@id/checkbox_home_sheet_bev"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/checkbox_home_sheet_bev"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bev"
+
+        app:layout_constraintBottom_toTopOf="@id/textView_home_sheet_fueltype"
+        app:layout_constraintEnd_toStartOf="@id/checkbox_home_sheet_fcev"
+        app:layout_constraintStart_toEndOf="@id/checkbox_home_sheet_ice"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/checkbox_home_sheet_fcev"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fcev"
+        app:layout_constraintBottom_toTopOf="@id/textView_home_sheet_fueltype"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/checkbox_home_sheet_bev"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView_home_sheet_fueltype"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fuel_type"
+        app:layout_constraintTop_toBottomOf="@id/checkbox_home_sheet_bev"
+        app:layout_constraintBottom_toTopOf="@+id/divider_home_sheet_fueltype"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textAlignment="center"
+ />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider_home_sheet_fueltype"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        app:layout_constraintBottom_toTopOf="@id/slider_home_sheet_seats"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView_home_sheet_fueltype" />
+
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/slider_home_sheet_seats"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="20dp"
+        android:stepSize="1"
+        android:value="2"
+        android:valueFrom="1"
+        android:valueTo="6"
+        app:labelBehavior="visible"
+        app:layout_constraintBottom_toTopOf="@id/slider_home_sheet_maxdistance"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider_home_sheet_fueltype" />
+
+    <TextView
+        android:id="@+id/textView_home_sheet_seats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/minimum_number_of_seats"
+        app:layout_constraintBottom_toTopOf="@+id/divider_home_sheet_seats"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@+id/slider_home_sheet_seats" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider_home_sheet_seats"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toTopOf="@id/slider_home_sheet_maxdistance"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView_home_sheet_seats" />
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/slider_home_sheet_maxdistance"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="20dp"
+        android:value="50"
+        android:valueFrom="1"
+        android:valueTo="100"
+        android:stepSize="1"
+        app:tickVisible="false"
+        app:labelBehavior="visible"
+        app:layout_constraintBottom_toTopOf="@id/textView_home_sheet_maxdistance"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider_home_sheet_seats" />
+
+    <TextView
+        android:id="@+id/textView_home_sheet_maxdistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/maximum_distance_from_my_location_in_km"
+        app:layout_constraintBottom_toTopOf="@+id/divider_home_sheet_distance"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@+id/slider_home_sheet_maxdistance" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider_home_sheet_distance"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@id/button_home_sheet_filter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView_home_sheet_maxdistance" />
+
+    <Button
+        android:id="@+id/button_home_sheet_filter"
+        android:layout_width="@dimen/dimen_0"
+        android:layout_height="@dimen/dimen_60"
+        android:text="@string/filter"
+        android:background="@color/blue_200"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider_home_sheet_distance" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
