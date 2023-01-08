@@ -127,7 +127,7 @@ class CarDetailFragment : Fragment() {
         binding.buttonEditCarimageFab.setOnClickListener {
             Log.d(TAG, "onViewCreated() => Button EDIT clicked. Go to the Edit fragment")
             val action =
-                CarDetailFragmentDirections.actionCarDetailFragmentToEditCarFragment(args.color, args.id)
+                CarDetailFragmentDirections.actionCarDetailFragmentToEditCarFragment(args.color, args.id, args.brand, args.mileage, args.licenseplate, args.numberofseats, args.year, args.carimageurl)
             view.findNavController().navigate(action)
 
         }

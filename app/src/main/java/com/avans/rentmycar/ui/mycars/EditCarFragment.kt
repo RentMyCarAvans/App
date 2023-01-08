@@ -7,13 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
-import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentEditCarBinding
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
@@ -39,25 +33,36 @@ class EditCarFragment : Fragment() {
         // Inflate the layout for this fragment
         Log.d("[RMC][EditCarFragment]","onCreateView()")
         _binding = FragmentEditCarBinding.inflate(inflater, container, false)
-
-        return inflater.inflate(R.layout.fragment_edit_car, container, false)
+        // TODO Figure out why this is not working. The data is NOT being showed on the UI. Instead, you HAVE to use binding.root
+        // return inflater.inflate(R.layout.fragment_edit_car, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val args: EditCarFragmentArgs by navArgs()
-        val carId = args.id
-        val carColor = args.color
-        bindUI(carColor)
-
+        //bindUI(args.color, args.brand, args.mileage?.toInt(), args.licenseplate, args.numberofseats?.toInt(), args.year?.toInt(), args.carimageurl)
+        bindUI2(args)
     }
 
     /**
      * Binds views with the passed in item data.
      */
-    fun bindUI(color:String) {
+    fun bindUI(color:String?, brand:String?, mileage:Int?, licensePlate:String?, nrOfSeats:Int?, year:Int?, carImageUrl:String?) {
         Log.d(TAG, "bindUI() => color: "+color )
-        binding.txtInputCarColor.setText(color)
+        binding.txtInputCarNrOfDoors.setText(color)
+        binding.txtInputCarColor.setText(color).toString()
+        binding.txtInputCarModel.setText("Tesla").toString()
+        this.binding.txtInputCarVehicle.setText("Auto").toString()
+        binding.txtInputCarVehicle.setText("Porsche 911 Turbo")
+        binding.txtInputCarVehicle.setText("koppppppp")
+    }
+    fun bindUI2(args: EditCarFragmentArgs) {
+        binding.txtInputCarNrOfDoors.setText(args.numberofseats)
+        binding.txtInputCarColor.setText(args.color)
+        binding.txtInputCarModel.setText(args.brand)
+        binding.txtInputCarVehicle.setText(args.year)
+
     }
 
     companion object {
@@ -74,8 +79,6 @@ class EditCarFragment : Fragment() {
         fun newInstance(param1: String, param2: String) =
             EditCarFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
                 }
             }
     }
