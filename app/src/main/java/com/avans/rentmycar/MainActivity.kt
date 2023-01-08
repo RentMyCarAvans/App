@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity() {
                 val snackbar = Snackbar.make(
                     findViewById(android.R.id.content),
                     "Location access is required to show nearby cars.",
-                    Snackbar.LENGTH_INDEFINITE
+                    Snackbar.LENGTH_LONG
                 )
                 snackbar.show()
 
@@ -109,6 +109,7 @@ class MainActivity : AppCompatActivity() {
             Log.d(TAG, "Checking if location permission is granted")
             if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 Log.d(TAG, "Location permission is granted")
+                SessionManager.setLocationPermissionGranted(true)
 
                 fusedLocationClient.getCurrentLocation(PRIORITY_HIGH_ACCURACY, null
 
@@ -124,6 +125,7 @@ class MainActivity : AppCompatActivity() {
             }
         } else {
             Log.w("[Main] Location", "Location permission not granted")
+            SessionManager.setLocationPermissionGranted(false)
         }
 
     }

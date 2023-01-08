@@ -9,7 +9,8 @@ import com.google.android.gms.maps.model.LatLng
 
 object SessionManager {
 
-    private var deviceLocation: LatLng = LatLng(51.925959,3.9226572) // TODO: Figuer out if the SessionManager is the right place for this
+    private var deviceLocation: LatLng = LatLng(51.925959,3.9226572) // TODO: Figure out if the SessionManager is the right place for this
+    var locationPermissionHasBeenGranted: MutableLiveData<Boolean> = MutableLiveData(false)
     var deviceLocationHasBeenSet: MutableLiveData<Boolean> = MutableLiveData(false)
 
     const val USER_TOKEN = "user_token"
@@ -80,6 +81,16 @@ object SessionManager {
     }
 
     // ===== Device location =====
+    fun setLocationPermissionGranted(granted: Boolean) {
+        locationPermissionHasBeenGranted.value = granted
+        Log.d("SessionManager", "Location permission has been granted: $granted")
+    }
+
+    fun getLocationPermissionGranted(): Boolean {
+        return locationPermissionHasBeenGranted.value ?: false
+    }
+
+
     fun getDeviceLocation(): LatLng {
         Log.d("[SM] getDeviceLocation", "getDeviceLocation() called")
         return deviceLocation
@@ -88,7 +99,8 @@ object SessionManager {
     fun setDeviceLocation(deviceLocation: LatLng) {
         Log.d("[SM] setDeviceLocation", "setDeviceLocation: $deviceLocation")
         deviceLocationHasBeenSet.value = true
-        Log.d("[SM] setDeviceLocation", "deviceLocationHasBeenSet: $deviceLocationHasBeenSet")
+        locationPermissionHasBeenGranted.value = true
+        Log.d("[SM] setDeviceLocation", "deviceLocationHasBeenSet: ${deviceLocationHasBeenSet.value}")
         this.deviceLocation = deviceLocation
     }
 
