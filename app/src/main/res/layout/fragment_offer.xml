@@ -30,7 +30,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Startdate"
+        android:hint="@string/startdate"
         app:endIconMode="clear_text"
         android:paddingBottom="15dp"
         android:paddingTop="15dp"
@@ -51,7 +51,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Enddate"
+        android:hint="@string/enddate"
         app:endIconMode="clear_text"
         android:paddingBottom="15dp"
         android:paddingTop="15dp"
@@ -72,7 +72,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Location"
+        android:hint="@string/location"
         app:endIconMode="clear_text"
         android:paddingBottom="15dp"
         android:paddingTop="15dp"
@@ -84,7 +84,8 @@
             android:id="@+id/txtInput_offerCarLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"/>
+            android:inputType="text"
+            android:maxLines="1"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Buttons -->

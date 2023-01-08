@@ -50,6 +50,6 @@
     <string name="the_car">The Car</string>
     <string name="delete">Delete</string>
     <string name="invalid_license">Licenseplate has an invalid pattern. Please provide a valid Dutch licenseplate</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="enddate">Enddate</string>
+    <string name="startdate">Startdate</string>
 </resources>
