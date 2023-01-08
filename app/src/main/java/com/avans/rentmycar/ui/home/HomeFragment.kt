@@ -128,7 +128,7 @@ class HomeFragment : Fragment() {
 
         // Get the offers from the database. With location if the devicelocation is available, else with mock location
         SessionManager.deviceLocationHasBeenSet.observe(viewLifecycleOwner) {
-            if (SessionManager.locationPermissionHasBeenGranted.value == false) {
+            if (SessionManager.locationPermissionHasBeenGranted.value == false && SessionManager.deviceLocationHasBeenSet.value == false) {
                 Log.d("[Home] DeviceLocation", "Location permission has not been granted. Setting mock location")
                 SessionManager.setDeviceLocation(LatLng(51.925959, 3.9226572))
             } else if (SessionManager.deviceLocationHasBeenSet.value == false && SessionManager.locationPermissionHasBeenGranted.value == true) {

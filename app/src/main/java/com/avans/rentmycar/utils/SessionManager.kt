@@ -99,7 +99,7 @@ object SessionManager {
     fun setDeviceLocation(deviceLocation: LatLng) {
         Log.d("[SM] setDeviceLocation", "setDeviceLocation: $deviceLocation")
         deviceLocationHasBeenSet.value = true
-        locationPermissionHasBeenGranted.value = true
+//        locationPermissionHasBeenGranted.value = true
         Log.d("[SM] setDeviceLocation", "deviceLocationHasBeenSet: ${deviceLocationHasBeenSet.value}")
         this.deviceLocation = deviceLocation
     }
