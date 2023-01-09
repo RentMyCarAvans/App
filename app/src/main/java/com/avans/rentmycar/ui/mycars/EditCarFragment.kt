@@ -112,7 +112,7 @@ class EditCarFragment : Fragment() {
         Log.d(TAG, "updateCar() => yearOfManufacture = " + year.toInt())
         var mType: String
         when (vehicleType) {
-            "Beinze" -> mType = "ICE"
+            "Benzine" -> mType = "ICE"
             "Diesel" -> mType = "BEV"
             else -> {
                 mType = "FCEV"

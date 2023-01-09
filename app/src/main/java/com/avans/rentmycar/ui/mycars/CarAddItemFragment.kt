@@ -192,7 +192,7 @@ class CarAddItemFragment : Fragment() {
         Log.d(TAG, "createCar() => yearOfManufacture = " + year.toInt())
         var mType: String
         when (vehicleType) {
-            "Beinze" -> mType = "ICE"
+            "Benzine" -> mType = "ICE"
             "Diesel" -> mType = "BEV"
             else -> {
                 mType = "FCEV"
