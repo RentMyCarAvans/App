@@ -28,6 +28,9 @@ interface CarApiService {
     @POST("/api/v1/cars")
     suspend fun createCar(@Body carRequest: CarRequest): Response<CreateCarResponse>
 
+    @PUT("/api/v1/cars/{id}")
+    suspend fun updateCar(@Path("id") id:Int, @Body carRequest: CarRequest): Response<CreateCarResponse>
+
     companion object {
         fun getApi(): CarApiService? {
             return ApiClient.client?.create(CarApiService::class.java)

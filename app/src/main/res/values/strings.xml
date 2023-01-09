@@ -62,4 +62,10 @@
     <string name="fcev">FCEV</string>
     <string name="bev">BEV</string>
     <string name="ice">ICE</string>
+    <string name="vehicle_type">Vehicle type:</string>
+    <string name="brand">Brand:</string>
+    <string name="year">Year:</string>
+    <string name="nr_of_seats">Nr of seats:</string>
+    <string name="color">Color:</string>
+    <string name="mileage">Mileage:</string>
 </resources>

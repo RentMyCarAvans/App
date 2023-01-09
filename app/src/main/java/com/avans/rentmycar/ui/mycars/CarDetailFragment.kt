@@ -29,6 +29,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentMycarsDetailBinding
@@ -93,6 +94,10 @@ class CarDetailFragment : Fragment() {
         view.findViewById<TextView>(R.id.tv_car_brand).text = args.brand.toString()
         view.findViewById<TextView>(R.id.tv_car_year).text = args.year
         view.findViewById<TextView>(R.id.tv_car_licenseplate).text = args.licenseplate
+        view.findViewById<TextView>(R.id.tv_car_color).text = args.color
+        view.findViewById<TextView>(R.id.tv_car_seats).text = args.numberofseats
+        view.findViewById<TextView>(R.id.tv_car_mileage).text = args.mileage
+        view.findViewById<TextView>(R.id.tv_car_vehicletype).text = args.vehicletype
 
         // Set the title of the actionbar
         val bar = (activity as AppCompatActivity).supportActionBar
@@ -104,16 +109,17 @@ class CarDetailFragment : Fragment() {
         binding.buttonDeleteCar.setOnClickListener {
             Log.d(TAG, "onViewCreated() => Button DELETE clicked. Invoke CarApiService")
             carViewModel.deleteCarById(args.id.toInt())
-                Snackbar.make(view, "Car with id " + args.id + "deleted", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Car " + args.brand + " with licenseplate " + args.licenseplate + "deleted", Snackbar.LENGTH_LONG)
                     .show()
+            Log.d(TAG, "onViewCreated() => Car "+ args.brand + " with licenseplate " + args.licenseplate + " deleted. Return to home")
+            findNavController().navigate(R.id.action_carDetailFragment_to_mycars)
         }
 
         binding.buttonEditCarimageFab.setOnClickListener {
             Log.d(TAG, "onViewCreated() => Button EDIT clicked. Go to the Edit fragment")
             val action =
-                CarDetailFragmentDirections.actionCarDetailFragmentToEditCarFragment(args.color, args.id, args.brand, args.mileage, args.licenseplate, args.numberofseats, args.year, args.carimageurl)
+                CarDetailFragmentDirections.actionCarDetailFragmentToEditCarFragment(args.id, args.color, args.brand, args.mileage, args.licenseplate, args.numberofseats, args.year, args.carimageurl, args.vehicletype)
             view.findNavController().navigate(action)
-
         }
 
         binding.buttonOfferCar.setOnClickListener {

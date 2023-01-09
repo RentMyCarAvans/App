@@ -15,6 +15,11 @@ class CarRepository {
         return CarApiService.getApi()?.createCar(carRequest)?.body()
     }
 
+    suspend fun updateCar(Id: Int, carRequest: CarRequest) : CreateCarResponse? {
+        Log.d("[RMC][CarRepository]", "createCar => CarApiService invoked")
+        return CarApiService.getApi()?.updateCar(Id, carRequest)?.body()
+    }
+
     suspend fun deleteCarById(Id: Int) : CarResponse? {
         Log.d("[RMC][CarRepository]", "deleteCarById => CarApiService invoked")
         return CarApiService.getApi()?.deleteCarById(Id)?.body()
