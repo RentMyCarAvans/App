@@ -62,8 +62,8 @@ class HomeDetailFragment : Fragment() {
         viewModel.geocodeResult?.observe(viewLifecycleOwner) {
             val geocodeResponse = viewModel.geocodeResult!!.value
             if (geocodeResponse != null) {
-                offerLat = geocodeResponse.results?.get(0)?.geometry?.location?.lat!!
-                offerLng = geocodeResponse.results.get(0)?.geometry?.location?.lng!!
+                offerLat = geocodeResponse.data?.get(0)?.latitude!!
+                offerLng = geocodeResponse.data?.get(0)?.longitude!!
             }
 
             if (mapFragment.isAdded) {
