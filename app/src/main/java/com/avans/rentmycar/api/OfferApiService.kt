@@ -26,6 +26,9 @@ interface OfferService {
     @GET("/api/v1/bookings")
     suspend fun getBookingsForUser(@Query("customerId") userId: Long): Response<BookingResponse>
 
+    @GET("/api/v1/offers/{userId}")
+    suspend fun getOffersByUserId(@Query("userId") userId: Long): Response<OfferResponse>
+
 
     companion object {
         fun getApi(): OfferService? {
