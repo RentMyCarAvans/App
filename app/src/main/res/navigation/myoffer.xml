@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/myOffers"
+    app:startDestination="@id/myOffersFragment">
+
+    <fragment
+        android:id="@+id/myOffersFragment"
+        android:name="com.avans.rentmycar.ui.offer.MyOffersFragment"
+        android:label="My offers" >
+        <action
+            android:id="@+id/action_myOffersFragment_to_editOfferFragment"
+            app:destination="@id/editOfferFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editOfferFragment"
+        android:name="com.avans.rentmycar.ui.offer.EditOfferFragment"
+        android:label="Edit offer" >
+        <argument
+            android:name="id"
+            app:argType="string" />
+        <argument
+            android:name="startdate"
+            app:argType="string" />
+        <argument
+            android:name="enddate"
+            app:argType="string" />
+        <argument
+            android:name="location"
+            app:argType="string" />
+        <argument
+            android:name="licenseplate"
+            app:argType="string" />
+    </fragment>
+</navigation>

@@ -132,6 +132,10 @@ class OfferViewModel : ViewModel() {
         return offers.sortedBy { offer -> offer.distance }
     }
 
+    fun getMyOffers(userId: Long) {
+        Log.d("[RMC][OfferVM]", "getMyOffers()")
+    }
+
     fun getBookings(userId: Long) {
         viewModelScope.launch {
             try {
