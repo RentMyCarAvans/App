@@ -1,32 +1,37 @@
 package com.avans.rentmycar.ui.profile
 
 import android.content.Intent.getIntent
+import android.hardware.biometrics.BiometricPrompt
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat.recreate
+import androidx.biometric.BiometricPrompt.ERROR_NEGATIVE_BUTTON
+import androidx.biometric.BiometricPrompt.ERROR_USER_CANCELED
+import androidx.core.view.isInvisible
+
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentProfileBinding
 import com.avans.rentmycar.rest.response.BaseResponse
-import com.avans.rentmycar.utils.Constant
-import com.avans.rentmycar.utils.SessionManager
 import com.avans.rentmycar.utils.SessionManager.clearData
 import com.avans.rentmycar.ui.viewmodel.UserViewModel
+import com.avans.rentmycar.utils.*
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
+
 import java.util.*
+import java.util.concurrent.Executor
 
 
 // viewbinding in fragment : https://stackoverflow.com/questions/62952957/viewbinding-in-fragment
-class ProfileFragment : Fragment(R.layout.fragment_profile) {
+class ProfileFragment : Fragment(R.layout.fragment_profile), BiometricAuthListener  {
     private var binding: FragmentProfileBinding? = null
     private val viewModel: UserViewModel by viewModels()
 
@@ -40,7 +45,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
         binding!!.btnEditProfile.setOnClickListener {
             findNavController().navigate(R.id.action_profileFragment_to_profileDetailFragment)
-
         }
         val userId = context?.let { SessionManager.getUserId(it) }
 
@@ -97,13 +101,58 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
         }
 
+
+        // Prompt appears when user clicks "Log in".
+        // Consider integrating with the keystore to unlock cryptographic operations,
+        // if needed by your app.
+
+        binding!!.btnAuth.setOnClickListener {
+            showBiometricPrompt(
+                activity = requireActivity() as AppCompatActivity,
+                listener = this,
+                cryptoObject = null,
+                allowDeviceCredential = true
+            )
+        }
+
+
     }
+
+    private fun checkBiometric() {
+                if (!isBiometricReady(requireContext())) {
+                    binding!!.btnAuth.visibility = View.GONE
+                }
+                else View.VISIBLE
+
+    }
+
+    override fun onBiometricAuthenticateError(error: Int, errMsg: String) {
+        when (error) {
+                BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED -> {
+                    Toast.makeText(requireContext(), "user cancelled", Toast.LENGTH_SHORT)
+                    .show()
+                }
+                BiometricPrompt.BIOMETRIC_ERROR_NO_DEVICE_CREDENTIAL -> {
+                    Toast.makeText(requireContext(), "no device credential", Toast.LENGTH_SHORT)
+                    .show()
+                }
+            }
+        }
+
+
+    override fun onBiometricAuthenticateSuccess(result: androidx.biometric.BiometricPrompt.AuthenticationResult) {
+        Toast.makeText(requireContext(), "Auth success!!", Toast.LENGTH_SHORT)
+            .show()
+
+
+    }
+
 
      fun stopLoading() {
         binding?.progressBar?.visibility = View.GONE
     }
 
-     fun showLoading() {
+     private fun showLoading() {
         binding?.progressBar?.visibility = View.VISIBLE
     }
 
