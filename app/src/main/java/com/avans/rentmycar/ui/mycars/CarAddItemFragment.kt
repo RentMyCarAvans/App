@@ -84,7 +84,8 @@ class CarAddItemFragment : Fragment() {
             Log.d(TAG, "onViewCreated() => Button SAVE clicked. Invoke CarApiService")
             // TODO Add validation for all inputfield
             createCar()
-            Log.d(TAG, "onViewCreated() => After calling fun createCar()")
+            Log.d(TAG, "onViewCreated() => Car added. Return to home of my cars")
+            findNavController().navigate(R.id.action_carAddItemFragment_to_mycars)
         }
 
         carViewModel.rdwResponse.observe(viewLifecycleOwner) {
@@ -191,7 +192,7 @@ class CarAddItemFragment : Fragment() {
         Log.d(TAG, "createCar() => yearOfManufacture = " + year.toInt())
         var mType: String
         when (vehicleType) {
-            "Beinze" -> mType = "ICE"
+            "Benzine" -> mType = "ICE"
             "Diesel" -> mType = "BEV"
             else -> {
                 mType = "FCEV"

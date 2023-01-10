@@ -74,6 +74,9 @@
         <action
             android:id="@+id/action_carDetailFragment_to_offerCarFragment"
             app:destination="@id/offerCarFragment" />
+        <argument
+            android:name="vehicletype"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/carAddItemFragment"
@@ -128,6 +131,13 @@
             android:name="carimageurl"
             app:argType="string"
             app:nullable="true" />
+        <argument
+            android:name="vehicletype"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_editCarFragment_to_mycars"
+            app:destination="@id/mycars" />
     </fragment>
     <fragment
         android:id="@+id/offerCarFragment"
@@ -155,5 +165,8 @@
         <argument
             android:name="licenseplate"
             app:argType="string" />
+        <action
+            android:id="@+id/action_offerCarFragment_to_mycars"
+            app:destination="@id/mycars" />
     </fragment>
 </navigation>

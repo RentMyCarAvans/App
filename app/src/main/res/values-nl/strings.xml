@@ -60,4 +60,10 @@
     <string name="fcev">FCEV</string>
     <string name="bev">BEV</string>
     <string name="ice">ICE</string>
+    <string name="vehicle_type">Voertuig type:</string>
+    <string name="brand">Merk en model:</string>
+    <string name="year">Bouwjaar:</string>
+    <string name="nr_of_seats">Aantal zitplaatsen:</string>
+    <string name="color">Kleur:</string>
+    <string name="mileage">Kilometers:</string>
 </resources>

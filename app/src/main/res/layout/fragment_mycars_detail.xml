@@ -65,7 +65,28 @@
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold" />
+                    <LinearLayout
 
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="@string/vehicle_type"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_car_vehicletype"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -75,7 +96,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="Brand: "
+                            android:text="@string/brand"
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
@@ -84,7 +105,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="Lamborghini Diablo"
                             android:textSize="14sp" />
 
                     </LinearLayout>
@@ -98,7 +118,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="Year: "
+                            android:text="@string/year"
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
@@ -107,7 +127,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="2022"
                             android:textSize="14sp" />
 
                     </LinearLayout>
@@ -121,7 +140,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="Nr of seats: "
+                            android:text="@string/nr_of_seats"
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
@@ -130,7 +149,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="4"
                             android:textSize="14sp" />
 
                     </LinearLayout>
@@ -144,7 +162,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="Color: "
+                            android:text="@string/color"
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
@@ -153,7 +171,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="Black"
                             android:textSize="14sp" />
 
                     </LinearLayout>
@@ -167,16 +184,15 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="Mileage: "
+                            android:text="@string/mileage"
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/tc_car_mileage"
+                            android:id="@+id/tv_car_mileage"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="12958"
                             android:textSize="14sp" />
 
                     </LinearLayout>
@@ -190,7 +206,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:text="Licenseplate "
+                        android:text="@string/licenseplate"
                         android:textSize="14sp"
                         android:textStyle="bold" />
 
@@ -199,7 +215,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:text="R-123-XP"
                         android:textSize="14sp" />
                     </LinearLayout>
 
