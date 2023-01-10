@@ -51,14 +51,14 @@ class MyOffersFragment : Fragment() {
 
         // Make all the items in the recyclerview clickable, so the user can click on an item and go to the detail page of the selected car
         val offerAdapter = OfferAdapter(GlideImageLoader(view?.context as AppCompatActivity)) { offer ->
-            val action = MyOffersFragmentDirections.actionMyOffersFragmentToEditOfferFragment(
+            val action = MyOffersFragmentDirections.actionMyOffersFragmentToOfferCarFragment2(
                 offer.id.toString(),
                 offer.startDateTime,
                 offer.endDateTime,
                 offer.pickupLocation,
                 offer.car.model
             )
-            Log.d(TAG,"onViewCreated() => Clicked on item with model " + offer.car.model + ". Navigate to detailscreen")
+            Log.d(TAG,"onViewCreated() => Clicked on offer item " + offer.id + " with model " + offer.car.model + ". Navigate to edit offer screen")
             findNavController().navigate(action)
         }
 
@@ -66,33 +66,20 @@ class MyOffersFragment : Fragment() {
             LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
         binding.listOfferRecyclerView.adapter = offerAdapter
 
-        // Attach an observer on the carReponse list to update the UI automatically when the data
+        // Attach an observer on the myOfferCollection list to update the UI automatically when the data
         // changes.
-        /*
-        viewModel.carResponse.observe(this.viewLifecycleOwner){ cars ->
-            cars.let {
-                carAdapter.setData(it)
-                Log.d(TAG, "onViewCreated => observed carResponse has been triggerd")
+        viewModel.myOfferCollection.observe(this.viewLifecycleOwner){ offers ->
+            offers.let {
+                Log.d(TAG, "onViewCreated => observed myOfferCollection has been triggerd")
+                offerAdapter.setData(it)
             }
         }
-         */
+
 
         // Get all offers of the logged in user and pass them to the adapter
         val userId = SessionManager.getUserId(requireContext())?.toInt()
         viewModel.getMyOffers((userId!!).toLong())
-       // offerAdapter.setData(viewModel.offerResponse.value?: emptyList())
 
-        // Clicklistener for floating action button
-        /*
-        binding.buttonNewCarFab.setOnClickListener {
-            Log.d(TAG, "onViewCreated() => Floating Action Button clicked")
-            val bar = (activity as AppCompatActivity).supportActionBar
-            bar?.title = "Add a new Car"
-            val action = MyCarsFragmentDirections.actionMycarsToCarAddItemFragment()
-            this.findNavController().navigate(action)
-        }
-
-         */
     }
 
     companion object {

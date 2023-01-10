@@ -47,8 +47,7 @@ class OfferCarFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val args: OfferCarFragmentArgs by navArgs()
-        Log.d("[RMC]", "onViewCreated() => Checking navArgs Car offer")
-        Log.d("[RMC]", "onViewCreated() => navArgs: " + args.toString())
+        Log.d(TAG, "onViewCreated() => navArgs CarOffer: " + args.toString())
 
         bindUI(args)
 
@@ -59,7 +58,7 @@ class OfferCarFragment : Fragment() {
             Snackbar.make(view, "Offer on car with licenseplate " + args.licenseplate + " created", Snackbar.LENGTH_LONG)
                 .show()
             Log.d(TAG, "onViewCreated() => Offer made for car " + args.licenseplate + ". Return to home")
-            findNavController().navigate(R.id.action_offerCarFragment_to_mycars)
+            findNavController().navigate(R.id.action_offerCarFragment2_to_myOffersFragment)
         }
     }
 

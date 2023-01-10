@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/myOffers"
     app:startDestination="@id/myOffersFragment">
 
@@ -9,27 +10,29 @@
         android:name="com.avans.rentmycar.ui.offer.MyOffersFragment"
         android:label="My offers" >
         <action
-            android:id="@+id/action_myOffersFragment_to_editOfferFragment"
-            app:destination="@id/editOfferFragment" />
+            android:id="@+id/action_myOffersFragment_to_offerCarFragment2"
+            app:destination="@id/offerCarFragment2" />
     </fragment>
     <fragment
-        android:id="@+id/editOfferFragment"
-        android:name="com.avans.rentmycar.ui.offer.EditOfferFragment"
-        android:label="Edit offer" >
+        android:id="@+id/offerCarFragment2"
+        android:name="com.avans.rentmycar.ui.offer.OfferCarFragment"
+        android:label="My offer"
+        tools:layout="@layout/fragment_offer" >
         <argument
             android:name="id"
             app:argType="string" />
         <argument
             android:name="startdate"
             app:argType="string" />
-        <argument
-            android:name="enddate"
-            app:argType="string" />
+        <argument android:name="enddate" />
         <argument
             android:name="location"
             app:argType="string" />
         <argument
             android:name="licenseplate"
             app:argType="string" />
+        <action
+            android:id="@+id/action_offerCarFragment2_to_myOffersFragment"
+            app:destination="@id/myOffersFragment" />
     </fragment>
 </navigation>
