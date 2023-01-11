@@ -83,7 +83,7 @@ class HomeFragment : Fragment() {
 
         val model = ViewModelProvider(requireActivity())[OfferViewModel::class.java]
         model.offerCollection.observe(viewLifecycleOwner) {
-
+        Log.d("[Home] model.offerColl", it.toString())
             offerAdapter.setData(it)
             if (it.isEmpty()) {
                 Log.d("[Home]", "No offers found")

@@ -59,6 +59,8 @@ class OfferAdapter(
             offerEndDate.text = itemView.context.getString(R.string.offer_returnBefore, endDate)
             offerLocation.text = offerData.pickupLocation
 
+            Log.d("[OAdapt] distance", "distance: " + offerData.distance)
+
             if (offerData.distance < 1000) { // If the distance < 1000, show the distance in meters
                 offerDistance.text = offerData.distance.toInt().toString() + "m"
             } else if (offerData.distance > 1000) { // If the distance > 1000, show the distance in kilometers

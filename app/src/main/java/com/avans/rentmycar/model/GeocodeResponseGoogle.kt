@@ -2,7 +2,7 @@ package com.avans.rentmycar.model
 
 import com.squareup.moshi.Json
 
-data class GeocodeResponse(
+data class GeocodeResponseGoogle(
 
 	@Json(name="results")
 	val results: List<ResultsItem?>? = null,

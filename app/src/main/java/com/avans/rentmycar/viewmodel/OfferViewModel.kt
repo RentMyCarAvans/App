@@ -20,6 +20,7 @@ class OfferViewModel : ViewModel() {
     // TODO: Refactor this
     val bookingsResult: MutableLiveData<Collection<BookingData>> = MutableLiveData()
     val createBookingResult: MutableLiveData<CreateBookingResponse?> = MutableLiveData()
+    var geocodeResult: MutableLiveData<GeocodeResponsePositionstack?>? = MutableLiveData()
     val createOfferResult: MutableLiveData<CreateOfferResponse?> = MutableLiveData()
     var geocodeResult: MutableLiveData<GeocodeResponse?>? = MutableLiveData()
 
@@ -65,20 +66,41 @@ class OfferViewModel : ViewModel() {
     // ===== Offers =====
     fun setOfferCollection(offers: Collection<OfferData>) {
 
+        Log.d("[OVM] setOffColl", "setOfferCollection: $offers")
+
+        Log.d("[OVM] setOffColl", "setOfferCollection numberOfSeatsFilter.value: ${numberOfSeatsFilter.value}")
+        Log.d("[OVM] setOffColl", "setOfferCollection maxDistanceInKmFilter.value: ${maxDistanceInKmFilter.value}")
+
         var filteredOffers = offers.filter { it.car.numberOfSeats >= numberOfSeatsFilter.value!! }
-        filteredOffers = filteredOffers.filter { it.distance <= (maxDistanceInKmFilter.value!! * 1000) }
+                Log.d("[OVM] setOffColl", "setOfferCollection filteredOffers na seats: $filteredOffers")
+
+//        filteredOffers = filteredOffers.filter { it.distance <= (maxDistanceInKmFilter.value!! * 1000) }
+//        Log.d("[OVM] setOffColl", "setOfferCollection filteredOffers na distance: $filteredOffers")
+
+
 
         if (!checkboxFuelTypeIceFilter.value!!) {
             filteredOffers = filteredOffers.filter { it.car.type != "ICE" }
         }
 
+        Log.d("[OVM] setOffColl", "setOfferCollection filteredOffers na ICE check: $filteredOffers")
+
+
         if (!checkboxFuelTypeBevFilter.value!!) {
             filteredOffers = filteredOffers.filter { it.car.type != "BEV" }
         }
 
+        Log.d("[OVM] setOffColl", "setOfferCollection filteredOffers na BEV check: $filteredOffers")
+
+
         if (!checkboxFuelTypeFcevFilter.value!!) {
             filteredOffers = filteredOffers.filter { it.car.type != "FCEV" }
         }
+
+        Log.d("[OVM] setOffColl", "setOfferCollection filteredOffers na FCEV check: $filteredOffers")
+
+
+        Log.d("[OVM] setOffColl", "setOfferCollection: filteredOffers: $filteredOffers")
 
         offerCollection.value = filteredOffers
     }
@@ -93,13 +115,19 @@ class OfferViewModel : ViewModel() {
 
     // ===== Repository Interaction =====
     fun getOffers() {
+        Log.d("[OVM] getOffers", "getOffers called")
         viewModelScope.launch {
             try {
                 val offerResponse = offerRepository.getOpenOffers()
+                Log.d("[OVM] getOffers", "offerResponse: $offerResponse")
 
                 if(SessionManager.getLocationPermissionGranted()) {
+                    Log.d("[OVM] getOffers", "Location permission granted. Show offers with distances.")
                     setOfferCollection(updateOfferDataWithDistance(offerResponse))
+//                    setOfferCollection(offerResponse) // TODO: Remove this line when distance is implemented correctly again
+
                 } else {
+                    Log.d("[OVM] getOffers", "Location permission not granted. Show offers without distances.")
                     setOfferCollection(offerResponse)
                 }
 
@@ -117,17 +145,40 @@ class OfferViewModel : ViewModel() {
         deviceLocation.latitude = userLocation.latitude
         deviceLocation.longitude = userLocation.longitude
         offers.forEach { offer ->
+
+            Log.d("[OVM] uOfferWithDist", "offer: $offer")
+
             val pickupLocation = offer.pickupLocation
-            val pickupLocationGeocode = MapsApiService.getApi()
-                ?.getLatLongFromAddress(pickupLocation)?.results?.get(0)?.geometry?.location
-            val pickupLocationLatLng =
-                LatLng(pickupLocationGeocode?.lat!!, pickupLocationGeocode.lng!!)
+            Log.d("[OVM] uOfferWithDist", "pickupLocation: $pickupLocation")
+            val pickupGeolocationResponse = MapsApiService.getApi()
+                ?.getLatLongFromAddress(pickupLocation)?.data?.get(0)
+            Log.d("[OVM] uOfferWithDist", "pickupGeolocationResponse: $pickupGeolocationResponse")
+
+            val pickupLocationLatLng = pickupGeolocationResponse?.let {
+                it.latitude?.let { it1 -> it.longitude?.let { it2 -> LatLng(it1, it2) } }
+            }
+//            Log.d("[OVM] uOfferWithDist", "pickupLocationLatLng: $pickupLocationLatLng")
+
             val pickupLocationLocation = Location("pickupLocation")
-            pickupLocationLocation.latitude = pickupLocationLatLng.latitude
-            pickupLocationLocation.longitude = pickupLocationLatLng.longitude
+
+            Log.d("[OVM] uOfferWithDist", "pickupLocationLocation: $pickupLocationLocation")
+
+            if (pickupLocationLatLng != null) {
+                pickupLocationLocation.latitude = pickupLocationLatLng.latitude
+            }
+            if (pickupLocationLatLng != null) {
+                pickupLocationLocation.longitude = pickupLocationLatLng.longitude
+            }
+
+            Log.d("[OVM] uOfferWithDist", "pickupLocationLocation 2: $pickupLocationLocation")
+
+
             val distance = deviceLocation.distanceTo(pickupLocationLocation)
+            Log.d("[OVM] uOfferWithDist", "distance: $distance")
             offer.distance = distance
         }
+
+        Log.d("[OVM] uOfferWithDist", "offers after everything: $offers")
 
         return offers.sortedBy { offer -> offer.distance }
     }
@@ -144,11 +195,23 @@ class OfferViewModel : ViewModel() {
                 deviceLocation.longitude = userLocation.longitude
                 getBookingResponse.forEach { booking ->
                     val pickupLocation = booking.offer.pickupLocation
-                    val pickupLocationGeocode = MapsApiService.getApi()?.getLatLongFromAddress(pickupLocation)?.results?.get(0)?.geometry?.location
-                    val pickupLocationLatLng = LatLng(pickupLocationGeocode?.lat!!, pickupLocationGeocode.lng!!)
+                    val pickupLocationLatLng =
+                        MapsApiService.getApi()
+                            ?.getLatLongFromAddress(pickupLocation)?.data?.get(0)?.latitude?.let {
+                                MapsApiService.getApi()
+                                    ?.getLatLongFromAddress(pickupLocation)?.data?.get(0)?.longitude?.let { it1 ->
+                                        LatLng(
+                                            it, it1
+                                        )
+                                    }
+                            }
                     val pickupLocationLocation = Location("pickupLocation")
-                    pickupLocationLocation.latitude = pickupLocationLatLng.latitude
-                    pickupLocationLocation.longitude = pickupLocationLatLng.longitude
+                    if (pickupLocationLatLng != null) {
+                        pickupLocationLocation.latitude = pickupLocationLatLng.latitude
+                    }
+                    if (pickupLocationLatLng != null) {
+                        pickupLocationLocation.longitude = pickupLocationLatLng.longitude
+                    }
                     val distance = deviceLocation.distanceTo(pickupLocationLocation)
                     booking.offer.distance = distance
                 }
@@ -197,6 +260,7 @@ class OfferViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val geocodeResponse = MapsApiService.getApi()?.getLatLongFromAddress(pickupLocation)
+                Log.i("[OfferVM] geocodeResp", geocodeResponse.toString())
                 geocodeResult?.value = geocodeResponse
             } catch (e: Exception) {
                 Log.e("[OfferVM] getGeoRespon", e.message.toString())
