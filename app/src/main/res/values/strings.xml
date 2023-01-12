@@ -70,6 +70,6 @@
     <string name="mileage">Mileage:</string>
     <string name="BiometricPrompt_title">Security Rent My Car</string>
     <string name="BiometricPrompt_description">Authenticate to start the ride</string>
-    <string name="return_car">Return this car</string>
+    <string name="return_car" translatable="false">Return this car</string>
     <string name="my_offers">My Offers</string>
 </resources>

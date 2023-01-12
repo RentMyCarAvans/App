@@ -1,37 +1,37 @@
-package com.avans.rentmycar.model
+package com.avans.rentmycar.model.response
 
 import com.squareup.moshi.Json
 
 data class GeocodeResponseGoogle(
 
-	@Json(name="results")
+    @Json(name="results")
 	val results: List<ResultsItem?>? = null,
 
-	@Json(name="status")
+    @Json(name="status")
 	val status: String? = null
 )
 
 data class Bounds(
 
-	@Json(name="southwest")
+    @Json(name="southwest")
 	val southwest: Southwest? = null,
 
-	@Json(name="northeast")
+    @Json(name="northeast")
 	val northeast: Northeast? = null
 )
 
 data class Geometry(
 
-	@Json(name="viewport")
+    @Json(name="viewport")
 	val viewport: Viewport? = null,
 
-	@Json(name="bounds")
+    @Json(name="bounds")
 	val bounds: Bounds? = null,
 
-	@Json(name="location")
+    @Json(name="location")
 	val location: Location? = null,
 
-	@Json(name="location_type")
+    @Json(name="location_type")
 	val locationType: String? = null
 )
 
@@ -46,19 +46,19 @@ data class Northeast(
 
 data class ResultsItem(
 
-	@Json(name="formatted_address")
+    @Json(name="formatted_address")
 	val formattedAddress: String? = null,
 
-	@Json(name="types")
+    @Json(name="types")
 	val types: List<String?>? = null,
 
-	@Json(name="geometry")
+    @Json(name="geometry")
 	val geometry: Geometry? = null,
 
-	@Json(name="address_components")
+    @Json(name="address_components")
 	val addressComponents: List<AddressComponentsItem?>? = null,
 
-	@Json(name="place_id")
+    @Json(name="place_id")
 	val placeId: String? = null
 )
 
@@ -73,10 +73,10 @@ data class Southwest(
 
 data class Viewport(
 
-	@Json(name="southwest")
+    @Json(name="southwest")
 	val southwest: Southwest? = null,
 
-	@Json(name="northeast")
+    @Json(name="northeast")
 	val northeast: Northeast? = null
 )
 

@@ -1,4 +1,4 @@
-package com.avans.rentmycar.rest.request
+package com.avans.rentmycar.model.request
 
 data class RegisterUserRequest(
     var firstName: String,

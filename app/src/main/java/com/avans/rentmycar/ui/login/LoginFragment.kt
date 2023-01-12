@@ -12,11 +12,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentLoginBinding
-import com.avans.rentmycar.ui.viewmodel.LoginViewModel
-import com.avans.rentmycar.rest.response.BaseResponse
-import com.avans.rentmycar.rest.response.LoginResponse
+import com.avans.rentmycar.viewmodel.LoginViewModel
+import com.avans.rentmycar.model.response.BaseResponse
+import com.avans.rentmycar.model.response.LoginResponse
 import com.avans.rentmycar.utils.SessionManager
-import okhttp3.internal.toLongOrDefault
 
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null

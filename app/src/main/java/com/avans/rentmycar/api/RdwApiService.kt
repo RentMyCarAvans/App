@@ -1,6 +1,6 @@
 package com.avans.rentmycar.api
 
-import com.avans.rentmycar.model.RdwResponseItem
+import com.avans.rentmycar.model.response.RdwResponseItem
 import retrofit2.http.GET
 import retrofit2.http.Query
 

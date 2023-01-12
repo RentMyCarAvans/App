@@ -1,4 +1,4 @@
-package com.avans.rentmycar.model
+package com.avans.rentmycar.model.response
 
 import com.squareup.moshi.Json
 

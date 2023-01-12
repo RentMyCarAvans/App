@@ -1,17 +1,17 @@
-package com.avans.rentmycar.rest.response
+package com.avans.rentmycar.model.response
 
 import com.squareup.moshi.Json
 
 data class RideResponse(
 
     @Json(name="data")
-    val data: List<DataItem?>? = null,
+    val data: List<RideDataItem?>? = null,
 
     @Json(name="status")
     val status: Int? = null
 )
 
-data class DataItem(
+data class RideDataItem(
 
     @Json(name="startRideLatitude")
     val startRideLatitude: Any? = null,

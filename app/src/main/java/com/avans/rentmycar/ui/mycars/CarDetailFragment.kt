@@ -33,7 +33,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentMycarsDetailBinding
-import com.avans.rentmycar.model.CarList
+import com.avans.rentmycar.model.response.CarList
 import com.avans.rentmycar.viewmodel.CarViewModel
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar

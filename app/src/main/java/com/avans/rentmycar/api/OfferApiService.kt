@@ -1,11 +1,10 @@
 package com.avans.rentmycar.api
 
 
-import com.avans.rentmycar.model.BookingResponse
-import com.avans.rentmycar.model.CreateBookingResponse
-import com.avans.rentmycar.model.CreateOfferResponse
-import com.avans.rentmycar.model.OfferResponse
-import com.avans.rentmycar.rest.ApiClient
+import com.avans.rentmycar.model.response.BookingResponse
+import com.avans.rentmycar.model.response.CreateBookingResponse
+import com.avans.rentmycar.model.response.CreateOfferResponse
+import com.avans.rentmycar.model.response.OfferResponse
 import retrofit2.Response
 import retrofit2.http.*
 

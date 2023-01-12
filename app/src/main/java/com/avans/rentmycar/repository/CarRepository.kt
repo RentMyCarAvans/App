@@ -2,8 +2,10 @@ package com.avans.rentmycar.repository
 
 import android.util.Log
 import com.avans.rentmycar.api.CarApiService
-import com.avans.rentmycar.model.*
-import retrofit2.Response
+import com.avans.rentmycar.model.request.CarRequest
+import com.avans.rentmycar.model.response.CarList
+import com.avans.rentmycar.model.response.CarResponse
+import com.avans.rentmycar.model.response.CreateCarResponse
 
 class CarRepository {
     suspend fun getCarsByUserId(userId:Int): Collection<CarList> {

@@ -1,24 +1,24 @@
-package com.avans.rentmycar.model
+package com.avans.rentmycar.model.response
 
 data class CreateOfferResponse(
-	val data: OfferData,
-	val message: String,
-	val status: Int
+    val data: OfferData,
+    val message: String,
+    val status: Int
 )
 
 data class OfferResponse(
-	val data: Collection<OfferData>,
-	val message: String,
-	val status: Int
+    val data: Collection<OfferData>,
+    val message: String,
+    val status: Int
 )
 
 data class OfferData(
-	val id: Long,
-	val startDateTime: String,
-	val endDateTime: String,
-	val pickupLocation: String,
-	val car: OfferCarData,
-	var distance: Float
+    val id: Long,
+    val startDateTime: String,
+    val endDateTime: String,
+    val pickupLocation: String,
+    val car: OfferCarData,
+    var distance: Float
 )
 
 data class OfferCarData(

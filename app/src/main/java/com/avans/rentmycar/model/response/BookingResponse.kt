@@ -1,4 +1,4 @@
-package com.avans.rentmycar.model
+package com.avans.rentmycar.model.response
 
 data class BookingResponse(
     val data: Collection<BookingData>,

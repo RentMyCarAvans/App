@@ -1,4 +1,4 @@
-package com.avans.rentmycar.ui.viewmodel
+package com.avans.rentmycar.viewmodel
 
 import android.app.Application
 import android.util.Log
@@ -6,13 +6,12 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.avans.rentmycar.repository.UserRepository
-import com.avans.rentmycar.rest.request.LoginRequest
-import com.avans.rentmycar.rest.request.PasswordResetRequest
-import com.avans.rentmycar.rest.request.RegisterUserRequest
-import com.avans.rentmycar.rest.response.BaseResponse
-import com.avans.rentmycar.rest.response.LoginResponse
-import com.avans.rentmycar.rest.response.UserResponse
-import faker.com.fasterxml.jackson.databind.ser.Serializers.Base
+import com.avans.rentmycar.model.request.LoginRequest
+import com.avans.rentmycar.model.request.PasswordResetRequest
+import com.avans.rentmycar.model.request.RegisterUserRequest
+import com.avans.rentmycar.model.response.BaseResponse
+import com.avans.rentmycar.model.response.LoginResponse
+import com.avans.rentmycar.model.response.UserResponse
 import kotlinx.coroutines.launch
 
 

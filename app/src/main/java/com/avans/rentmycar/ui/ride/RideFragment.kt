@@ -1,48 +1,24 @@
 package com.avans.rentmycar.ui.ride
 
-import android.content.Intent.getIntent
-import android.hardware.biometrics.BiometricPrompt
-import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
-import androidx.biometric.BiometricPrompt.ERROR_NEGATIVE_BUTTON
-import androidx.biometric.BiometricPrompt.ERROR_USER_CANCELED
-import androidx.core.view.isInvisible
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.avans.rentmycar.BaseApplication
 import com.avans.rentmycar.R
-import com.avans.rentmycar.databinding.FragmentProfileBinding
 import com.avans.rentmycar.databinding.FragmentRideBinding
-import com.avans.rentmycar.rest.response.BaseResponse
 import com.avans.rentmycar.room.Ride
-import com.avans.rentmycar.utils.SessionManager.clearData
-import com.avans.rentmycar.ui.viewmodel.UserViewModel
 import com.avans.rentmycar.utils.*
 import com.avans.rentmycar.viewmodel.RideViewModel
 import com.avans.rentmycar.viewmodel.RideViewModelFactory
-import com.bumptech.glide.Glide
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.Priority.PRIORITY_BALANCED_POWER_ACCURACY
-import com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.material.snackbar.Snackbar
-import java.text.SimpleDateFormat
 import java.time.Instant
-import java.time.LocalDate
 
 import java.util.*
-import java.util.concurrent.Executor
 
 
 // viewbinding in fragment : https://stackoverflow.com/questions/62952957/viewbinding-in-fragment

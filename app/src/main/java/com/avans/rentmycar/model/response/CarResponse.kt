@@ -1,6 +1,7 @@
-package com.avans.rentmycar.model
+package com.avans.rentmycar.model.response
 
 import androidx.annotation.Keep
+import com.avans.rentmycar.model.User
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

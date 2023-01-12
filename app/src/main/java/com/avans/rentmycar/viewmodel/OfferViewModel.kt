@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.avans.rentmycar.api.MapsApiService
-import com.avans.rentmycar.model.*
+import com.avans.rentmycar.model.response.*
 import com.avans.rentmycar.repository.OfferRepository
 import com.avans.rentmycar.utils.SessionManager
 import com.google.android.gms.maps.model.LatLng
