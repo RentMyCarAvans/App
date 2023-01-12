@@ -29,6 +29,7 @@ class OfferViewModel : ViewModel() {
     // ===== Variables for the API calls =====
     val offerCollection = MutableLiveData<Collection<OfferData>>()
     val myOfferCollection = MutableLiveData<Collection<OfferData>>()
+    val singleOffer = MutableLiveData<OfferData?>()
 
 
     // ===== Filter options =====
@@ -107,9 +108,31 @@ class OfferViewModel : ViewModel() {
         offerCollection.value = filteredOffers
     }
 
-    fun getOfferWithId(id: Long): OfferData? {
-        Log.d("[OVM] getOfferWithId", "getOfferWithId: $id")
-        return offerCollection.value?.find { it.id == id }
+    fun getOfferById(id: Long) {
+        Log.d("[OVM] getOfferById", "getOfferById called for id: $id")
+        // 1. Check if offer is already in offerCollection
+        // 2. If yes, return it
+        // 3. If no, get it from the repository and return it
+
+        if (offerCollection.value?.find { it.id == id } != null) {
+            Log.d("[OVM] getOfferById", "getOfferById: offer found in offerCollection")
+            singleOffer.value = offerCollection.value?.find { it.id == id }
+        }
+
+        Log.d(
+            "[OVM] getOfferById",
+            "getOfferById: offer not found in offerCollection, getting it from repository"
+        )
+        viewModelScope.launch {
+            try {
+                val offer = offerRepository.getOfferById(id)
+                singleOffer.value = offer
+            } catch (e: Exception) {
+                Log.d("[OVM] getOfferById", "getOfferById: error: $e")
+                singleOffer.value = null
+            }
+
+        }
     }
 
 
@@ -133,9 +156,9 @@ class OfferViewModel : ViewModel() {
                     Log.d("[OVM] getOffers", "readableDeviceLocation: $readableDeviceLocation")
                     SessionManager.setDeviceLocationReadable(readableDeviceLocation?.data?.get(0)?.label!!)
 
+                    setOfferCollection(offerResponse)
 
-
-                    setOfferCollection(updateOfferDataWithDistance(offerResponse))
+//                    setOfferCollection(updateOfferDataWithDistance(offerResponse))
 
 
 
@@ -151,6 +174,8 @@ class OfferViewModel : ViewModel() {
             }
         }
     }
+
+
 
 
     suspend fun updateOfferDataWithDistance(offers: Collection<OfferData>): Collection<OfferData> {

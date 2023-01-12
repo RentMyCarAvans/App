@@ -66,12 +66,7 @@ class HomeFragment : Fragment() {
 
             // TODO: Only pass the ID and let the DetailsFragment fetch the data from the Collection
             val action = HomeFragmentDirections.actionHomeFragment2ToHomeDetailFragment2(
-                offer.id,
-                offer.car.model,
-                offer.pickupLocation,
-                offer.startDateTime,
-                offer.endDateTime,
-                offer.car.image
+                offer.id
             )
 
             //TODO: Andere Fragment maken voor de Booking Details

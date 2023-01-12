@@ -12,6 +12,9 @@ interface OfferService {
     @GET("/api/v1/offers/unbooked")
     suspend fun getOpenOffers(): Response<OfferResponse>
 
+    @GET("/api/v1/offers/{id}")
+    suspend fun getOfferById(@Path("id") id:Long): Response<SingleOfferResponse>
+
     @POST("/api/v1/bookings/")
     suspend fun createBooking(@Body bookingDTO: BookingDTO): Response<CreateBookingResponse>
 

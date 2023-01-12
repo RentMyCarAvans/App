@@ -15,6 +15,10 @@ class OfferRepository {
         return OfferService.getApi()?.getOpenOffers()?.body()?.data ?: emptyList()
     }
 
+    suspend fun getOfferById(id: Long): OfferData? {
+        return OfferService.getApi()?.getOfferById(id)?.body()?.data
+    }
+
     suspend fun getOffersByUserId(userId: Long): Collection<OfferData> {
         return OfferService.getApi()?.getOffersByUserId(userId)?.body()?.data ?: emptyList()
     }

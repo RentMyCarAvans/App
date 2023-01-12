@@ -25,7 +25,6 @@ import com.google.android.material.snackbar.Snackbar
 
 class HomeDetailFragment : Fragment(), BiometricAuthListener {
 
-    // Declare viewbinding
     private lateinit var _binding: FragmentHomeDetailBinding
     private val binding get() = _binding
 
@@ -53,19 +52,42 @@ class HomeDetailFragment : Fragment(), BiometricAuthListener {
         super.onViewCreated(view, savedInstanceState)
 
         val bookingViewModel = ViewModelProvider(requireActivity())[BookingViewModel::class.java]
+        val offerViewModel = ViewModelProvider(this)[OfferViewModel::class.java]
+
+        val actionBar = (activity as AppCompatActivity).supportActionBar
 
 
         val args: HomeDetailFragmentArgs by navArgs()
         val offerId = args.id
-        val offerCarModel = args.carmodel
-        val offerPickupLocation = args.pickuplocation
-        val offerStartDateTime = args.startDateTime
-        val offerEndDateTime = args.endDateTime
-        val carImageUrl = args.carImageUrl
-    Log.d("ROB_APP", args.toString())
-        val offerViewModel = ViewModelProvider(this)[OfferViewModel::class.java]
 
-        viewModel.getGeocodeResponse(offerPickupLocation)
+        Log.d("ROB_APP", args.toString())
+
+
+        // TODO: Get the Offer data from the ViewModel instead of from the navArgs
+        offerViewModel.getOfferById(offerId)
+
+        offerViewModel.singleOffer.observe(viewLifecycleOwner) { offer ->
+            if (offer != null) {
+                binding.textviewHomeDetailCarName.setText(offer.car.model)
+                binding.textviewHomeDetailOfferPickuplocation.setText(offer.pickupLocation)
+                binding.textviewHomeDetailOfferDates.setText(offer.startDateTime + " - " + offer.endDateTime)
+
+                binding.imageviewHomeDetailCarImage.let {
+                    Glide.with(this).load(offer.car.image).into(it)
+                }
+
+                actionBar?.title = offer.car.model
+
+                // TODO: Refactor this after changes on API to include LatLng have been Approved
+                viewModel.getGeocodeResponse(offer.pickupLocation)
+            }
+        }
+
+
+        // TODO: Refactor this after changes on API to include LatLng  have been Approved
+        // ===========================================================
+
+//        viewModel.getGeocodeResponse(offerPickupLocation)
 
         viewModel.geocodeResult?.observe(viewLifecycleOwner) {
             val geocodeResponse = viewModel.geocodeResult!!.value
@@ -80,16 +102,18 @@ class HomeDetailFragment : Fragment(), BiometricAuthListener {
 
         }
 
+        // ===========================================================
+
+
         // Set the offer data
-        binding.textviewHomeDetailOfferid.setText("Current OfferId: $offerId")
-        binding.textviewHomeDetailCarName.setText(offerCarModel)
-        binding.textviewHomeDetailOfferPickuplocation.setText(offerPickupLocation)
-        binding.textviewHomeDetailOfferDates.setText("$offerStartDateTime - $offerEndDateTime")
-
-
-        binding.imageviewHomeDetailCarImage.let {
-            Glide.with(this).load(carImageUrl).into(it)
-        }
+//        binding.textviewHomeDetailCarName.setText(offerCarModel)
+//        binding.textviewHomeDetailOfferPickuplocation.setText(offerPickupLocation)
+//        binding.textviewHomeDetailOfferDates.setText("$offerStartDateTime - $offerEndDateTime")
+//
+//
+//        binding.imageviewHomeDetailCarImage.let {
+//            Glide.with(this).load(carImageUrl).into(it)
+//        }
 
         // start ride button
         binding.buttonHomeDetailStartRide.setOnClickListener {
@@ -129,8 +153,7 @@ class HomeDetailFragment : Fragment(), BiometricAuthListener {
 
 
         // Set the title of the actionbar
-        val bar = (activity as AppCompatActivity).supportActionBar
-        bar?.title = offerCarModel
+
     }
 
 
