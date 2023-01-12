@@ -22,7 +22,7 @@ class OfferViewModel : ViewModel() {
     val createBookingResult: MutableLiveData<CreateBookingResponse?> = MutableLiveData()
     var geocodeResult: MutableLiveData<GeocodeResponsePositionstack?>? = MutableLiveData()
     val createOfferResult: MutableLiveData<CreateOfferResponse?> = MutableLiveData()
-    var geocodeResult: MutableLiveData<GeocodeResponse?>? = MutableLiveData()
+//    var geocodeResult: MutableLiveData<GeocodeResponse?>? = MutableLiveData()
 
 
     // ===== Variables for the API calls =====
