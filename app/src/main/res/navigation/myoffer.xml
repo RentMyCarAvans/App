@@ -23,11 +23,15 @@
             app:argType="string" />
         <argument
             android:name="startdate"
-            app:argType="string" />
-        <argument android:name="enddate" />
+            app:argType="string"
+            app:nullable="true" />
+        <argument android:name="enddate"
+            app:argType="string"
+            app:nullable="true" />
         <argument
             android:name="location"
-            app:argType="string" />
+            app:argType="string"
+            app:nullable="true" />
         <argument
             android:name="licenseplate"
             app:argType="string" />

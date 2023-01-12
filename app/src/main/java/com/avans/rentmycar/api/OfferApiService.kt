@@ -20,6 +20,9 @@ interface OfferService {
     @POST("/api/v1/offers/")
     suspend fun createOffer(@Body offerDTO: OfferDTO): Response<CreateOfferResponse>
 
+    @PUT("/api/v1/offers/")
+    suspend fun updateOffer(@Body offer: CreateOfferResponse): Response<CreateOfferResponse>
+
     @GET("/api/v1/bookings")
     suspend fun getBookings(): Response<BookingResponse>
 

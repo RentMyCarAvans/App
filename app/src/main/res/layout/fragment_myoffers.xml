@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.offer.MyOffersFragment"
-        tools:listitem="@layout/myoffers_item"/>
+        tools:listitem="@layout/item_offer"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

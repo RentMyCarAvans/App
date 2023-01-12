@@ -11,14 +11,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.avans.rentmycar.databinding.FragmentMycarsBinding
 import com.avans.rentmycar.utils.GlideImageLoader
 import com.avans.rentmycar.utils.SessionManager
-import com.avans.rentmycar.adapter.CarAdapter
 import com.avans.rentmycar.adapter.OfferAdapter
 import com.avans.rentmycar.databinding.FragmentMyoffersBinding
-
-import com.avans.rentmycar.viewmodel.CarViewModel
 import com.avans.rentmycar.viewmodel.OfferViewModel
 
 /**
