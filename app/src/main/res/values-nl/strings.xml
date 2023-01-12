@@ -66,4 +66,6 @@
     <string name="nr_of_seats">Aantal zitplaatsen:</string>
     <string name="color">Kleur:</string>
     <string name="mileage">Kilometers:</string>
+    <string name="BiometricPrompt_title">Beveiliging Rent My Car</string>
+    <string name="BiometricPrompt_description">Authentiseer om de rit te starten</string>
 </resources>

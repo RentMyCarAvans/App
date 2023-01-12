@@ -13,9 +13,6 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface UserService {
-    // TODO: need to implement dynamic urls: https://stackoverflow.com/a/41341057
-
-
     @POST("/api/v1/auth/login")
     suspend fun loginUser(@Body loginRequest: LoginRequest): Response<LoginResponse>
 

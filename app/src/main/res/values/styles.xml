@@ -20,4 +20,9 @@
 
     <dimen name="horizontal_line_height">1dp</dimen>
     <dimen name="large_spacer">16dp</dimen>
+
+    <style name="Widget.Theme.RentMyCar.ButtonBar.Fullscreen" parent="">
+        <item name="android:background">@color/black_overlay</item>
+        <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
+    </style>
 </resources>

@@ -68,4 +68,10 @@
     <string name="nr_of_seats">Nr of seats:</string>
     <string name="color">Color:</string>
     <string name="mileage">Mileage:</string>
+    <string name="BiometricPrompt_title">Security Rent My Car</string>
+    <string name="BiometricPrompt_description">Authenticate to start the ride</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="return_car">Return this car</string>
+    <string name="riding">riding</string>
 </resources>

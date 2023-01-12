@@ -85,26 +85,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), BiometricAuthListen
                         binding!!.textviewVerifiedUser.text = getString(R.string.verified_user)
                     } else {binding!!.textviewVerifiedUser.text = getString(R.string.not_verified_user)    }
 
-
-//                    val dateofBirth = it.data?.data?.dateOfBirth
-//                    val dateFormatted = LocalDateTime
-//                        .parse(dateofBirth)
-//                        .toLocalDate()
-//                        .format(
-//                            DateTimeFormatter
-//                                .ofLocalizedDate(FormatStyle.LONG)
-//                                .withLocale(Locale.ENGLISH)
-//                        )
-//
-//                    binding!!.txtBirthdate.text = dateFormatted
                 }
             }
         }
 
-
-        // Prompt appears when user clicks "Log in".
-        // Consider integrating with the keystore to unlock cryptographic operations,
-        // if needed by your app.
 
         binding!!.btnAuth.setOnClickListener {
             showBiometricPrompt(

@@ -60,8 +60,9 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
 
+        // hide the bottommenubar for these fragments
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if(destination.id == R.id.loginFragment || destination.id == R.id.registerFragment || destination.id == R.id.introFragment) {
+            if(destination.id == R.id.loginFragment || destination.id == R.id.registerFragment || destination.id == R.id.introFragment || destination.id == R.id.rideFragment) {
 
                 bottomNavigationView.visibility = View.GONE
             } else {

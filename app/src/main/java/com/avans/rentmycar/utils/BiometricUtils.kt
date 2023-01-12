@@ -67,9 +67,9 @@ fun initBiometricPrompt(
 }
 
 fun showBiometricPrompt(
-    title: String = "Biometric Authentication",
-    subtitle: String = "Enter biometric credentials to proceed.",
-    description: String = "Input your Fingerprint or FaceID to ensure it's you!",
+    title: String = "Rent My Car Security",
+    subtitle: String = "Enter biometric credentials to start the ride",
+    description: String = "Input your PIN, Fingerprint or Face to ensure it's you!",
     activity: AppCompatActivity,
     listener: BiometricAuthListener,
     cryptoObject: BiometricPrompt.CryptoObject? = null,
