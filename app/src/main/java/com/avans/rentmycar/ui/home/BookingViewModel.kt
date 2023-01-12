@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.avans.rentmycar.model.BookingData
+import com.avans.rentmycar.model.response.BookingData
 import com.avans.rentmycar.repository.BookingRepository
 import kotlinx.coroutines.launch
 

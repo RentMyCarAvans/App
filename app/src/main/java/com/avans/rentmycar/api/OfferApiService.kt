@@ -3,7 +3,7 @@ package com.avans.rentmycar.api
 
 
 import com.avans.rentmycar.model.*
-import com.avans.rentmycar.rest.ApiClient
+import com.avans.rentmycar.model.response.*
 import retrofit2.Response
 import retrofit2.http.*
 

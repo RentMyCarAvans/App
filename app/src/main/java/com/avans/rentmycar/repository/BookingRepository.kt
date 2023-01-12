@@ -2,9 +2,9 @@ package com.avans.rentmycar.repository
 
 import com.avans.rentmycar.api.BookingDTO
 import com.avans.rentmycar.api.OfferService
-import com.avans.rentmycar.model.BookingData
-import com.avans.rentmycar.model.CreateBookingResponse
-import com.avans.rentmycar.model.SingleBookingResponse
+import com.avans.rentmycar.model.response.BookingData
+import com.avans.rentmycar.model.response.CreateBookingResponse
+
 
 class BookingRepository {
 
