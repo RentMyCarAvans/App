@@ -68,4 +68,5 @@
     <string name="mileage">Kilometers:</string>
     <string name="BiometricPrompt_title">Beveiliging Rent My Car</string>
     <string name="BiometricPrompt_description">Authentiseer om de rit te starten</string>
+    <string name="my_offers">Mijn aanbod</string>
 </resources>

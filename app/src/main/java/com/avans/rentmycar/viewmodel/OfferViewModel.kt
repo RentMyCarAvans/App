@@ -27,6 +27,7 @@ class OfferViewModel : ViewModel() {
 
     // ===== Variables for the API calls =====
     val offerCollection = MutableLiveData<Collection<OfferData>>()
+    val myOfferCollection = MutableLiveData<Collection<OfferData>>()
 
 
     // ===== Filter options =====
@@ -181,6 +182,20 @@ class OfferViewModel : ViewModel() {
         Log.d("[OVM] uOfferWithDist", "offers after everything: $offers")
 
         return offers.sortedBy { offer -> offer.distance }
+    }
+
+    fun getMyOffers(userId: Long) {
+        Log.d("[RMC][OfferVM]", "getMyOffers() => userid: "+userId)
+        viewModelScope.launch {
+            try {
+                val offerResponse = offerRepository.getOffersByUserId(userId)
+                Log.d("[RMC][OfferVM]", "getMyOffers() => Response: " + offerResponse.toString())
+                myOfferCollection.value = offerResponse
+
+            } catch (e: Exception) {
+                Log.d("[RMC][OfferVM]", "getMyOffers() => ERROR: " + e.message.toString())
+            }
+        }
     }
 
     fun getBookings(userId: Long) {

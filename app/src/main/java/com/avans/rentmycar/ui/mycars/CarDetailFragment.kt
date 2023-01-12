@@ -127,7 +127,7 @@ class CarDetailFragment : Fragment() {
             val current = LocalDateTime.now()
 
             val offerDirection =
-                CarDetailFragmentDirections.actionCarDetailFragmentToOfferCarFragment(args.id, current.toString(), current.toString(), "Hogeschoolllaan", args.licenseplate)
+                CarDetailFragmentDirections.actionCarDetailFragmentToOfferCarFragment(args.id, null, null, null, args.licenseplate)
             view.findNavController().navigate(offerDirection)
         }
     }
