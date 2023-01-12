@@ -1,4 +1,4 @@
-package com.avans.rentmycar.rest.request
+package com.avans.rentmycar.model.request
 
 
 import com.google.gson.annotations.SerializedName

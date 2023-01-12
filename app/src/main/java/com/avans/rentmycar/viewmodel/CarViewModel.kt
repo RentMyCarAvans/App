@@ -1,15 +1,16 @@
 package com.avans.rentmycar.viewmodel
 
-import android.text.Editable
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.avans.rentmycar.api.RdwApiClient
-import com.avans.rentmycar.model.*
+import com.avans.rentmycar.model.request.CarRequest
 import com.avans.rentmycar.repository.CarRepository
-import com.avans.rentmycar.rest.response.BaseResponse
-import com.google.android.material.snackbar.Snackbar
+import com.avans.rentmycar.model.response.BaseResponse
+import com.avans.rentmycar.model.response.CarList
+import com.avans.rentmycar.model.response.CarResponse
+import com.avans.rentmycar.model.response.RdwResponseItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

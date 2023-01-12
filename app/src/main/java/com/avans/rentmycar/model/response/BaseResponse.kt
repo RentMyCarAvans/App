@@ -1,4 +1,4 @@
-package com.avans.rentmycar.rest.response
+package com.avans.rentmycar.model.response
 
 sealed class BaseResponse<out T> {
     data class Success<out T>(val data: T? = null) : BaseResponse<T>()

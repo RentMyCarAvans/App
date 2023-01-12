@@ -69,7 +69,7 @@ class HomeDetailFragment : Fragment(), BiometricAuthListener {
             val geocodeResponse = viewModel.geocodeResult!!.value
             if (geocodeResponse != null) {
                 offerLat = geocodeResponse.data?.get(0)?.latitude!!
-                offerLng = geocodeResponse.data?.get(0)?.longitude!!
+                offerLng = geocodeResponse.data.get(0)?.longitude!!
             }
 
             if (mapFragment.isAdded) {

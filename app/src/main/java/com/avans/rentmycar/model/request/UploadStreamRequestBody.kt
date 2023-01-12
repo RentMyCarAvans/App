@@ -1,4 +1,4 @@
-package com.avans.rentmycar.rest.request
+package com.avans.rentmycar.model.request
 
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull

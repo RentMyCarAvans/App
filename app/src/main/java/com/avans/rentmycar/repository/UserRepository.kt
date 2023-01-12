@@ -1,13 +1,12 @@
 package com.avans.rentmycar.repository
 
-import com.avans.rentmycar.rest.methods.UserService
-import com.avans.rentmycar.rest.request.CreateUpdateUserRequest
-import com.avans.rentmycar.rest.request.LoginRequest
-import com.avans.rentmycar.rest.request.PasswordResetRequest
-import com.avans.rentmycar.rest.request.RegisterUserRequest
-import com.avans.rentmycar.rest.response.BaseResponse
-import com.avans.rentmycar.rest.response.LoginResponse
-import com.avans.rentmycar.rest.response.UserResponse
+import com.avans.rentmycar.api.UserService
+import com.avans.rentmycar.model.request.CreateUpdateUserRequest
+import com.avans.rentmycar.model.request.LoginRequest
+import com.avans.rentmycar.model.request.PasswordResetRequest
+import com.avans.rentmycar.model.request.RegisterUserRequest
+import com.avans.rentmycar.model.response.LoginResponse
+import com.avans.rentmycar.model.response.UserResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
 

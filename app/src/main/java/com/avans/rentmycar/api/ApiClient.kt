@@ -1,4 +1,4 @@
-package com.avans.rentmycar.rest
+package com.avans.rentmycar.api
 
 import com.avans.rentmycar.utils.Constant
 import okhttp3.OkHttpClient

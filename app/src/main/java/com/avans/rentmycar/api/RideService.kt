@@ -1,8 +1,7 @@
-package com.avans.rentmycar.rest.methods
+package com.avans.rentmycar.api
 
-import com.avans.rentmycar.rest.ApiClient
-import com.avans.rentmycar.rest.request.UpdateRideRequest
-import com.avans.rentmycar.rest.response.RideResponse
+import com.avans.rentmycar.model.request.UpdateRideRequest
+import com.avans.rentmycar.model.response.RideResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.PUT

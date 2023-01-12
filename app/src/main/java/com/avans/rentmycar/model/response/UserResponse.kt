@@ -1,4 +1,4 @@
-package com.avans.rentmycar.rest.response
+package com.avans.rentmycar.model.response
 
 data class UserResponse(
 	val data: Data,

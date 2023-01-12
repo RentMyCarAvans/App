@@ -2,9 +2,8 @@ package com.avans.rentmycar.api
 
 import com.avans.rentmycar.BuildConfig.MAPS_API_KEY
 import com.avans.rentmycar.BuildConfig.POSITIONSTACK_API_KEY
-import com.avans.rentmycar.model.GeocodeResponseGoogle
-import com.avans.rentmycar.model.GeocodeResponsePositionstack
-import com.avans.rentmycar.rest.ApiClient
+import com.avans.rentmycar.model.response.GeocodeResponseGoogle
+import com.avans.rentmycar.model.response.GeocodeResponsePositionstack
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.http.GET
 import retrofit2.http.Query

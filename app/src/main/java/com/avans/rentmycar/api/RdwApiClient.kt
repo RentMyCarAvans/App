@@ -1,6 +1,5 @@
 package com.avans.rentmycar.api
 
-import com.avans.rentmycar.rest.ApiClient
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
