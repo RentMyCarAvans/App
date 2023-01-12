@@ -1,24 +1,29 @@
 package com.avans.rentmycar.ui.home
 
+import android.hardware.biometrics.BiometricPrompt
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentHomeDetailBinding
+import com.avans.rentmycar.utils.BiometricAuthListener
 import com.avans.rentmycar.utils.SessionManager
+import com.avans.rentmycar.utils.showBiometricPrompt
 import com.avans.rentmycar.viewmodel.OfferViewModel
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 
-class HomeDetailFragment : Fragment() {
+class HomeDetailFragment : Fragment(), BiometricAuthListener {
 
     // Declare viewbinding
     private lateinit var _binding: FragmentHomeDetailBinding
@@ -55,7 +60,8 @@ class HomeDetailFragment : Fragment() {
         val offerStartDateTime = args.startDateTime
         val offerEndDateTime = args.endDateTime
         val carImageUrl = args.carImageUrl
-
+    Log.d("ROB_APP", args.toString())
+        val offerViewModel = ViewModelProvider(this)[OfferViewModel::class.java]
 
         viewModel.getGeocodeResponse(offerPickupLocation)
 
@@ -63,7 +69,7 @@ class HomeDetailFragment : Fragment() {
             val geocodeResponse = viewModel.geocodeResult!!.value
             if (geocodeResponse != null) {
                 offerLat = geocodeResponse.data?.get(0)?.latitude!!
-                offerLng = geocodeResponse.data?.get(0)?.longitude!!
+                offerLng = geocodeResponse.data.get(0)?.longitude!!
             }
 
             if (mapFragment.isAdded) {
@@ -83,9 +89,21 @@ class HomeDetailFragment : Fragment() {
             Glide.with(this).load(carImageUrl).into(it)
         }
 
+        // start ride button
+        binding.buttonHomeDetailStartRide.setOnClickListener {
+            showBiometricPrompt(
+                activity = requireActivity() as AppCompatActivity,
+                listener = this,
+                cryptoObject = null,
+                allowDeviceCredential = true,
+                title = getString(R.string.BiometricPrompt_title),
+                description = getString(R.string.BiometricPrompt_description),
+                subtitle = ""
+            )
+        }
+
         // Setup Book Button
         binding.buttonHomeDetailBook.setOnClickListener {
-            val offerViewModel = ViewModelProvider(this)[OfferViewModel::class.java]
             offerViewModel.createBooking(offerId, SessionManager.getUserId(requireContext())!!)
 
             offerViewModel.createBookingResult.observe(viewLifecycleOwner) { response ->
@@ -118,6 +136,27 @@ class HomeDetailFragment : Fragment() {
 
 
 
+    override fun onBiometricAuthenticateError(error: Int, errMsg: String) {
+        when (error) {
+            BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED -> {
+                Toast.makeText(requireContext(), "Cancelled", Toast.LENGTH_SHORT)
+                    .show()
+            }
+            BiometricPrompt.BIOMETRIC_ERROR_NO_DEVICE_CREDENTIAL -> {
+                Toast.makeText(requireContext(), "No device credential", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+    }
+
+
+    override fun onBiometricAuthenticateSuccess(result: androidx.biometric.BiometricPrompt.AuthenticationResult) {
+        Toast.makeText(requireContext(), "Succes", Toast.LENGTH_SHORT)
+            .show()
+        findNavController().navigate(R.id.action_homeDetailFragment2_to_rideFragment)
+
+
+    }
 
 //    override fun onStart() {
 //        super.onStart()

@@ -54,14 +54,15 @@ class MainActivity : AppCompatActivity() {
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_nav)
         bottomNavigationView.setupWithNavController(navController)
 
-        // Setup the ActionBar with navController and 3 top level destinations
+        // Setup the ActionBar with navController and 4 top level destinations
         appBarConfiguration = AppBarConfiguration(
-            setOf( R.id.homeFragment2,  R.id.mycars, R.id.profileFragment)
+            setOf( R.id.homeFragment2,  R.id.mycars, R.id.myOffers, R.id.profileFragment)
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
 
+        // hide the bottommenubar for these fragments
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if(destination.id == R.id.loginFragment || destination.id == R.id.registerFragment || destination.id == R.id.introFragment) {
+            if(destination.id == R.id.loginFragment || destination.id == R.id.registerFragment || destination.id == R.id.introFragment || destination.id == R.id.rideFragment) {
 
                 bottomNavigationView.visibility = View.GONE
             } else {

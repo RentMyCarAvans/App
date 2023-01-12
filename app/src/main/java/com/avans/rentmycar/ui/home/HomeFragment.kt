@@ -100,7 +100,7 @@ class HomeFragment : Fragment() {
         viewModel.bookingsResult.observe(viewLifecycleOwner) {
             Log.d("[Home]", "Bookings: $it")
             val offersFromMyBookings = viewModel.bookingsResult.value?.map { it.offer } ?: emptyList()
-            Log.d("[Home]", "Offers from my bookings: $offersFromMyBookings")
+            Log.d("[Home]", "Offers from    my bookings: $offersFromMyBookings")
             offerAdapter.setData(offersFromMyBookings)
         }
 

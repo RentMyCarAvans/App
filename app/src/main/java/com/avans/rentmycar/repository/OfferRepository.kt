@@ -4,15 +4,19 @@ import android.util.Log
 import com.avans.rentmycar.api.BookingDTO
 import com.avans.rentmycar.api.OfferDTO
 import com.avans.rentmycar.api.OfferService
-import com.avans.rentmycar.model.BookingData
-import com.avans.rentmycar.model.CreateBookingResponse
-import com.avans.rentmycar.model.CreateOfferResponse
-import com.avans.rentmycar.model.OfferData
+import com.avans.rentmycar.model.response.BookingData
+import com.avans.rentmycar.model.response.CreateBookingResponse
+import com.avans.rentmycar.model.response.CreateOfferResponse
+import com.avans.rentmycar.model.response.OfferData
 
 class OfferRepository {
 
     suspend fun getOpenOffers(): Collection<OfferData> {
         return OfferService.getApi()?.getOpenOffers()?.body()?.data ?: emptyList()
+    }
+
+    suspend fun getOffersByUserId(userId: Long): Collection<OfferData> {
+        return OfferService.getApi()?.getOffersByUserId(userId)?.body()?.data ?: emptyList()
     }
 
     suspend fun getBookings(userId: Long): Collection<BookingData> {

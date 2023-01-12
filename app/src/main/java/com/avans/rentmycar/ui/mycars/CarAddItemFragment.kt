@@ -29,8 +29,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.AddCarItemBinding
-import com.avans.rentmycar.model.RdwResponseItem
-import com.avans.rentmycar.rest.response.BaseResponse
+import com.avans.rentmycar.model.response.RdwResponseItem
+import com.avans.rentmycar.model.response.BaseResponse
 import com.avans.rentmycar.utils.FieldValidation
 import com.avans.rentmycar.utils.SessionManager
 import com.avans.rentmycar.viewmodel.CarViewModel

@@ -33,7 +33,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentMycarsDetailBinding
-import com.avans.rentmycar.model.CarList
+import com.avans.rentmycar.model.response.CarList
 import com.avans.rentmycar.viewmodel.CarViewModel
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
@@ -127,7 +127,7 @@ class CarDetailFragment : Fragment() {
             val current = LocalDateTime.now()
 
             val offerDirection =
-                CarDetailFragmentDirections.actionCarDetailFragmentToOfferCarFragment(args.id, current.toString(), current.toString(), "Hogeschoolllaan", args.licenseplate)
+                CarDetailFragmentDirections.actionCarDetailFragmentToOfferCarFragment(args.id, null, null, null, args.licenseplate)
             view.findNavController().navigate(offerDirection)
         }
     }

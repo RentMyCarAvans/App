@@ -10,7 +10,7 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.ItemOfferBinding
-import com.avans.rentmycar.model.OfferData
+import com.avans.rentmycar.model.response.OfferData
 import com.avans.rentmycar.utils.ImageLoader
 import com.avans.rentmycar.utils.SessionManager
 import java.text.SimpleDateFormat

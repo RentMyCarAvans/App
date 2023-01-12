@@ -1,6 +1,7 @@
 package com.avans.rentmycar.api
 
 
+
 import com.avans.rentmycar.model.*
 import com.avans.rentmycar.rest.ApiClient
 import retrofit2.Response
@@ -17,11 +18,17 @@ interface OfferService {
     @POST("/api/v1/offers/")
     suspend fun createOffer(@Body offerDTO: OfferDTO): Response<CreateOfferResponse>
 
+    @PUT("/api/v1/offers/")
+    suspend fun updateOffer(@Body offer: CreateOfferResponse): Response<CreateOfferResponse>
+
     @GET("/api/v1/bookings")
     suspend fun getBookings(): Response<BookingResponse>
 
     @GET("/api/v1/bookings")
     suspend fun getBookingsForUser(@Query("customerId") userId: Long): Response<BookingResponse>
+
+    @GET("/api/v1/offers")
+    suspend fun getOffersByUserId(@Query("userId") userId: Long): Response<OfferResponse>
 
     @GET("/api/v1/bookings/{id}")
     suspend fun getBookingById(@Path("id") id:Long): Response<SingleBookingResponse>

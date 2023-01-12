@@ -6,12 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
-import androidx.core.view.isGone
-import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.avans.rentmycar.databinding.ItemCarBinding
-import com.avans.rentmycar.model.CarList
+import com.avans.rentmycar.model.response.CarList
 import com.avans.rentmycar.utils.ImageLoader
 
 class CarAdapter(
