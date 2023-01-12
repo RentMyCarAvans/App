@@ -17,7 +17,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         >
         <Button
-            style="?attr/materialButtonStyle"
             android:id="@+id/button_home_availablecars"
             android:layout_width="0dp"
             android:paddingVertical="15dp"
@@ -28,7 +27,6 @@
             android:text="@string/home_availablecars"
             />
         <Button
-            style="?attr/materialButtonStyle"
             android:id="@+id/button_home_mybookings"
             android:layout_width="0dp"
             android:paddingVertical="15dp"
@@ -69,7 +67,7 @@
     </LinearLayout>
 
     <Button
-        android:layout_marginHorizontal="20dp"
+        style="@style/primaryButton"
         android:id="@+id/btnBottomSheetModal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

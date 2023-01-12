@@ -8,8 +8,8 @@ import com.avans.rentmycar.model.response.CreateBookingResponse
 
 class BookingRepository {
 
-    suspend fun getBookings(userId: Long): Collection<BookingData> {
-        return if(userId == 0L) {
+    suspend fun getBookings(userId: Long?): Collection<BookingData> {
+        return if(userId == null) {
             // TODO: Create BookingService
             OfferService.getApi()?.getBookings()?.body()?.data ?: emptyList()
         } else {

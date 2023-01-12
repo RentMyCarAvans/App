@@ -28,6 +28,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding
 
     private val viewModel: OfferViewModel by viewModels()
+    private val bookingViewModel: BookingViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -122,10 +123,15 @@ class HomeFragment : Fragment() {
             binding.buttonHomeAvailablecars.setBackgroundColor(resources.getColor(R.color.blue_500))
             binding.buttonHomeMybookings.setBackgroundColor(resources.getColor(R.color.blue_200))
             if (userId != null) {
-                viewModel.getBookings(userId)
+                bookingViewModel.getBookings(userId)
                 // TODO: Maybe create a new layout for My Bookings?
                 val offersFromMyBookings = viewModel.bookingsResult.value?.map { it.offer } ?: emptyList()
                 offerAdapter.setData(offersFromMyBookings)
+            } else {
+                // TODO: Show a text message that there are no bookings available. For now, just show a snackbar
+                view?.let { it1 ->
+                    Snackbar.make(it1, "No bookings found", Snackbar.LENGTH_LONG).show()
+                }
             }
         }
 

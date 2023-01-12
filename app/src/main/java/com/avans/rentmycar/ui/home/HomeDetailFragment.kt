@@ -52,6 +52,8 @@ class HomeDetailFragment : Fragment(), BiometricAuthListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val bookingViewModel = ViewModelProvider(requireActivity())[BookingViewModel::class.java]
+
 
         val args: HomeDetailFragmentArgs by navArgs()
         val offerId = args.id
@@ -104,9 +106,9 @@ class HomeDetailFragment : Fragment(), BiometricAuthListener {
 
         // Setup Book Button
         binding.buttonHomeDetailBook.setOnClickListener {
-            offerViewModel.createBooking(offerId, SessionManager.getUserId(requireContext())!!)
+            bookingViewModel.createBooking(offerId, SessionManager.getUserId(requireContext())!!)
 
-            offerViewModel.createBookingResult.observe(viewLifecycleOwner) { response ->
+            bookingViewModel.createBookingResult.observe(viewLifecycleOwner) { response ->
                 if (response != null) {
                     Log.d("[HDF] Response", "Response: $response")
                     Log.d("[HDF] Resp.status", "Resp.status: " + response.status)
@@ -118,12 +120,9 @@ class HomeDetailFragment : Fragment(), BiometricAuthListener {
                         view.findNavController().navigate(action)
                     }
 
-                }
-                if (response == null) {
-                    Snackbar.make(view, "Booking failed", Snackbar.LENGTH_LONG).show()
-                    Log.e("[HDF]", "--- BOOKING FAILED ---")
                 } else {
-                    Snackbar.make(view, "Booking failed", Snackbar.LENGTH_LONG).show()
+                    Log.d("[HDF] Response", "Response: $response")
+                    Snackbar.make(view, "Booking creation failed", Snackbar.LENGTH_LONG).show()
                 }
             }
         }
@@ -158,11 +157,5 @@ class HomeDetailFragment : Fragment(), BiometricAuthListener {
 
     }
 
-//    override fun onStart() {
-//        super.onStart()
-////        if(mapFragment.isAdded) {
-////            mapFragment.setMapLocation(offerLat, offerLng)
-////        }
-//    }
 
 }

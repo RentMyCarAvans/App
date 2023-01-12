@@ -91,7 +91,7 @@
         android:text="Book this car"
         app:layout_constraintBottom_toTopOf="@id/button_home_detail_startRide" />
 
-
+<!--TODO: This button should not be here! Move it to the BookingDetailsFragment-->
     <Button
         android:id="@+id/button_home_detail_startRide"
         android:layout_width="match_parent"

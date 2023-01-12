@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.avans.rentmycar.api.MapsApiService
 import com.avans.rentmycar.model.response.*
+import com.avans.rentmycar.repository.BookingRepository
 import com.avans.rentmycar.repository.OfferRepository
 import com.avans.rentmycar.utils.SessionManager
 import com.google.android.gms.maps.model.LatLng
@@ -211,59 +212,61 @@ class OfferViewModel : ViewModel() {
         }
     }
 
-    fun getBookings(userId: Long) {
-        viewModelScope.launch {
-            try {
-                val getBookingResponse = offerRepository.getBookings(userId)
+//    fun getBookings(userId: Long) {
+//        viewModelScope.launch {
+//            try {
+//                val getBookingResponse = offerRepository.getBookings(userId)
+//
+//                // TODO: Refactor this sorting and that of getOffers() to a separate function
+//                val userLocation = SessionManager.getDeviceLocation()
+//                val deviceLocation = Location("deviceLocation")
+//                deviceLocation.latitude = userLocation.latitude
+//                deviceLocation.longitude = userLocation.longitude
+//                getBookingResponse.forEach { booking ->
+//                    val pickupLocation = booking.offer.pickupLocation
+//                    val pickupLocationLatLng = MapsApiService.getApi()
+//                        ?.getLatLongFromAddress(pickupLocation)?.data?.get(0)?.let {
+//                            LatLng(
+//                                it.latitude as Double,
+//                                it.longitude as Double
+//                            )
+//                        }
+//                    val pickupLocationLocation = Location("pickupLocation")
+//                    if (pickupLocationLatLng != null) {
+//                        pickupLocationLocation.latitude = pickupLocationLatLng.latitude
+//                    }
+//                    if (pickupLocationLatLng != null) {
+//                        pickupLocationLocation.longitude = pickupLocationLatLng.longitude
+//                    }
+//                    val distance = deviceLocation.distanceTo(pickupLocationLocation)
+//                    booking.offer.distance = distance
+//                }
+//
+//                val sortedBookings = getBookingResponse.sortedBy { booking -> booking.offer.distance }
+//                bookingsResult.value = sortedBookings
+//
+//            } catch (e: Exception) {
+//                Log.e("[OfferVM] getB error", e.message.toString())
+//            }
+//        }
+//    }
 
-                // TODO: Refactor this sorting and that of getOffers() to a separate function
-                val userLocation = SessionManager.getDeviceLocation()
-                val deviceLocation = Location("deviceLocation")
-                deviceLocation.latitude = userLocation.latitude
-                deviceLocation.longitude = userLocation.longitude
-                getBookingResponse.forEach { booking ->
-                    val pickupLocation = booking.offer.pickupLocation
-                    val pickupLocationLatLng = MapsApiService.getApi()
-                        ?.getLatLongFromAddress(pickupLocation)?.data?.get(0)?.let {
-                            LatLng(
-                                it.latitude as Double,
-                                it.longitude as Double
-                            )
-                        }
-                    val pickupLocationLocation = Location("pickupLocation")
-                    if (pickupLocationLatLng != null) {
-                        pickupLocationLocation.latitude = pickupLocationLatLng.latitude
-                    }
-                    if (pickupLocationLatLng != null) {
-                        pickupLocationLocation.longitude = pickupLocationLatLng.longitude
-                    }
-                    val distance = deviceLocation.distanceTo(pickupLocationLocation)
-                    booking.offer.distance = distance
-                }
-
-                val sortedBookings = getBookingResponse.sortedBy { booking -> booking.offer.distance }
-                bookingsResult.value = sortedBookings
-
-            } catch (e: Exception) {
-                Log.e("[OfferVM] getB error", e.message.toString())
-            }
-        }
-    }
-
-    fun createBooking(offerId: Long, customerId: Long) {
-        viewModelScope.launch {
-            try {
-                val createBookingResponse = offerRepository.createBooking(offerId, customerId)
-                createBookingResult.value = createBookingResponse
-                Log.d("[OfferVM] crBookingResp", createBookingResponse.toString())
-                Log.d("[OfferVM] crBookingResu", createBookingResult.value.toString())
-            } catch (e: Exception) {
-                Log.d("[OfferVM] bookingresult", createBookingResult.value.toString())
-                Log.e("[OfferVM] crBookingResu", e.message.toString())
-                Log.e("[OfferVM] createBooking", e.message.toString())
-            }
-        }
-    }
+//    // TODO: Move all references to this method to the BookingViewModel
+//    fun createBooking(offerId: Long, customerId: Long) {
+//        viewModelScope.launch {
+//            try {
+//                val bookingRepository = BookingRepository()
+//                val createBookingResponse = bookingRepository.createBooking(offerId, customerId)
+//                createBookingResult.value = createBookingResponse
+//                Log.d("[OfferVM] crBookingResp", createBookingResponse.toString())
+//                Log.d("[OfferVM] crBookingResu", createBookingResult.value.toString())
+//            } catch (e: Exception) {
+//                Log.d("[OfferVM] bookingresult", createBookingResult.value.toString())
+//                Log.e("[OfferVM] crBookingResu", e.message.toString())
+//                Log.e("[OfferVM] createBooking", e.message.toString())
+//            }
+//        }
+//    }
 
     fun createOffer( startDateTime: String,
                      endDateTime: String,
