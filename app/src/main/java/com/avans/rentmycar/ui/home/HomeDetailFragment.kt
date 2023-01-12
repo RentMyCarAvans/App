@@ -23,7 +23,7 @@ import com.avans.rentmycar.viewmodel.OfferViewModel
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 
-class HomeDetailFragment : Fragment(), BiometricAuthListener {
+class HomeDetailFragment : Fragment() {
 
     private lateinit var _binding: FragmentHomeDetailBinding
     private val binding get() = _binding
@@ -120,18 +120,7 @@ class HomeDetailFragment : Fragment(), BiometricAuthListener {
 //            Glide.with(this).load(carImageUrl).into(it)
 //        }
 
-        // start ride button
-        binding.buttonHomeDetailStartRide.setOnClickListener {
-            showBiometricPrompt(
-                activity = requireActivity() as AppCompatActivity,
-                listener = this,
-                cryptoObject = null,
-                allowDeviceCredential = true,
-                title = getString(R.string.BiometricPrompt_title),
-                description = getString(R.string.BiometricPrompt_description),
-                subtitle = ""
-            )
-        }
+
 
         // Setup Book Button
         binding.buttonHomeDetailBook.setOnClickListener {
@@ -163,27 +152,7 @@ class HomeDetailFragment : Fragment(), BiometricAuthListener {
     }
 
 
-    override fun onBiometricAuthenticateError(error: Int, errMsg: String) {
-        when (error) {
-            BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED -> {
-                Toast.makeText(requireContext(), "Cancelled", Toast.LENGTH_SHORT)
-                    .show()
-            }
-            BiometricPrompt.BIOMETRIC_ERROR_NO_DEVICE_CREDENTIAL -> {
-                Toast.makeText(requireContext(), "No device credential", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        }
-    }
 
-
-    override fun onBiometricAuthenticateSuccess(result: androidx.biometric.BiometricPrompt.AuthenticationResult) {
-        Toast.makeText(requireContext(), "Succes", Toast.LENGTH_SHORT)
-            .show()
-        findNavController().navigate(R.id.action_homeDetailFragment2_to_rideFragment)
-
-
-    }
 
 
 }

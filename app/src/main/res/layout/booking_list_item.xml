@@ -20,12 +20,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <!--        TODO: Check if scaleType is good like this-->
             <ImageView
                 android:id="@+id/imageview_item_offer_car_image"
                 android:layout_width="175dp"
                 android:layout_height="match_parent"
-                android:scaleType="fitCenter"
+                android:scaleType="centerCrop"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="ContentDescription"

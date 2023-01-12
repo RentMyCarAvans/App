@@ -92,10 +92,11 @@ class HomeFragment : Fragment() {
 
 
         // TODO: This should be in the Bookings fragment when it has been coded
-        viewModel.bookingsResult.observe(viewLifecycleOwner) {
+        bookingViewModel.bookingCollection.observe(viewLifecycleOwner) {
             Log.d("[Home]", "Bookings: $it")
-            val offersFromMyBookings = viewModel.bookingsResult.value?.map { it.offer } ?: emptyList()
+            val offersFromMyBookings = bookingViewModel.bookingCollection.value?.map { it.offer } ?: emptyList()
             Log.d("[Home]", "Offers from    my bookings: $offersFromMyBookings")
+            // TODO: Convert to BookingAdapter
             offerAdapter.setData(offersFromMyBookings)
         }
 
