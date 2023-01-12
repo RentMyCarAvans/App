@@ -14,8 +14,8 @@ object SessionManager {
     var locationPermissionHasBeenGranted: MutableLiveData<Boolean> = MutableLiveData(false)
     var deviceLocationHasBeenSet: MutableLiveData<Boolean> = MutableLiveData(false)
 
-    const val USER_TOKEN = "user_token"
-    const val USER_ID = "user_id"
+    private const val USER_TOKEN = "user_token"
+    private const val USER_ID = "user_id"
 
     /**
      * Function to save auth token

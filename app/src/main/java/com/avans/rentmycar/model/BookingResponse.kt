@@ -19,3 +19,8 @@ data class BookingData(
     val customer: OfferUserData,
 )
 
+data class SingleBookingResponse(
+    val data: BookingData,
+    val message: String,
+    val status: Int
+)
