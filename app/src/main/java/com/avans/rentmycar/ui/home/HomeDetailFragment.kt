@@ -32,6 +32,9 @@ class HomeDetailFragment : Fragment(), BiometricAuthListener {
     var offerLat = 51.5837013
     var offerLng = 4.797106
 
+
+    val args: HomeDetailFragmentArgs by navArgs()
+
     val mapFragment = MapsFragment()
 
     private val viewModel: OfferViewModel by viewModels()
@@ -57,7 +60,7 @@ class HomeDetailFragment : Fragment(), BiometricAuthListener {
         val actionBar = (activity as AppCompatActivity).supportActionBar
 
 
-        val args: HomeDetailFragmentArgs by navArgs()
+//        val args: HomeDetailFragmentArgs by navArgs()
         val offerId = args.id
 
         Log.d("ROB_APP", args.toString())
@@ -95,6 +98,8 @@ class HomeDetailFragment : Fragment(), BiometricAuthListener {
                 offerLat = geocodeResponse.data?.get(0)?.latitude!!
                 offerLng = geocodeResponse.data.get(0)?.longitude!!
             }
+
+            //
 
             if (mapFragment.isAdded) {
                 mapFragment.setMapLocation(offerLat, offerLng)
@@ -155,7 +160,6 @@ class HomeDetailFragment : Fragment(), BiometricAuthListener {
         // Set the title of the actionbar
 
     }
-
 
 
     override fun onBiometricAuthenticateError(error: Int, errMsg: String) {

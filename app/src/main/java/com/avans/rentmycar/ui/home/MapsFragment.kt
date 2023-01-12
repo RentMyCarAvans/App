@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.avans.rentmycar.R
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -31,6 +32,9 @@ class MapsFragment : Fragment() {
     private val mapBoundsBuilder = LatLngBounds.Builder()
 
     private val boundsPadding = 100
+
+    var RmcChildFragmentManager: FragmentManager? = null
+
 
 
     private val callback = OnMapReadyCallback { googleMap ->
@@ -70,6 +74,7 @@ class MapsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        RmcChildFragmentManager = getChildFragmentManager();
         return inflater.inflate(R.layout.fragment_maps, container, false)
     }
 
@@ -118,8 +123,10 @@ class MapsFragment : Fragment() {
                         Log.d("[MAPS] lastLocation", lastLocation.toString())
                         val currentLatLng = LatLng(deviceLocation.latitude, deviceLocation.longitude)
 //                        setMapLocation(currentLatLng.latitude, currentLatLng.longitude)
+                        // Check if map has been attached yet
+
                         val mapFragment =
-                            childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+                            RmcChildFragmentManager?.findFragmentById(R.id.map) as SupportMapFragment?
                         mapFragment?.getMapAsync { googleMap ->
                             val deviceLocation = LatLng(currentLatLng.latitude, currentLatLng.longitude)
                             Log.d("[MAPS] getMapsAc devloc", "Location: $deviceLocation")
@@ -155,13 +162,13 @@ class MapsFragment : Fragment() {
 
 
 
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        val mapFragment = RmcChildFragmentManager?.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
 
     }
 
     private fun clearMap() {
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        val mapFragment = RmcChildFragmentManager?.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync { googleMap ->
             googleMap.clear()
         }
@@ -169,7 +176,7 @@ class MapsFragment : Fragment() {
 
     private fun addDeviceMarker(location: LatLng){
         Log.d("[MAPS] addDeviceMarker", "Location: $location")
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        val mapFragment = RmcChildFragmentManager?.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync { googleMap ->
             googleMap.addMarker(MarkerOptions().position(location).title("Your location"))
             Log.d("[MAPS] addDeviceMarker", "Marker added to map at $location")
@@ -178,7 +185,7 @@ class MapsFragment : Fragment() {
 
     fun addCarMarker(location: LatLng){
         Log.d("[MAPS] addCarMarker", "Location: $location")
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        val mapFragment = RmcChildFragmentManager?.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync { googleMap ->
             googleMap.addMarker(MarkerOptions().position(location).title("CAR NAME HERE").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)))
         }
@@ -190,7 +197,7 @@ class MapsFragment : Fragment() {
         Log.d("[MAPS]", "setMapLoc called")
         if (!isAdded) return
         Log.d("[MAPS]", "setMapLoc called 2")
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        val mapFragment = RmcChildFragmentManager?.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync { googleMap ->
             val location = LatLng(latToSet, lngToSet)
             Log.d("[MAPS] setMapLocation", "Location: $location")
