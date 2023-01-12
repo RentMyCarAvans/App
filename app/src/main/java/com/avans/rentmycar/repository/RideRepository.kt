@@ -7,6 +7,6 @@ import okhttp3.Response
 
 class RideRepository {
     suspend fun updateRide(updatedUser: UpdateRideRequest, rideId: String): retrofit2.Response<RideResponse>? {
-        return RideService.getApi()?.putRide(updatedUser, url="/api/v1/ride${rideId}")
+        return RideService.getApi()?.putRide(updatedUser, url="/api/v1/ride/${rideId}")
     }
 }
