@@ -22,7 +22,7 @@ class OfferViewModel : ViewModel() {
     val createBookingResult: MutableLiveData<CreateBookingResponse?> = MutableLiveData()
     var geocodeResult: MutableLiveData<GeocodeResponsePositionstack?>? = MutableLiveData()
     val createOfferResult: MutableLiveData<CreateOfferResponse?> = MutableLiveData()
-    var geocodeResult: MutableLiveData<GeocodeResponse?>? = MutableLiveData()
+//    var geocodeResult: MutableLiveData<GeocodeResponse?>? = MutableLiveData()
 
 
     // ===== Variables for the API calls =====
@@ -123,7 +123,20 @@ class OfferViewModel : ViewModel() {
 
                 if(SessionManager.getLocationPermissionGranted()) {
                     Log.d("[OVM] getOffers", "Location permission granted. Show offers with distances.")
+
+
+                    val stringFromCoordinatesDeviceLocation = SessionManager.getDeviceLocation()?.latitude.toString() + "," + SessionManager.getDeviceLocation()?.longitude.toString()
+                    Log.d("[OVM] getOffers", "stringFromCoordinatesDeviceLocation: $stringFromCoordinatesDeviceLocation")
+                    val readableDeviceLocation = MapsApiService.getApi()?.getAddressFromLatLong(stringFromCoordinatesDeviceLocation)
+                    Log.d("[OVM] getOffers", "readableDeviceLocation: $readableDeviceLocation")
+                    SessionManager.setDeviceLocationReadable(readableDeviceLocation?.data?.get(0)?.label!!)
+
+
+
                     setOfferCollection(updateOfferDataWithDistance(offerResponse))
+
+
+
 //                    setOfferCollection(offerResponse) // TODO: Remove this line when distance is implemented correctly again
 
                 } else {
@@ -154,10 +167,10 @@ class OfferViewModel : ViewModel() {
                 ?.getLatLongFromAddress(pickupLocation)?.data?.get(0)
             Log.d("[OVM] uOfferWithDist", "pickupGeolocationResponse: $pickupGeolocationResponse")
 
-            val pickupLocationLatLng = pickupGeolocationResponse?.let {
-                it.latitude?.let { it1 -> it.longitude?.let { it2 -> LatLng(it1, it2) } }
-            }
-//            Log.d("[OVM] uOfferWithDist", "pickupLocationLatLng: $pickupLocationLatLng")
+            val pickupLocationLatLng = LatLng(pickupGeolocationResponse?.latitude!! as Double,
+                pickupGeolocationResponse.longitude as Double
+            )
+            Log.d("[OVM] uOfferWithDist", "pickupLocationLatLng: $pickupLocationLatLng")
 
             val pickupLocationLocation = Location("pickupLocation")
 
@@ -195,16 +208,13 @@ class OfferViewModel : ViewModel() {
                 deviceLocation.longitude = userLocation.longitude
                 getBookingResponse.forEach { booking ->
                     val pickupLocation = booking.offer.pickupLocation
-                    val pickupLocationLatLng =
-                        MapsApiService.getApi()
-                            ?.getLatLongFromAddress(pickupLocation)?.data?.get(0)?.latitude?.let {
-                                MapsApiService.getApi()
-                                    ?.getLatLongFromAddress(pickupLocation)?.data?.get(0)?.longitude?.let { it1 ->
-                                        LatLng(
-                                            it, it1
-                                        )
-                                    }
-                            }
+                    val pickupLocationLatLng = MapsApiService.getApi()
+                        ?.getLatLongFromAddress(pickupLocation)?.data?.get(0)?.let {
+                            LatLng(
+                                it.latitude as Double,
+                                it.longitude as Double
+                            )
+                        }
                     val pickupLocationLocation = Location("pickupLocation")
                     if (pickupLocationLatLng != null) {
                         pickupLocationLocation.latitude = pickupLocationLatLng.latitude

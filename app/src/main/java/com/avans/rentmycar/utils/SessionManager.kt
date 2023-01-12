@@ -10,6 +10,7 @@ import com.google.android.gms.maps.model.LatLng
 object SessionManager {
 
     private var deviceLocation: LatLng = LatLng(51.925959,3.9226572) // TODO: Figure out if the SessionManager is the right place for this
+    private var deviceLocationReadable: String = "Groningen, Netherlands"
     var locationPermissionHasBeenGranted: MutableLiveData<Boolean> = MutableLiveData(false)
     var deviceLocationHasBeenSet: MutableLiveData<Boolean> = MutableLiveData(false)
 
@@ -103,6 +104,15 @@ object SessionManager {
 //        locationPermissionHasBeenGranted.value = true
         Log.d("[SM] setDeviceLocation", "deviceLocationHasBeenSet: ${deviceLocationHasBeenSet.value}")
         this.deviceLocation = deviceLocation
+    }
+
+    fun getDeviceLocationReadable(): String {
+        return deviceLocationReadable
+    }
+
+    fun setDeviceLocationReadable(devicelocationString: String) {
+        Log.d("[SM] setDevLocReadable", "setDeviceLocationReadable: $devicelocationString")
+        this.deviceLocationReadable = devicelocationString
     }
 
 

@@ -4,6 +4,7 @@ import com.avans.rentmycar.BuildConfig.MAPS_API_KEY
 import com.avans.rentmycar.BuildConfig.POSITIONSTACK_API_KEY
 import com.avans.rentmycar.model.GeocodeResponseGoogle
 import com.avans.rentmycar.model.GeocodeResponsePositionstack
+import com.avans.rentmycar.model.GeocodeResponsePositionstackReverse
 import com.avans.rentmycar.rest.ApiClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.http.GET
@@ -19,6 +20,13 @@ interface MapsApiService {
         @Query("query") pickupLocation: String,
         @Query("access_key") key: String = POSITIONSTACK_API_KEY
     ): GeocodeResponsePositionstack
+
+    @GET("http://api.positionstack.com/v1/reverse")
+    suspend fun getAddressFromLatLong(
+        @Query("query") coordinates: String,
+        @Query("access_key") key: String = POSITIONSTACK_API_KEY,
+        @Query("limit") limit: Int = 1
+    ): GeocodeResponsePositionstackReverse
 
 
     @GET("https://maps.googleapis.com/maps/api/geocode/json")
