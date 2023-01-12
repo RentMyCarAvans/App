@@ -66,4 +66,5 @@
     <string name="nr_of_seats">Aantal zitplaatsen:</string>
     <string name="color">Kleur:</string>
     <string name="mileage">Kilometers:</string>
+    <string name="my_offers">Mijn aanbod</string>
 </resources>
