@@ -47,8 +47,8 @@ class OfferAdapter(
             // TODO: Replace cute placeholder images with dumb pictures of cars
             val random = (1..10).random() * 100
             var carImage = ""
-            carImage = if(offerData.car.image == null) {
-                "http://placekitten.com/$random/$random"
+            carImage = if(offerData.car.image == null || offerData.car.image == "") {
+                "https://www.thecarwiz.com/images/listing_vehicle_placeholder.jpg"
             } else {
                 offerData.car.image
             }
