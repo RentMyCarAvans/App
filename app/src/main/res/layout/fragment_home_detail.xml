@@ -19,14 +19,15 @@
         android:id="@+id/textview_home_detail_car_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
         android:textColor="@color/black"
         android:textSize="25sp"
-        android:layout_marginTop="20dp"
-        android:layout_marginHorizontal="20dp"
         android:textStyle="bold"
-        android:text="OFFER CAR NAME"
 
-        app:layout_constraintTop_toBottomOf="@id/imageview_home_detail_car_image" />
+        app:layout_constraintTop_toBottomOf="@id/imageview_home_detail_car_image"
+        tools:layout_editor_absoluteX="20dp"
+        tools:text="OFFER CAR NAME" />
 
     <TextView
         android:id="@+id/textview_home_detail_offer_dates"
@@ -36,7 +37,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:textSize="18sp"
-        android:text="OFFER DATES"
+        tools:text="OFFER DATES"
 
         app:layout_constraintTop_toBottomOf="@id/textview_home_detail_car_name" />
 
@@ -49,7 +50,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:textSize="18sp"
-        android:text="OFFER PICKUPLOCATION"
+        tools:text="OFFER PICKUPLOCATION"
         app:layout_constraintTop_toBottomOf="@id/textview_home_detail_offer_dates" />
 
 
@@ -81,7 +82,7 @@
         app:layout_constraintRight_toRightOf="parent"
         style="@style/primaryButton"
         android:layout_marginBottom="20dp"
-        android:text="Book this car"
+        android:text="@string/book_this_car"
         app:layout_constraintBottom_toTopOf="@id/button_home_detail_startRide" />
 
 <!--TODO: This button should not be here! Move it to the BookingDetailsFragment-->
@@ -93,6 +94,6 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginHorizontal="20dp"
         android:layout_marginBottom="20dp"
-        android:text="Start Riding"
+        android:text="@string/start_riding"
         app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -29,7 +29,7 @@ class BookingDetailFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentBookingDetailBinding.inflate(inflater, container, false)
         return binding.root
     }

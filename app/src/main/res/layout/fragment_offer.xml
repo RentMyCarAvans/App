@@ -7,7 +7,7 @@
     android:layout_marginHorizontal="8dp"
     android:background="@color/white"
     android:paddingTop="8dp"
-    tools:context=".ui.offer.OfferCarFragment">>
+    tools:context=".ui.offer.OfferCarFragment">
 
     <FrameLayout
         android:id="@+id/layout_add_offer"

@@ -138,6 +138,7 @@ class HomeDetailFragment : Fragment(), BiometricAuthListener {
             bookingViewModel.createBooking(offerId, SessionManager.getUserId(requireContext())!!)
 
             bookingViewModel.createBookingResult.observe(viewLifecycleOwner) { response ->
+                // TODO: Check if value of response can be !null
                 if (response != null) {
                     Log.d("[HDF] Response", "Response: $response")
                     Log.d("[HDF] Resp.status", "Resp.status: " + response.status)

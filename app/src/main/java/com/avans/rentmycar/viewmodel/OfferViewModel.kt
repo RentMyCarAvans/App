@@ -150,7 +150,7 @@ class OfferViewModel : ViewModel() {
                     Log.d("[OVM] getOffers", "Location permission granted. Show offers with distances.")
 
 
-                    val stringFromCoordinatesDeviceLocation = SessionManager.getDeviceLocation()?.latitude.toString() + "," + SessionManager.getDeviceLocation()?.longitude.toString()
+                    val stringFromCoordinatesDeviceLocation = SessionManager.getDeviceLocation().latitude.toString() + "," + SessionManager.getDeviceLocation().longitude.toString()
                     Log.d("[OVM] getOffers", "stringFromCoordinatesDeviceLocation: $stringFromCoordinatesDeviceLocation")
                     val readableDeviceLocation = MapsApiService.getApi()?.getAddressFromLatLong(stringFromCoordinatesDeviceLocation)
                     Log.d("[OVM] getOffers", "readableDeviceLocation: $readableDeviceLocation")
@@ -194,7 +194,8 @@ class OfferViewModel : ViewModel() {
                 ?.getLatLongFromAddress(pickupLocation)?.data?.get(0)
             Log.d("[OVM] uOfferWithDist", "pickupGeolocationResponse: $pickupGeolocationResponse")
 
-            val pickupLocationLatLng = LatLng(pickupGeolocationResponse?.latitude!! as Double,
+            val pickupLocationLatLng = LatLng(
+                pickupGeolocationResponse?.latitude!!,
                 pickupGeolocationResponse.longitude as Double
             )
             Log.d("[OVM] uOfferWithDist", "pickupLocationLatLng: $pickupLocationLatLng")
