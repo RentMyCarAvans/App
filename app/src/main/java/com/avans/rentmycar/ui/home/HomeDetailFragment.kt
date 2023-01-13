@@ -24,17 +24,9 @@ class HomeDetailFragment : Fragment() {
     private lateinit var _binding: FragmentHomeDetailBinding
     private val binding get() = _binding
 
-    // TODO: Refactor this page
-    var offerLat = 51.5837013
-    var offerLng = 4.797106
-
-
     val args: HomeDetailFragmentArgs by navArgs()
 
     val mapFragment = MapsFragment()
-
-    private val viewModel: OfferViewModel by viewModels()
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,14 +47,8 @@ class HomeDetailFragment : Fragment() {
 
         val actionBar = (activity as AppCompatActivity).supportActionBar
 
-
-//        val args: HomeDetailFragmentArgs by navArgs()
         val offerId = args.id
 
-        Log.d("ROB_APP", args.toString())
-
-
-        // TODO: Get the Offer data from the ViewModel instead of from the navArgs
         offerViewModel.getOfferById(offerId)
 
         offerViewModel.singleOffer.observe(viewLifecycleOwner) { offer ->
@@ -81,46 +67,8 @@ class HomeDetailFragment : Fragment() {
                     mapFragment.setMapLocation(offer.pickupLocationLatitude, offer.pickupLocationLongitude)
                 }
 
-                // TODO: Refactor this after changes on API to include LatLng have been Approved
-//                viewModel.getGeocodeResponse(offer.pickupLocation)
             }
         }
-
-
-        // TODO: Refactor this after changes on API to include LatLng  have been Approved
-        // ===========================================================
-
-//        viewModel.getGeocodeResponse(offerPickupLocation)
-
-//        viewModel.geocodeResult?.observe(viewLifecycleOwner) {
-//            val geocodeResponse = viewModel.geocodeResult!!.value
-//            if (geocodeResponse != null) {
-//                offerLat = geocodeResponse.data?.get(0)?.latitude!!
-//                offerLng = geocodeResponse.data.get(0)?.longitude!!
-//            }
-//
-//            //
-//
-//            if (mapFragment.isAdded) {
-//                mapFragment.setMapLocation(offerLat, offerLng)
-//            }
-//
-//        }
-
-        // ===========================================================
-
-
-        // Set the offer data
-//        binding.textviewHomeDetailCarName.setText(offerCarModel)
-//        binding.textviewHomeDetailOfferPickuplocation.setText(offerPickupLocation)
-//        binding.textviewHomeDetailOfferDates.setText("$offerStartDateTime - $offerEndDateTime")
-//
-//
-//        binding.imageviewHomeDetailCarImage.let {
-//            Glide.with(this).load(carImageUrl).into(it)
-//        }
-
-
 
         // Setup Book Button
         binding.buttonHomeDetailBook.setOnClickListener {
@@ -146,13 +94,6 @@ class HomeDetailFragment : Fragment() {
             }
         }
 
-
-        // Set the title of the actionbar
-
     }
-
-
-
-
 
 }

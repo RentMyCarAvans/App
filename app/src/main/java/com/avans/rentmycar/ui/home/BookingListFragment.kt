@@ -48,9 +48,7 @@ class BookingListFragment : Fragment() {
             val action = HomeFragmentDirections.actionHomeFragment2ToBookingDetailFragment(
                 booking.id
             )
-//            val action = HomeFragmentDirections.actionHomeFragment2ToHomeDetailFragment2(
-//                booking.id
-//            )
+
             findNavController().navigate(action)
         }
 
