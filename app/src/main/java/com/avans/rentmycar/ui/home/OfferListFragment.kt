@@ -18,6 +18,7 @@ import com.avans.rentmycar.databinding.FragmentOfferListBinding
 import com.avans.rentmycar.utils.GlideImageLoader
 import com.avans.rentmycar.utils.SessionManager
 import com.avans.rentmycar.viewmodel.OfferViewModel
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
 
 class OfferListFragment : Fragment() {
@@ -72,7 +73,28 @@ class OfferListFragment : Fragment() {
             binding.progressIndicatorHomeFragment.visibility = View.INVISIBLE
         }
 
+
+        // Get the offers from the database. With location if the devicelocation is available, else with mock location
+        SessionManager.deviceLocationHasBeenSet.observe(viewLifecycleOwner) {
+            if (SessionManager.locationPermissionHasBeenGranted.value == false && SessionManager.deviceLocationHasBeenSet.value == false) {
+                Log.d(
+                    "[Home] DeviceLocation",
+                    "Location permission has not been granted. Setting mock location"
+                )
+                SessionManager.setDeviceLocation(LatLng(51.925959, 3.9226572))
+            } else if (SessionManager.deviceLocationHasBeenSet.value == false && SessionManager.locationPermissionHasBeenGranted.value == true) {
+                Log.w(
+                    "[Home] SM Deviceloc",
+                    "Device location has not been set yet, so we wait for that"
+                )
+                binding.progressIndicatorHomeFragment.visibility = View.VISIBLE
+            } else {
+                Log.i("[Home] SM Deviceloc", "Device location has been set, so we can start!")
         offerViewModel.getOffers()
+
+            }
+        }
+
 
         // Filter options
         binding.btnBottomSheetModal.setOnClickListener {

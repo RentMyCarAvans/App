@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.avans.rentmycar.api.MapsApiService
 import com.avans.rentmycar.model.response.*
-import com.avans.rentmycar.repository.BookingRepository
 import com.avans.rentmycar.repository.OfferRepository
 import com.avans.rentmycar.utils.SessionManager
 import com.google.android.gms.maps.model.LatLng
@@ -153,9 +152,9 @@ class OfferViewModel : ViewModel() {
                     Log.d("[OVM] getOffers", "readableDeviceLocation: $readableDeviceLocation")
                     SessionManager.setDeviceLocationReadable(readableDeviceLocation?.data?.get(0)?.label!!)
 
-                    setOfferCollection(offerResponse)
+//                    setOfferCollection(offerResponse)
 
-//                    setOfferCollection(updateOfferDataWithDistance(offerResponse))
+                    setOfferCollection(updateOfferDataWithDistance(offerResponse))
 
 
 
@@ -177,49 +176,45 @@ class OfferViewModel : ViewModel() {
 
     suspend fun updateOfferDataWithDistance(offers: Collection<OfferData>): Collection<OfferData> {
 
-        val userLocation = SessionManager.getDeviceLocation()
         val deviceLocation = Location("deviceLocation")
-        deviceLocation.latitude = userLocation.latitude
-        deviceLocation.longitude = userLocation.longitude
+        deviceLocation.latitude = SessionManager.getDeviceLocation().latitude
+        deviceLocation.longitude = SessionManager.getDeviceLocation().longitude
+        Log.d("[OVM] deviceLocation", "deviceLocation: $deviceLocation")
         offers.forEach { offer ->
+
+            Log.d("[OVM] ========", "=================================")
 
             Log.d("[OVM] uOfferWithDist", "offer: $offer")
 
-            val pickupLocation = offer.pickupLocation
-            Log.d("[OVM] uOfferWithDist", "pickupLocation: $pickupLocation")
-            val pickupGeolocationResponse = MapsApiService.getApi()
-                ?.getLatLongFromAddress(pickupLocation)?.data?.get(0)
-            Log.d("[OVM] uOfferWithDist", "pickupGeolocationResponse: $pickupGeolocationResponse")
-
             val pickupLocationLatLng = LatLng(
-                pickupGeolocationResponse?.latitude!!,
-                pickupGeolocationResponse.longitude as Double
+                offer.pickupLocationLatitude,
+                offer.pickupLocationLatitude
             )
             Log.d("[OVM] uOfferWithDist", "pickupLocationLatLng: $pickupLocationLatLng")
 
             val pickupLocationLocation = Location("pickupLocation")
 
-            Log.d("[OVM] uOfferWithDist", "pickupLocationLocation: $pickupLocationLocation")
-
             if (pickupLocationLatLng != null) {
                 pickupLocationLocation.latitude = pickupLocationLatLng.latitude
-            }
-            if (pickupLocationLatLng != null) {
                 pickupLocationLocation.longitude = pickupLocationLatLng.longitude
             }
 
             Log.d("[OVM] uOfferWithDist", "pickupLocationLocation 2: $pickupLocationLocation")
 
-
-            val distance = deviceLocation.distanceTo(pickupLocationLocation)
+            val distance = pickupLocationLocation.distanceTo(deviceLocation)
             Log.d("[OVM] uOfferWithDist", "distance: $distance")
             offer.distance = distance
+
+
         }
 
         Log.d("[OVM] uOfferWithDist", "offers after everything: $offers")
 
+
+
         return offers.sortedBy { offer -> offer.distance }
     }
+
 
     fun getMyOffers(userId: Long) {
         Log.d("[RMC][OfferVM]", "getMyOffers() => userid: "+userId)
@@ -307,18 +302,18 @@ class OfferViewModel : ViewModel() {
         }
     }
 
-    fun getGeocodeResponse(pickupLocation: String) {
-        viewModelScope.launch {
-            try {
-                val geocodeResponse = MapsApiService.getApi()?.getLatLongFromAddress(pickupLocation)
-                Log.i("[OfferVM] geocodeResp", geocodeResponse.toString())
-                geocodeResult?.value = geocodeResponse
-            } catch (e: Exception) {
-                Log.e("[OfferVM] getGeoRespon", e.message.toString())
-            }
-        }
-
-    }
+//    fun getGeocodeResponse(pickupLocation: String) {
+//        viewModelScope.launch {
+//            try {
+//                val geocodeResponse = MapsApiService.getApi()?.getLatLongFromAddress(pickupLocation)
+//                Log.i("[OfferVM] geocodeResp", geocodeResponse.toString())
+//                geocodeResult?.value = geocodeResponse
+//            } catch (e: Exception) {
+//                Log.e("[OfferVM] getGeoRespon", e.message.toString())
+//            }
+//        }
+//
+//    }
 
 
 

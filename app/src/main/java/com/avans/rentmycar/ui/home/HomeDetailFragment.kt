@@ -77,8 +77,12 @@ class HomeDetailFragment : Fragment() {
 
                 actionBar?.title = offer.car.model
 
+                if (mapFragment.isAdded) {
+                    mapFragment.setMapLocation(offer.pickupLocationLatitude, offer.pickupLocationLongitude)
+                }
+
                 // TODO: Refactor this after changes on API to include LatLng have been Approved
-                viewModel.getGeocodeResponse(offer.pickupLocation)
+//                viewModel.getGeocodeResponse(offer.pickupLocation)
             }
         }
 
@@ -88,20 +92,20 @@ class HomeDetailFragment : Fragment() {
 
 //        viewModel.getGeocodeResponse(offerPickupLocation)
 
-        viewModel.geocodeResult?.observe(viewLifecycleOwner) {
-            val geocodeResponse = viewModel.geocodeResult!!.value
-            if (geocodeResponse != null) {
-                offerLat = geocodeResponse.data?.get(0)?.latitude!!
-                offerLng = geocodeResponse.data.get(0)?.longitude!!
-            }
-
-            //
-
-            if (mapFragment.isAdded) {
-                mapFragment.setMapLocation(offerLat, offerLng)
-            }
-
-        }
+//        viewModel.geocodeResult?.observe(viewLifecycleOwner) {
+//            val geocodeResponse = viewModel.geocodeResult!!.value
+//            if (geocodeResponse != null) {
+//                offerLat = geocodeResponse.data?.get(0)?.latitude!!
+//                offerLng = geocodeResponse.data.get(0)?.longitude!!
+//            }
+//
+//            //
+//
+//            if (mapFragment.isAdded) {
+//                mapFragment.setMapLocation(offerLat, offerLng)
+//            }
+//
+//        }
 
         // ===========================================================
 

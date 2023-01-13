@@ -25,7 +25,7 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
     private lateinit var _binding: FragmentBookingDetailBinding
     private val binding get() = _binding
 
-    val args: BookingDetailFragmentArgs by navArgs()
+    private val args: BookingDetailFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,11 +33,6 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
     ): View {
         _binding = FragmentBookingDetailBinding.inflate(inflater, container, false)
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
     }
 
 
@@ -49,30 +44,31 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
 
         val bookingViewModel = ViewModelProvider(requireActivity())[BookingViewModel::class.java]
 
-//        val args: BookingDetailFragmentArgs by navArgs()
         val bookingId = args.id
 
-        if (bookingId != null) {
-            bookingViewModel.getBookingById(bookingId)
+        bookingViewModel.getBookingById(bookingId)
 
-            bookingViewModel.bookingSingle.observe(viewLifecycleOwner) { booking ->
-                if (booking != null) {
-                    binding.textviewBookingDetailCarName.setText(booking.offer.car.model)
-                    binding.textviewBookingDetailOfferPickuplocation.setText(booking.offer.pickupLocation)
-                    binding.textviewBookingDetailOfferDates.setText(booking.offer.startDateTime + " - " + booking.offer.endDateTime)
+        bookingViewModel.bookingSingle.observe(viewLifecycleOwner) { booking ->
+            if (booking != null) {
+                binding.textviewBookingDetailCarName.setText(booking.offer.car.model)
+                binding.textviewBookingDetailOfferPickuplocation.setText(booking.offer.pickupLocation)
+                binding.textviewBookingDetailOfferDates.setText(booking.offer.startDateTime + " - " + booking.offer.endDateTime)
 
-                    binding.imageviewBookingDetailCarImage.let {
-                        Glide.with(this).load(booking.offer.car.image).into(it)
-                    }
-
-                    actionBar?.title = booking.offer.car.model
-
+                binding.imageviewBookingDetailCarImage.let {
+                    Glide.with(this).load(booking.offer.car.image).into(it)
                 }
-            }
 
-        } else {
-            Snackbar.make(binding.root, "No booking found", Snackbar.LENGTH_LONG).show()
-            return
+                actionBar?.title = booking.offer.car.model
+
+            }
+        }
+
+
+        // Cancel booking
+        binding.buttonBookingDetailCancelbooking.setOnClickListener {
+            Log.d("[BDF]", "Cancel booking")
+            // TODO: Show dialog to confirm cancel booking
+            // TODO: Implement cancel booking in BookingRepository
         }
 
 
