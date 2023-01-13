@@ -27,12 +27,12 @@ class BookingAdapter(
     lateinit var itemBookingBinding: BookingListItemBinding
 
     inner class BookingViewHolder(container: View) : RecyclerView.ViewHolder(container) {
-//        private val offerCarImage = itemBookingBinding.imageviewItemOfferCarImage
+        private val bookingCarImage = itemBookingBinding.imageviewItemBookingCarImage
         private val bookingCarName = itemBookingBinding.textviewItemBookingCarName
-//        private val offerStartDate = itemBookingBinding.textviewItemOfferStartdate
-//        private val offerEndDate = itemBookingBinding.textviewItemOfferEnddate
-//        private val offerLocation = itemBookingBinding.textviewItemOfferLocation
-//        private val offerDistance = itemBookingBinding.textviewItemOfferDistance
+        private val bookingStartDate = itemBookingBinding.textviewItemBookingStartdate
+        private val bookingEndDate = itemBookingBinding.textviewItemBookingEnddate
+        private val bookingLocation = itemBookingBinding.textviewItemBookingLocation
+        private val bookingDistance = itemBookingBinding.textviewItemBookingDistance
 
         @SuppressLint("SetTextI18n")
         @RequiresApi(Build.VERSION_CODES.O)
@@ -56,29 +56,23 @@ class BookingAdapter(
                 bookingData.offer.car.image
             }
 
-//            imageLoader.loadImage(carImage, bookingCarImage)
+            imageLoader.loadImage(carImage, bookingCarImage)
             bookingCarName.text = bookingData.offer.car.model
-//            bookingStartDate.text = itemView.context.getString(R.string.offer_pickupAfter, startDate)
-//            bookingEndDate.text = itemView.context.getString(R.string.offer_returnBefore, endDate)
-//            bookingLocation.text = bookingData.offer.pickupLocation
-//
-//            Log.d("[OAdapt] distance", "distance: " + offerData.distance)
-//
-//            if (bookingData.offer.distance < 1000) { // If the distance < 1000, show the distance in meters
-//                offerDistance.text = bookingData.offer.distance.toInt().toString() + "m"
-//            } else if (bookingData.offer.distance > 1000) { // If the distance > 1000, show the distance in kilometers
-//                val distanceInKm = bookingData.offer.distance / 1000
-//                // set distanceInKm to 1 decimal
-//                offerDistance.text = String.format("%.1f", distanceInKm) + "km"
-//            } else {
-//                offerDistance.text = "..."
-//            }
-//
-//            Log.d("[OfferAdapter locPerm]", "Location permission: ${SessionManager.getLocationPermissionGranted()}")
-//
-//            if(!SessionManager.getLocationPermissionGranted()){
-//                itemBookingBinding.textviewItemOfferDistance.visibility = View.GONE
-//            }
+            bookingStartDate.text = itemView.context.getString(R.string.offer_pickupAfter, startDate)
+            bookingEndDate.text = itemView.context.getString(R.string.offer_returnBefore, endDate)
+            bookingLocation.text = bookingData.offer.pickupLocation
+
+            Log.d("[BAdapt] distance", "distance: " + bookingData.offer.distance)
+
+            if (bookingData.offer.distance < 1000) { // If the distance < 1000, show the distance in meters
+                bookingDistance.text = bookingData.offer.distance.toInt().toString() + "m"
+            } else if (bookingData.offer.distance > 1000) { // If the distance > 1000, show the distance in kilometers
+                val distanceInKm = bookingData.offer.distance / 1000
+                // set distanceInKm to 1 decimal
+                bookingDistance.text = String.format("%.1f", distanceInKm) + "km"
+            } else {
+                bookingDistance.text = "..."
+            }
 
         }
 

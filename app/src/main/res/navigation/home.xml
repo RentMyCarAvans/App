@@ -83,6 +83,9 @@
             android:name="id"
             app:argType="long"
             android:defaultValue="0L" />
+        <action
+            android:id="@+id/action_bookingDetailFragment_to_bookingListFragment"
+            app:destination="@id/bookingListFragment" />
     </fragment>
     <fragment
         android:id="@+id/rideFragment"
@@ -118,4 +121,13 @@
         android:name="com.avans.rentmycar.ui.ride.RideDetailFragment"
         android:label="fragment_ride_detail"
         tools:layout="@layout/fragment_ride_detail" />
+    <fragment
+        android:id="@+id/bookingListFragment"
+        android:name="com.avans.rentmycar.ui.home.BookingListFragment"
+        android:label="fragment_booking_list"
+        tools:layout="@layout/fragment_booking_list" >
+        <action
+            android:id="@+id/action_bookingListFragment_to_bookingDetailFragment"
+            app:destination="@id/bookingDetailFragment" />
+    </fragment>
 </navigation>

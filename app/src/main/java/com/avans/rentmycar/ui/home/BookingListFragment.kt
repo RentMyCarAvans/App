@@ -45,9 +45,12 @@ class BookingListFragment : Fragment() {
         val bookingViewModel = ViewModelProvider(requireActivity())[BookingViewModel::class.java]
 
         val bookingAdapter = BookingAdapter(GlideImageLoader(view?.context as AppCompatActivity)) { booking ->
-            val action = HomeFragmentDirections.actionHomeFragment2ToHomeDetailFragment2(
+            val action = HomeFragmentDirections.actionHomeFragment2ToBookingDetailFragment(
                 booking.id
             )
+//            val action = HomeFragmentDirections.actionHomeFragment2ToHomeDetailFragment2(
+//                booking.id
+//            )
             findNavController().navigate(action)
         }
 

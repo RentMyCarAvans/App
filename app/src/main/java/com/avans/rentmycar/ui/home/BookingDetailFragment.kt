@@ -26,7 +26,7 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
 //        fun newInstance() = BookingDetailFragment()
 //    }
 
-    private lateinit var viewModel: BookingViewModel
+//    private lateinit var viewModel: BookingViewModel
 
     private lateinit var _binding: FragmentBookingDetailBinding
     private val binding get() = _binding
@@ -40,15 +40,22 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+    }
+
 
     override fun onStart() {
         super.onStart()
+
+        val bookingViewModel = ViewModelProvider(requireActivity())[BookingViewModel::class.java]
 
         val args: BookingDetailFragmentArgs by navArgs()
         val bookingId = args.id
 
         if (bookingId != null) {
-            viewModel.getBookingById(bookingId)
+            bookingViewModel.getBookingById(bookingId)
         } else {
             Snackbar.make(binding.root, "No booking found", Snackbar.LENGTH_LONG).show()
             return

@@ -1,6 +1,5 @@
 package com.avans.rentmycar.ui.home
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,15 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
 import com.avans.rentmycar.databinding.FragmentHomeBinding
 import com.avans.rentmycar.utils.SessionManager
 import com.avans.rentmycar.viewmodel.BookingViewModel
 import com.avans.rentmycar.viewmodel.OfferViewModel
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.material.snackbar.Snackbar
 
 
 class HomeFragment : Fragment() {
@@ -24,8 +20,8 @@ class HomeFragment : Fragment() {
     private lateinit var _binding: FragmentHomeBinding
     private val binding get() = _binding
 
-    private val viewModel: OfferViewModel by viewModels()
-    private val bookingViewModel: BookingViewModel by viewModels()
+//    private val viewModel: OfferViewModel by viewModels()
+//    private val bookingViewModel: BookingViewModel by viewModels()
 
 
     override fun onCreateView(
@@ -69,7 +65,7 @@ class HomeFragment : Fragment() {
 
 
         // Get the id of the logged in user so we can use it to get the correct offers and bookings
-        val userId = SessionManager.getUserId(requireContext())
+//        val userId = SessionManager.getUserId(requireContext())
 
 
         // Topbar navigation button Available cars
