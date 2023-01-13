@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
 import com.avans.rentmycar.R
@@ -71,20 +72,44 @@ class HomeFragment : Fragment() {
         bar?.title = getString(com.avans.rentmycar.R.string.offers_title)
     }
 
+
+    fun AppCompatActivity.addFragment(fragment: Fragment, frameId: Int){
+        supportFragmentManager.inTransaction { add(frameId, fragment) }
+    }
+    fun AppCompatActivity.replaceFragment(fragment: Fragment, frameId: Int) {
+        supportFragmentManager.inTransaction{replace(frameId, fragment)}
+    }
+
+    inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> FragmentTransaction) {
+        beginTransaction().func().commit()
+    }
+
     override fun onStart() {
         super.onStart()
+
+        //Create and add the fragment
+        val fatherView=OfferListFragment()
+        childFragmentManager.beginTransaction().apply {
+            add(com.avans.rentmycar.R.id.framelayout_home, fatherView)
+            commit()
+        }
 
         // Get the id of the logged in user so we can use it to get the correct offers and bookings
         val userId = SessionManager.getUserId(requireContext())
 
-        checkIfFragmentAttached {
-            val offerListFragment: OfferListFragment = OfferListFragment()
-            val ft: FragmentTransaction = childFragmentManager.beginTransaction()
-            ft.replace(R.id.parent_fragment_container, offerListFragment);
-            ft.addToBackStack(null);
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            ft.commit();
+        binding.framelayoutHome.setOnClickListener {
+            Log.d("HomeFragment", "Clicked on the parent fragment container")
         }
+
+
+//        checkIfFragmentAttached {
+//            val offerListFragment: OfferListFragment = OfferListFragment()
+//            val ft: FragmentTransaction = childFragmentManager.beginTransaction()
+//            ft.replace(R.id.parent_fragment_container, offerListFragment);
+//            ft.addToBackStack(null);
+//            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+//            ft.commit();
+//        }
 
         // Make all the items in the recyclerview clickable, so the user can click on an item and go to the detail page of the selected offer
 //        val offerAdapter = OfferAdapter(GlideImageLoader(view?.context as AppCompatActivity)) { offer ->

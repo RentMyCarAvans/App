@@ -29,8 +29,7 @@ class OfferListFragment : Fragment() {
 
     private lateinit var _binding: FragmentOfferListBinding
     private val binding get() = _binding
-    val userId = SessionManager.getUserId(requireContext())
-    val offerViewModel = ViewModelProvider(requireActivity())[OfferViewModel::class.java]
+
 
 
     override fun onCreateView(
@@ -45,6 +44,9 @@ class OfferListFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
+        val userId = SessionManager.getUserId(requireContext())
+        val offerViewModel = ViewModelProvider(requireActivity())[OfferViewModel::class.java]
+
         val offerAdapter = OfferAdapter(GlideImageLoader(view?.context as AppCompatActivity)) { offer ->
             val action = HomeFragmentDirections.actionHomeFragment2ToHomeDetailFragment2(
                 offer.id
@@ -58,19 +60,19 @@ class OfferListFragment : Fragment() {
 
         // Making sure the offerData is up to date
         offerViewModel.offerCollection.observe(viewLifecycleOwner) {
-            Log.d("[Home] model.offerColl", it.toString())
+            Log.d("[OLF] model.offerColl", it.toString())
             offerAdapter.setData(it)
             if (it.isEmpty()) {
-                Log.d("[Home]", "No offers found")
+                Log.d("[OLF]", "No offers found")
                 // TODO: Show a text message that there are no offers available. For now, just show a snackbar
                 view?.let { it1 ->
                     Snackbar.make(it1, "No offers found", Snackbar.LENGTH_LONG).show()
                 }
             }
-            binding.progressIndicatorHomeFragment.visibility = View.GONE
+            binding.progressIndicatorHomeFragment.visibility = View.INVISIBLE
         }
 
-
+        offerViewModel.getOffers()
 
         // Filter options
         binding.btnBottomSheetModal.setOnClickListener {
