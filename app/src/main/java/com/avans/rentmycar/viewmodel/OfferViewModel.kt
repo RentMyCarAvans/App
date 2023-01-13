@@ -110,9 +110,6 @@ class OfferViewModel : ViewModel() {
 
     fun getOfferById(id: Long) {
         Log.d("[OVM] getOfferById", "getOfferById called for id: $id")
-        // 1. Check if offer is already in offerCollection
-        // 2. If yes, return it
-        // 3. If no, get it from the repository and return it
 
         if (offerCollection.value?.find { it.id == id } != null) {
             Log.d("[OVM] getOfferById", "getOfferById: offer found in offerCollection")
