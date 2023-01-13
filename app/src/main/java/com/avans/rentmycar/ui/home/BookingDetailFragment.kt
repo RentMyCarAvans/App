@@ -10,14 +10,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentBookingDetailBinding
 import com.avans.rentmycar.utils.BiometricAuthListener
 import com.avans.rentmycar.utils.showBiometricPrompt
-import com.avans.rentmycar.viewmodel.OfferViewModel
+import com.avans.rentmycar.viewmodel.BookingViewModel
 import com.google.android.material.snackbar.Snackbar
 
 class BookingDetailFragment : Fragment(), BiometricAuthListener {

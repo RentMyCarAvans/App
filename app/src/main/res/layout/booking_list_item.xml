@@ -42,7 +42,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/textview_item_offer_car_name"
+                    android:id="@+id/textview_item_booking_car_name"
                     style="@style/list_item_header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

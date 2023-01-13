@@ -1,4 +1,4 @@
-package com.avans.rentmycar.ui.home
+package com.avans.rentmycar.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -46,7 +46,7 @@ class BookingViewModel : ViewModel() {
     }
 
     // ===== Repository Interaction =====
-    fun getBookings(userId: Long?) {
+    fun getBookings(userId: Long? = null) {
         Log.d("[BVM] getBookings", "getBookings called")
 
         viewModelScope.launch {
