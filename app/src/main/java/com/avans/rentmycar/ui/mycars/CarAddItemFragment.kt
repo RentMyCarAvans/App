@@ -71,7 +71,7 @@ class CarAddItemFragment : Fragment() {
             val licensePlate: String = kenteken.text.toString()
 
             // Validate licenseplate before API call
-            if (isValidLicensePlate()){
+            if (validateLicensePlate()){
                 // invoke RdwApiService for retrieval of cardetails of the given licenseplate
                 Log.d(TAG, "onViewCreated() => invoke RdwApiService for licenseplate: " + licensePlate)
                 carViewModel.getRdwCarDetails(kenteken.text.toString())
@@ -82,10 +82,11 @@ class CarAddItemFragment : Fragment() {
 
         binding.buttonCarSave.setOnClickListener {
             Log.d(TAG, "onViewCreated() => Button SAVE clicked. Invoke CarApiService")
-            // TODO Add validation for all inputfield
-            createCar()
-            Log.d(TAG, "onViewCreated() => Car added. Return to home of my cars")
-            findNavController().navigate(R.id.action_carAddItemFragment_to_mycars)
+            if (isValidated()) {
+                createCar()
+                Log.d(TAG, "onViewCreated() => Car added. Return to home of my cars")
+                findNavController().navigate(R.id.action_carAddItemFragment_to_mycars)
+            }
         }
 
         carViewModel.rdwResponse.observe(viewLifecycleOwner) {
@@ -115,8 +116,6 @@ class CarAddItemFragment : Fragment() {
                     Log.d(TAG, "onViewCreated() => observer BaseResponse.Success. Return to MyCarsFragment ")
                     val action = CarDetailFragmentDirections.actionCarDetailFragmentToMycars()
                     findNavController().navigate(action)
-                    // Snackbar.make(view, "An error occurred while fetching your data. Please try again later", Snackbar.LENGTH_LONG)
-                    //     .show()
                 }
             }
         }
@@ -143,7 +142,7 @@ class CarAddItemFragment : Fragment() {
         binding.txtInputCarYear.setText(it[0].datumEersteToelating?.substring(0,4)) // substring year of date with format yyyymmdd
     }
 
-    private fun isValidLicensePlate(): Boolean {
+    private fun validateLicensePlate(): Boolean {
         if (binding.txtInputCarLicensePlate.text.toString().trim().isEmpty()) {
             binding.txtInputCarLicensePlate.error = getString(R.string.required_field)
             binding.txtInputCarLicensePlate.requestFocus()
@@ -212,4 +211,80 @@ class CarAddItemFragment : Fragment() {
         )
         Log.d(TAG, "createCar() => After calling viewModel.createCar().")
     }
+
+    private fun isValidated(): Boolean {
+        return validateModel() && validateColor() && validateNrOfSeats() && validateYearOfManufacture() && validateVehicleType() && validateLicensePlate() && validateNrOfDoors()
+    }
+
+    private fun validateModel(): Boolean {
+        if (binding.txtInputCarModel.text.toString().trim().isEmpty()) {
+            binding.txtLayCarModelAdd.error = getString(R.string.required_field)
+            binding.txtInputCarModel.requestFocus()
+            return false
+        } else {
+            binding.txtLayCarModelAdd.isErrorEnabled = false
+        }
+        return true
+    }
+
+    private fun validateColor(): Boolean {
+        if (binding.txtInputCarColor.text.toString().trim().isEmpty()) {
+            binding.txtLayCarColorAdd.error = getString(R.string.required_field)
+            binding.txtInputCarColor.requestFocus()
+            return false
+        } else {
+            binding.txtLayCarColorAdd.isErrorEnabled = false
+        }
+        return true
+    }
+
+    private fun validateNrOfSeats(): Boolean {
+        if (binding.txtInputCarNrOfSeats.text.toString().trim().isEmpty()) {
+            binding.txtLayCarNrOfSeatsAdd.error = getString(R.string.required_field)
+            binding.txtInputCarNrOfSeats.requestFocus()
+            return false
+        } else {
+            binding.txtLayCarNrOfSeatsAdd.isErrorEnabled = false
+        }
+        return true
+    }
+
+    private fun validateVehicleType(): Boolean {
+        if (binding.txtInputCarVehicle.text.toString().trim().isEmpty()) {
+            binding.txtLayCarVehicleAdd.error = getString(R.string.required_field)
+            binding.txtInputCarVehicle.requestFocus()
+            return false
+        } else {
+            binding.txtLayCarVehicleAdd.isErrorEnabled = false
+        }
+        return true
+    }
+
+    private fun validateYearOfManufacture(): Boolean {
+        if (binding.txtInputCarYear.text.toString().trim().isEmpty()) {
+            binding.txtLayCarYearAdd.error = getString(R.string.required_field)
+            binding.txtInputCarYear.requestFocus()
+            return false
+        } else if  (binding.txtInputCarYear.text.toString().toInt() > 2023) {
+            binding.txtLayCarYearAdd.error = "Year cannot be in the future. Please select another year"
+            binding.txtInputCarYear.requestFocus()
+            return false
+        } else {
+            binding.txtLayCarYearAdd.isErrorEnabled = false
+        }
+        return true
+    }
+
+    private fun validateNrOfDoors(): Boolean {
+        if (binding.txtInputCarNrOfDoors.text.toString().trim().isEmpty()) {
+            binding.txtLayCarNrOfDoorsAdd.error = getString(R.string.required_field)
+            binding.txtInputCarNrOfDoors.requestFocus()
+            return false
+        } else {
+            binding.txtLayCarNrOfDoorsAdd.isErrorEnabled = false
+        }
+        return true
+    }
+
+
 }

@@ -1,5 +1,6 @@
 package com.avans.rentmycar.ui.offer
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
@@ -9,17 +10,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.DatePicker
 import android.widget.TextView
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentOfferBinding
-import com.avans.rentmycar.utils.SessionManager
-import com.avans.rentmycar.viewmodel.CarViewModel
 import com.avans.rentmycar.viewmodel.OfferViewModel
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.timepicker.MaterialTimePicker
@@ -53,6 +52,7 @@ class OfferCarFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val args: OfferCarFragmentArgs by navArgs()
@@ -62,52 +62,76 @@ class OfferCarFragment : Fragment() {
         bindUI(args)
 
         val mPickTimeBtn = view.findViewById<Button>(R.id.pickTimeBtn)
-        val mDateTimeBtn = view.findViewById<Button>(R.id.pickDateBtn)
+        val mPickDateBtn = view.findViewById<Button>(R.id.pickDateBtn)
 
-        // nVar to hold the startdatetime, which is concatenation of textview_date and textview_time
-        val textView     = view.findViewById<TextView>(R.id.textview_offer_car_startdate)
+        var textviewDate: TextView? = null
+        var textviewTime: TextView? = null
+        var textviewDateTime: TextView? = null
 
-        var textview_date: TextView? = null
-        var textview_time: TextView? = null
         var cal = Calendar.getInstance()
 
+        // Var to hold the dates, which is concatenation of textview_date and textview_time
+        textviewDate     = view.findViewById<TextView>(R.id.textview_offer_car_date)
+        textviewTime     = view.findViewById<TextView>(R.id.textview_offer_car_time)
+        textviewDateTime = view.findViewById<TextView>(R.id.textview_offer_car_datetime)
+
+        mPickDateBtn.setOnClickListener {
+            // TODO Makes only dates from today forward selectable.
+            val now = Calendar.getInstance()
+            val builder = MaterialDatePicker.Builder.dateRangePicker()
+            builder.setSelection(androidx.core.util.Pair(now.timeInMillis, now.timeInMillis))
+
+            val datePicker =
+                MaterialDatePicker
+                    .Builder
+                    .datePicker()
+                    .setTitleText("Select date")
+                    .build()
+            datePicker.show(this.parentFragmentManager,"DATE_PICKER")
+
+            // Setting up the event for when ok is clicked
+            datePicker.addOnPositiveButtonClickListener {
+                val date = Date(it)
+                val myFormat = "yyyy.MM.dd" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                textviewDate.text = sdf.format(date) // date selected by the user
+
+                if (textviewDateTime != null) {
+                    textviewDateTime.text = textviewDate.text as String + "T" + (textviewTime?.text as String + ":00")
+                }
+            }
+
+            // Setting up the event for when back button is pressed
+            datePicker.addOnCancelListener{
+                Log.d("[RMC]", "onViewCreated() => Datepicker cancelled")
+            }
+
+            datePicker.addOnNegativeButtonClickListener {
+                Log.d("[RMC]", "onViewCreated() =>\"${datePicker.headerText} is cancelled\"")
+            }
+        }
+
+       // mPickTimeBtn.setOnClickListener {
+       //     val timePicker =
+       //         MaterialTimePicker
+       //             .Builder()
+       //             .setTitleText("Select a time")
+       //             .build()
+       //             .show(this.parentFragmentManager, "TIME_PICKER")
+       //     textviewTime?.text = SimpleDateFormat("hh:mm").format(cal.time)
+       //     Log.d(TAG,"onViewCreated() => OnClickListener PickTime button: " + textviewTime.text)
+       // }
+
         mPickTimeBtn.setOnClickListener {
-            val cal = Calendar.getInstance()
             val timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
                 cal.set(Calendar.HOUR_OF_DAY, hour)
                 cal.set(Calendar.MINUTE, minute)
-                textview_time?.text = SimpleDateFormat("HH:mm").format(cal.time)
-                textview_date?.text = textview_date.toString() + "-" + textview_time.toString()
+                textviewTime?.text = SimpleDateFormat("HH:mm").format(cal.time)
+                Log.d(TAG,"onViewCreated() => OnClickListener PickTime button: " + textviewTime.text)
             }
-            TimePickerDialog(this.context, timeSetListener, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true).show()
+            TimePickerDialog(this.context, timeSetListener, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true)
+                .show()
         }
-
-        val mPickDateTimeBtn = view.findViewById<Button>(R.id.pickDateBtn)
-        textview_date     = view.findViewById<TextView>(R.id.textview_offer_car_startdate)
-
-        // create an OnDateSetListener
-        val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-            cal.set(Calendar.YEAR, year)
-            cal.set(Calendar.MONTH, monthOfYear)
-            cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-
-            val myFormat = "dd.MM.yyyy" // mention the format you need
-            val sdf = SimpleDateFormat(myFormat, Locale.US)
-            textview_date.text = sdf.format(cal.time)
-          //  textview_date.text = textview_date.toString() + "-" + textview_time.toString()
-        }
-
-
-        mDateTimeBtn.setOnClickListener {
-            this.context?.let { it1 ->
-                DatePickerDialog(
-                    it1, dateSetListener,
-                    cal.get(Calendar.YEAR),
-                    cal.get(Calendar.MONTH),
-                    cal.get(Calendar.DAY_OF_MONTH)).show()
-            }
-        }
-
 
         binding.buttonCarSave.setOnClickListener {
             Log.d(TAG, "onViewCreated() => Button SAVE clicked. Invoke CarApiService")
@@ -127,7 +151,6 @@ class OfferCarFragment : Fragment() {
                 )
                 findNavController().navigate(R.id.action_offerCarFragment_to_mycars)
             } else {
-                // TODO Figure out if there's a way to determine where you came from. From edit offer? Then invoek updateOffer, else createOffer
                 Log.d(TAG, "onViewCreated() => Offer updated for car " + args.licenseplate + ". Return to my offers")
                 updateOffer()
                 findNavController().navigate(R.id.action_offerCarFragment2_to_myOffersFragment)
