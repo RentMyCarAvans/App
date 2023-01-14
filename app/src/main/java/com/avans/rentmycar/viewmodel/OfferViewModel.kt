@@ -229,14 +229,18 @@ class OfferViewModel : ViewModel() {
                      endDateTime: String,
                      pickupLocation: String,
                      carId: Long) {
+        Log.d("[RMC][OfferViewModel]", "createOffer() => startDateTime $startDateTime, endDateTime $endDateTime location $pickupLocation carid $carId" )
         viewModelScope.launch {
             try {
                 val createOfferResponse = offerRepository.createOffer(startDateTime, endDateTime, pickupLocation, carId)
                 createOfferResult.value = createOfferResponse
                 Log.d("[OfferVM] crOfferResp", createOfferResponse.toString())
+                Log.d("[RMC][OfferViewModel]", "createOffer() => Response: " + createOfferResponse.toString() )
             } catch (e: Exception) {
                 Log.d("[OfferVM] offerResult", createOfferResult.value.toString())
                 Log.e("[OfferVM] crOfferResu", e.message.toString())
+                Log.d("[RMC][OfferViewModel]", "createOffer() => Exception: " + createOfferResult.value.toString() )
+                Log.d("[RMC][OfferViewModel]", "createOffer() => Exception message: " + e.message.toString() )
             }
         }
     }

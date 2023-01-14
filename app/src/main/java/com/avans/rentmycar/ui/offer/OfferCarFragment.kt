@@ -1,7 +1,9 @@
 package com.avans.rentmycar.ui.offer
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.os.Build
 import android.os.Bundle
 import android.se.omapi.Session
 import android.util.Log
@@ -12,19 +14,26 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.DatePicker
 import android.widget.TextView
-import androidx.fragment.app.FragmentManager
+import android.widget.TimePicker
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentOfferBinding
+import com.avans.rentmycar.model.response.BaseResponse
+import com.avans.rentmycar.model.response.Data
+import com.avans.rentmycar.model.response.RdwResponseItem
+import com.avans.rentmycar.utils.Constant
 import com.avans.rentmycar.utils.SessionManager
 import com.avans.rentmycar.viewmodel.CarViewModel
 import com.avans.rentmycar.viewmodel.OfferViewModel
+import com.avans.rentmycar.viewmodel.UserViewModel
+import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.timepicker.MaterialTimePicker
-import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.LocalDateTime.now
 import java.util.*
 
 /**
@@ -32,12 +41,28 @@ import java.util.*
  * Use the [OfferCarFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class OfferCarFragment : Fragment() {
+class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     private val TAG = "[RMC][OfferCarFrg]"
 
     // var for binding the fragment_edit_car layout
     private var _binding: FragmentOfferBinding? = null
     private val binding get() = _binding!!
+
+    // Declare viewmodel
+    private val viewModel: UserViewModel by viewModels()
+
+    //
+    var day = 0
+    var month = 0
+    var year = 0
+    var hour = 0
+    var minute = 0
+
+    var saveMinute = 0
+    var saveDay = 0
+    var saveMonth = 0
+    var saveYear = 0
+    var saveHour = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,61 +79,45 @@ class OfferCarFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val args: OfferCarFragmentArgs by navArgs()
-        Log.d("[RMC]", "onViewCreated() => Checking navArgs Car offer")
-        Log.d("[RMC]", "onViewCreated() => navArgs: " + args.toString())
+        Log.d(TAG, "onViewCreated() => Checking navArgs Car offer")
+        Log.d(TAG, "onViewCreated() => navArgs: " + args.toString())
+
+        // Observe userresult when retrieving userdata
+        viewModel.userResult.observe(viewLifecycleOwner) {
+            Log.d(TAG, "onViewCreated() => observer userResult triggerd:" + viewModel.userResult.value.toString())
+            //bindIt(it)
+            Log.d(TAG, "onViewCreated() => it" + it.toString())
+            when (it) {
+
+                is BaseResponse.Loading -> {
+                    Log.d(TAG, "onViewCreated() => response loading")
+                }
+                is BaseResponse.Error -> {
+                    Log.d(TAG, "onViewCreated() => ERROR, API DOWN?")
+                    Snackbar.make(view, "Error", Snackbar.LENGTH_LONG).show()
+                }
+                is BaseResponse.Success -> {
+                    Log.d(TAG, "onViewCreated() => success")
+                    binding!!.txtInputOfferCarLocation.setText(it.data?.data?.address + ", " + it.data?.data?.city)
+                }
+            }
+        }
 
         bindUI(args)
+        setDefaults(args)
 
-        val mPickTimeBtn = view.findViewById<Button>(R.id.pickTimeBtn)
-        val mDateTimeBtn = view.findViewById<Button>(R.id.pickDateBtn)
+        val mBtn_dateTimePicker = view.findViewById<Button>(R.id.button_car_offer_start_datetime)
 
-        // nVar to hold the startdatetime, which is concatenation of textview_date and textview_time
-        val textView     = view.findViewById<TextView>(R.id.textview_offer_car_startdate)
-
-        var textview_date: TextView? = null
-        var textview_time: TextView? = null
-        var cal = Calendar.getInstance()
-
-        mPickTimeBtn.setOnClickListener {
-            val cal = Calendar.getInstance()
-            val timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
-                cal.set(Calendar.HOUR_OF_DAY, hour)
-                cal.set(Calendar.MINUTE, minute)
-                textview_time?.text = SimpleDateFormat("HH:mm").format(cal.time)
-                textview_date?.text = textview_date.toString() + "-" + textview_time.toString()
-            }
-            TimePickerDialog(this.context, timeSetListener, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true).show()
+        mBtn_dateTimePicker.setOnClickListener {
+            Log.d(TAG, "onViewCreated() => Button STARTDATE clicked")
+            getDateTimeCalender()
+            DatePickerDialog(it.context,this,year, month, day).show()
         }
-
-        val mPickDateTimeBtn = view.findViewById<Button>(R.id.pickDateBtn)
-        textview_date     = view.findViewById<TextView>(R.id.textview_offer_car_startdate)
-
-        // create an OnDateSetListener
-        val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-            cal.set(Calendar.YEAR, year)
-            cal.set(Calendar.MONTH, monthOfYear)
-            cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-
-            val myFormat = "dd.MM.yyyy" // mention the format you need
-            val sdf = SimpleDateFormat(myFormat, Locale.US)
-            textview_date.text = sdf.format(cal.time)
-          //  textview_date.text = textview_date.toString() + "-" + textview_time.toString()
-        }
-
-
-        mDateTimeBtn.setOnClickListener {
-            this.context?.let { it1 ->
-                DatePickerDialog(
-                    it1, dateSetListener,
-                    cal.get(Calendar.YEAR),
-                    cal.get(Calendar.MONTH),
-                    cal.get(Calendar.DAY_OF_MONTH)).show()
-            }
-        }
-
 
         binding.buttonCarSave.setOnClickListener {
             Log.d(TAG, "onViewCreated() => Button SAVE clicked. Invoke CarApiService")
@@ -128,7 +137,6 @@ class OfferCarFragment : Fragment() {
                 )
                 findNavController().navigate(R.id.action_offerCarFragment_to_mycars)
             } else {
-                // TODO Figure out if there's a way to determine where you came from. From edit offer? Then invoek updateOffer, else createOffer
                 Log.d(TAG, "onViewCreated() => Offer updated for car " + args.licenseplate + ". Return to my offers")
                 updateOffer()
                 findNavController().navigate(R.id.action_offerCarFragment2_to_myOffersFragment)
@@ -141,10 +149,31 @@ class OfferCarFragment : Fragment() {
      */
     fun bindUI(args: OfferCarFragmentArgs) {
         Log.d(TAG, "bindUI()")
-        binding.txtInputOfferCarStartDate.setText(args.startdate)
-        binding.txtInputOfferCarEndDate.setText(args.enddate)
-        binding.txtInputOfferCarLocation.setText(SessionManager.getDeviceLocationReadable())
+        binding.textviewOfferCarStartDatetime.text = args.startdate
+        binding.textviewOfferCarEndDatetime.text = args.enddate
+        binding.txtInputOfferCarLocation.setText(args.location)
+        // binding.txtInputOfferCarLocation.setText(SessionManager.getDeviceLocationReadable())
         binding.textviewOfferCarLicensePlate.text = (args.licenseplate)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun setDefaults(args: OfferCarFragmentArgs){
+        Log.d(TAG, "setDefaults()")
+
+        if (args.startdate.isNullOrEmpty() && args.enddate.isNullOrEmpty()) {
+            Log.d(TAG, "setDefaults() => setting default dates on startdate and enddate because they are null")
+            Log.d(TAG, "setDefaults() => Default startdate: " + getCurrentDateTime(0))
+            Log.d(TAG, "setDefaults() => Default enddate: " + getCurrentDateTime(8))
+            binding.textviewOfferCarStartDatetime.text = getCurrentDateTime(0)
+            binding.textviewOfferCarEndDatetime.text = getCurrentDateTime(8)
+        }
+
+        // If no location is provided, then use the address of the current user as a default location
+        if (args.location.isNullOrEmpty()){
+            val userViewModel: UserViewModel by viewModels()
+            val userId = SessionManager.getUserId(requireContext())
+            userViewModel.getUser(userId!!)
+        }
     }
 
     private fun createOffer(id: Int) {
@@ -152,10 +181,10 @@ class OfferCarFragment : Fragment() {
         val offerViewModel: OfferViewModel by viewModels()
 
         // Cast inputfields
-        val offerStartDate: TextInputEditText = binding.txtInputOfferCarStartDate
+        val offerStartDate: TextView = binding.textviewOfferCarStartDatetime
         val startDate: String = offerStartDate.text.toString()
 
-        val offerEndDate: TextInputEditText = binding.txtInputOfferCarEndDate
+        val offerEndDate: TextView = binding.textviewOfferCarEndDatetime
         val endDate: String = offerEndDate.text.toString()
 
         val offerLocation: TextInputEditText = binding.txtInputOfferCarLocation
@@ -174,5 +203,54 @@ class OfferCarFragment : Fragment() {
 
     private fun updateOffer(){
         Log.d(TAG, "updateOffer()")
+        // TODO Make call to the OfferRepository
     }
+
+    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        Log.d(TAG, "onDateSet()" )
+        saveDay = dayOfMonth
+        saveMonth = month
+        saveYear = year
+
+        Log.d(TAG, "onDateSet() before getDateTimeCalender: $saveDay-$saveMonth-$saveYear" )
+        getDateTimeCalender()
+        Log.d(TAG, "onDateSet() after getDateTimeCalender: $saveDay-$saveMonth-$saveYear" )
+
+        TimePickerDialog(context, this, hour, minute, true).show()
+    }
+
+    override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
+        Log.d(TAG, "onTimeSet()" )
+        saveHour = hourOfDay
+        saveMinute = minute
+        Log.d(TAG, "onTimeSet() : $saveHour:$saveMinute" )
+
+        var date = "$saveYear-$saveMonth-$saveDay $saveHour:$saveMinute"
+        binding.textviewOfferCarStartDatetime.text =date
+    }
+
+    private fun getDateTimeCalender(){
+        val cal = Calendar.getInstance()
+        year = cal.get(Calendar.YEAR)
+        month = cal.get(Calendar.MONTH)
+        day = cal.get(Calendar.DAY_OF_MONTH) + 1 // start next day
+        hour = cal.get(Calendar.HOUR_OF_DAY)
+        minute = cal.get(Calendar.MINUTE)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun getCurrentDateTime(added_hours: Int) : String{
+        val calendar = Calendar.getInstance()
+        val current = LocalDateTime.of(
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH) + 1,
+            calendar.get(Calendar.DAY_OF_MONTH) + 1,
+            calendar.get(Calendar.HOUR_OF_DAY) + added_hours,
+            calendar.get(Calendar.MINUTE),
+            calendar.get(Calendar.SECOND)
+        )
+
+        return current.toString()
+    }
+
 }
