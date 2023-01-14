@@ -118,19 +118,22 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
                 Toast.makeText(requireContext(), "No device credential", Toast.LENGTH_SHORT)
                     .show()
             }
+            else ->       {
+                Toast.makeText(requireContext(), "No Biometric Authentication installed. Please add PIN to use this app.", Toast.LENGTH_SHORT)
+                    .show()
+                doStartRiding()
+
+            }
+
         }
     }
 
 
     override fun onBiometricAuthenticateSuccess(result: androidx.biometric.BiometricPrompt.AuthenticationResult) {
-        Toast.makeText(requireContext(), "Succes", Toast.LENGTH_SHORT)
+        Toast.makeText(requireContext(), "Starting the ride..", Toast.LENGTH_SHORT)
             .show()
-        // build action
-        val action = BookingDetailFragmentDirections.actionBookingDetailFragmentToRideFragment(bookingId)
 
-        findNavController().navigate(action)
-
-        saveRideToDB()
+        doStartRiding()
     }
 
     private fun saveRideToDB() {
@@ -140,6 +143,15 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
         rideViewModel.startRide(
             rideId = args.id, startLongitude = location.longitude, startLatitude = location.latitude, startTimeStamp = timeNow
         )
+    }
+
+    fun doStartRiding() {
+        // build action
+        val action = BookingDetailFragmentDirections.actionBookingDetailFragmentToRideFragment(bookingId)
+
+        findNavController().navigate(action)
+
+        saveRideToDB()
     }
 
 

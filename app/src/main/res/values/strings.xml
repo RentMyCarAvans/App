@@ -74,4 +74,5 @@
     <string name="my_offers">My Offers</string>
     <string name="book_this_car">Book this car</string>
     <string name="start_riding">Start Riding</string>
+    <string name="_1s_kilometer_driven">%1$s kilometer driven</string>
 </resources>

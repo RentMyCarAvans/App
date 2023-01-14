@@ -14,12 +14,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.avans.rentmycar.BaseApplication
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentBookingDetailBinding
 import com.avans.rentmycar.databinding.FragmentRideBinding
+import com.avans.rentmycar.model.request.CreateUpdateUserRequest
+import com.avans.rentmycar.model.response.BaseResponse
 import com.avans.rentmycar.room.Ride
 import com.avans.rentmycar.ui.home.BookingDetailFragmentArgs
 import com.avans.rentmycar.ui.home.BookingDetailFragmentDirections
@@ -27,6 +30,7 @@ import com.avans.rentmycar.ui.home.HomeDetailFragmentArgs
 import com.avans.rentmycar.utils.*
 import com.avans.rentmycar.viewmodel.RideViewModel
 import com.avans.rentmycar.viewmodel.RideViewModelFactory
+import kotlinx.coroutines.launch
 import java.time.Instant
 
 import java.util.*
@@ -71,7 +75,7 @@ class RideFragment : Fragment(R.layout.fragment_ride) {
         val args: HomeDetailFragmentArgs by navArgs()
         val rideId = args.id
 
-        Log.d("APP_ROB", rideId.toString())
+        Log.d("RMC_APP", rideId.toString())
         if (id > 0) {
             //  Observe a ride that is retrieved by id, set the Ride variable,
             rideViewModel.getRide(rideId).observe(this.viewLifecycleOwner) { selectedItem ->
@@ -112,21 +116,18 @@ class RideFragment : Fragment(R.layout.fragment_ride) {
         rideViewModel.endRide(rideId, startLatitude = ride.startLatitude, startLongitude = ride.startLongitude, startTimeStamp = ride.startTimeStamp, endTimeStamp = timeNow, endLatitude = location.latitude, endLongitude = location.longitude )
 
         // TODO do api call to update Ride
-
+        updateApi()
         stopLoading()
+
         // navigate to rideDetailFragment
         val action = RideFragmentDirections.actionRideFragmentToRideDetailFragment(bookingId)
 
         findNavController().navigate(action)
 
+    }
 
-//        val navController: NavController =
-//            findNavController()
-//        navController.run {
-//            popBackStack()
-//            navigate(action)
-//        }
-
+    private fun updateApi() {
+   // TODO
     }
 
     private fun bindRide(ride: Ride) {

@@ -99,14 +99,11 @@ class RideDetailFragment : Fragment(R.layout.fragment_ride_detail)  {
 
     private fun bindRide(ride: Ride) {
         binding.apply{
-
-            binding.textviewBonuspointsValue.text = (100..1337).random().toString() // mock bonuspoints for now
-            binding.textviewKmdrivenValue.text = calculateDistance(ride.startLatitude!!, ride.startLongitude!!, ride.endLatitude!!+2, ride.endLongitude!! + 2).toString()
-            binding.textviewMaxspeedValue.text = (50..130).random().toString() // mock max speed for now
-            binding.textviewTimestartValue.text = ride.startTimeStamp
-            binding.textviewEndtime.text = ride.endTimeStamp
-
-
+            binding.textviewBonuspointsValue.text = "Earned bonuspoints " + (100..1337).random().toString() + "km" // mock bonuspoints for now
+            binding.textviewKmdrivenValue.text = "Kilometer driven " + calculateDistance(ride.startLatitude!!, ride.startLongitude!!, ride.endLatitude!!+0.2, ride.endLongitude!! + 0.1).toString()
+            binding.textviewMaxspeedValue.text = "Max speed " + (50..130).random().toString() // mock max speed for now
+            binding.textviewStartRideDate.text = "Ride started " +  ride.startTimeStamp
+            binding.textviewEndRideDate.text = "Ride Ended " + ride.endTimeStamp
         }
     }
 
