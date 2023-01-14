@@ -1,29 +1,21 @@
 package com.avans.rentmycar.ui.home
 
-import android.hardware.biometrics.BiometricPrompt
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.avans.rentmycar.BaseApplication
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentHomeDetailBinding
-import com.avans.rentmycar.utils.BiometricAuthListener
 import com.avans.rentmycar.utils.SessionManager
 import com.avans.rentmycar.viewmodel.BookingViewModel
 import com.avans.rentmycar.viewmodel.OfferViewModel
-import com.avans.rentmycar.viewmodel.RideViewModel
-import com.avans.rentmycar.viewmodel.RideViewModelFactory
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 
@@ -35,8 +27,6 @@ class HomeDetailFragment : Fragment() {
     val args: HomeDetailFragmentArgs by navArgs()
 
     val mapFragment = MapsFragment()
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -74,47 +64,36 @@ class HomeDetailFragment : Fragment() {
                 actionBar?.title = offer.car.model
 
                 if (mapFragment.isAdded) {
-                    mapFragment.setMapLocation(
-                        offer.pickupLocationLatitude,
-                        offer.pickupLocationLongitude
-                    )
+                    mapFragment.setMapLocation(offer.pickupLocationLatitude, offer.pickupLocationLongitude)
                 }
-
-
-
-                // Setup Book Button
-                binding.buttonHomeDetailBook.setOnClickListener {
-                    bookingViewModel.createBooking(
-                        offerId,
-                        SessionManager.getUserId(requireContext())!!
-                    )
-
-                    bookingViewModel.createBookingResult.observe(viewLifecycleOwner) { response ->
-                        // TODO: Check if value of response can be !null
-                        if (response != null) {
-                            Log.d("[HDF] Response", "Response: $response")
-                            Log.d("[HDF] Resp.status", "Resp.status: " + response.status)
-                            if (response.status == 201) {
-                                Snackbar.make(
-                                    view,
-                                    "Booking created successfully",
-                                    Snackbar.LENGTH_LONG
-                                )
-                                    .show()
-                                val action =
-                                    HomeDetailFragmentDirections.actionHomeDetailFragmentToHomeFragment()
-                                view.findNavController().navigate(action)
-                            }
-
-                        } else {
-                            Log.d("[HDF] Response", "Response: $response")
-                            Snackbar.make(view, "Booking creation failed", Snackbar.LENGTH_LONG)
-                                .show()
-                        }
-                    }
-                }
-
-
 
             }
-        }}}
+        }
+
+        // Setup Book Button
+        binding.buttonHomeDetailBook.setOnClickListener {
+            bookingViewModel.createBooking(offerId, SessionManager.getUserId(requireContext())!!)
+
+            bookingViewModel.createBookingResult.observe(viewLifecycleOwner) { response ->
+                // TODO: Check if value of response can be !null
+                if (response != null) {
+                    Log.d("[HDF] Response", "Response: $response")
+                    Log.d("[HDF] Resp.status", "Resp.status: " + response.status)
+                    if (response.status == 201) {
+                        Snackbar.make(view, "Booking created successfully", Snackbar.LENGTH_LONG)
+                            .show()
+                        val action =
+                            HomeDetailFragmentDirections.actionHomeDetailFragmentToHomeFragment()
+                        view.findNavController().navigate(action)
+                    }
+
+                } else {
+                    Log.d("[HDF] Response", "Response: $response")
+                    Snackbar.make(view, "Booking creation failed", Snackbar.LENGTH_LONG).show()
+                }
+            }
+        }
+
+    }
+
+}
