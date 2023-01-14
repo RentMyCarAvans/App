@@ -27,13 +27,11 @@ import java.util.*
 
 
 class RideFragment : Fragment(R.layout.fragment_ride) {
+    private var binding: FragmentRideBinding? = null
     private val navigationArgs: RideFragmentArgs by navArgs()
 
-    // var for binding the add_car_item layout
-    private var _binding: FragmentRideBinding? = null
-    private val binding get() = _binding!!
-
     private lateinit var ride: Ride
+
 
     private val rideViewModel: RideViewModel by activityViewModels{
         RideViewModelFactory(
@@ -43,11 +41,13 @@ class RideFragment : Fragment(R.layout.fragment_ride) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding = FragmentRideBinding.bind(view)
 
-        binding.btnEndride.setOnClickListener {
+        binding!!.btnEndride.setOnClickListener {
             endRide()
         }
     }
+
 
 
     /** end ride fragment
@@ -67,9 +67,6 @@ class RideFragment : Fragment(R.layout.fragment_ride) {
             ride = selectedItem
             bindRide(ride)
         }
-//        val ride = rideViewModel.getRide(rideId)
-//        val startLatitude = ride.startLatitude
-//        val startLongitude = ride.value!!.startLongitude
 
         // get current long/lat of device
         var location = SessionManager.getDeviceLocation()
@@ -86,7 +83,7 @@ class RideFragment : Fragment(R.layout.fragment_ride) {
     private fun bindRide(ride: Ride) {
         binding.apply{
 
-            btnEndride.setOnClickListener {
+            binding?.btnEndride?.setOnClickListener {
                 endRide()
             }
         }
@@ -94,7 +91,7 @@ class RideFragment : Fragment(R.layout.fragment_ride) {
 
 
     override fun onDestroyView() {
-        _binding = null
+        binding = null
         super.onDestroyView()
     }
 
