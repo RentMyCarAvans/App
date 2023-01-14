@@ -17,6 +17,7 @@ import com.avans.rentmycar.BaseApplication
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.AddCarItemBinding
 import com.avans.rentmycar.databinding.FragmentBookingDetailBinding
+import com.avans.rentmycar.ui.mycars.MyCarsFragmentDirections
 import com.avans.rentmycar.utils.BiometricAuthListener
 import com.avans.rentmycar.utils.SessionManager
 import com.avans.rentmycar.utils.showBiometricPrompt
@@ -32,6 +33,8 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
     // var for binding the add_car_item layout
     private var _binding: FragmentBookingDetailBinding? = null
     private val binding get() = _binding!!
+
+    private var bookingId : Long = 0L
 
     private val args: BookingDetailFragmentArgs by navArgs()
     private val rideViewModel: RideViewModel by activityViewModels{
@@ -56,7 +59,7 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
 
         val bookingViewModel = ViewModelProvider(requireActivity())[BookingViewModel::class.java]
 
-        val bookingId = args.id
+         bookingId = args.id
 
         bookingViewModel.getBookingById(bookingId)
 
@@ -122,7 +125,10 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
     override fun onBiometricAuthenticateSuccess(result: androidx.biometric.BiometricPrompt.AuthenticationResult) {
         Toast.makeText(requireContext(), "Succes", Toast.LENGTH_SHORT)
             .show()
-        findNavController().navigate(R.id.action_bookingDetailFragment_to_rideFragment)
+        // build action
+        val action = BookingDetailFragmentDirections.actionBookingDetailFragmentToRideFragment(bookingId)
+
+        findNavController().navigate(action)
 
         saveRideToDB()
     }
