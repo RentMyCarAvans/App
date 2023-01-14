@@ -26,12 +26,11 @@ import java.util.*
 
 
 // viewbinding in fragment : https://stackoverflow.com/questions/62952957/viewbinding-in-fragment
-class ProfileFragment : Fragment(R.layout.fragment_profile), BiometricAuthListener  {
+class ProfileFragment : Fragment(R.layout.fragment_profile)  {
     private var binding: FragmentProfileBinding? = null
     private val viewModel: UserViewModel by viewModels()
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentProfileBinding.bind(view)
@@ -49,7 +48,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), BiometricAuthListen
 
 
         viewModel.userResult.observe(viewLifecycleOwner) {
-            Log.d("RentMyCarApp", it.toString())
             when (it) {
 
                 is BaseResponse.Loading -> {
@@ -85,46 +83,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), BiometricAuthListen
         }
 
 
-        binding!!.btnAuth.setOnClickListener {
-            showBiometricPrompt(
-                activity = requireActivity() as AppCompatActivity,
-                listener = this,
-                cryptoObject = null,
-                allowDeviceCredential = true
-            )
-        }
+
 
 
     }
 
-    private fun checkBiometric() {
-                if (!isBiometricReady(requireContext())) {
-                    binding!!.btnAuth.visibility = View.GONE
-                }
-                else View.VISIBLE
 
-    }
-
-    override fun onBiometricAuthenticateError(error: Int, errMsg: String) {
-        when (error) {
-                BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED -> {
-                    Toast.makeText(requireContext(), "user cancelled", Toast.LENGTH_SHORT)
-                    .show()
-                }
-                BiometricPrompt.BIOMETRIC_ERROR_NO_DEVICE_CREDENTIAL -> {
-                    Toast.makeText(requireContext(), "no device credential", Toast.LENGTH_SHORT)
-                    .show()
-                }
-            }
-        }
-
-
-    override fun onBiometricAuthenticateSuccess(result: androidx.biometric.BiometricPrompt.AuthenticationResult) {
-        Toast.makeText(requireContext(), "Auth success!!", Toast.LENGTH_SHORT)
-            .show()
-
-
-    }
 
 
      fun stopLoading() {

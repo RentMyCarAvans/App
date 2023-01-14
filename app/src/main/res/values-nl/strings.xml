@@ -42,7 +42,7 @@
     <string name="licenseplate">kenteken</string>
     <string name="offers_title">Aanbiedingen</string>
     <string name="home_availablecars">Beschikbare Auto\'s</string>
-    <string name="home_mybookings">Mijn Boekingen</string>
+    <string name="home_mybookings">Mijn Reserveringen</string>
     <string name="home_myoffers">My Offers (werkt nog niet)</string>
     <string name="offer_pickupAfter">Ophalen na: %1$s</string>
     <string name="offer_returnBefore">Terugbrengen voor: %1$s</string>
@@ -56,7 +56,7 @@
     <string name="filter">Pas Filter Toe</string>
     <string name="minimum_number_of_seats">Minimum aantal zitplaatsen</string>
     <string name="maximum_distance_from_my_location_in_km">Maximum afstand van mijn locatie in km</string>
-    <string name="fuel_type">Fuel Type</string>
+    <string name="fuel_type">Brandstoftype</string>
     <string name="fcev">FCEV</string>
     <string name="bev">BEV</string>
     <string name="ice">ICE</string>
@@ -69,4 +69,12 @@
     <string name="BiometricPrompt_title">Beveiliging Rent My Car</string>
     <string name="BiometricPrompt_description">Authentiseer om de rit te starten</string>
     <string name="my_offers">Mijn aanbod</string>
+    <string name="book_this_car">Reserveer deze auto</string>
+    <string name="start_riding">Start de Rit</string>
+    <string name="booking_cancel_dialog_title">Reservering annuleren?</string>
+    <string name="booking_cancel_dialog_message">Weet je zeker dat je deze reservering wilt verwijderen?</string>
+    <string name="booking_cancel_dialog_button_negative">Nee, behouden</string>
+    <string name="booking_cancel_dialog_button_positive">Ja, verwijderen</string>
+
+    <string name="_1s_kilometer_driven">%1$s gereden kilometers</string>
 </resources>

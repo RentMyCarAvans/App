@@ -6,9 +6,6 @@ import androidx.lifecycle.ViewModel
 
 class HomeViewModel : ViewModel() {
 
-    // TODO: Set up all the fields here
-//    val checkboxBlue = MutableLiveData<Boolean>()
-
     val checkboxFuelTypeIceFilter = MutableLiveData<Boolean>()
     val checkboxFuelTypeBevFilter = MutableLiveData<Boolean>()
     val checkboxFuelTypeFcevFilter = MutableLiveData<Boolean>()

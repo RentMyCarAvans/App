@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Build
 import android.os.Bundle
+import android.se.omapi.Session
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -148,10 +149,10 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
      */
     fun bindUI(args: OfferCarFragmentArgs) {
         Log.d(TAG, "bindUI()")
-
         binding.textviewOfferCarStartDatetime.text = args.startdate
         binding.textviewOfferCarEndDatetime.text = args.enddate
         binding.txtInputOfferCarLocation.setText(args.location)
+        // binding.txtInputOfferCarLocation.setText(SessionManager.getDeviceLocationReadable())
         binding.textviewOfferCarLicensePlate.text = (args.licenseplate)
     }
 

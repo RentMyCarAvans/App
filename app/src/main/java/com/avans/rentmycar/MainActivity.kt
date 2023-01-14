@@ -118,6 +118,7 @@ class MainActivity : AppCompatActivity() {
                     if (location != null) {
                         Log.d("[Main] getCurLoc", "Location: ${location.latitude}, ${location.longitude}")
                         SessionManager.setDeviceLocation(LatLng(location.latitude, location.longitude))
+
                     } else {
                         Log.e("[Main] getCurLoc", "Location is null")
                     }

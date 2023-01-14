@@ -12,11 +12,19 @@ data class OfferResponse(
     val status: Int
 )
 
+data class SingleOfferResponse(
+	val data: OfferData,
+	val message: String,
+	val status: Int
+)
+
 data class OfferData(
     val id: Long,
     val startDateTime: String,
     val endDateTime: String,
     val pickupLocation: String,
+	val pickupLocationLatitude: Double,
+	val pickupLocationLongitude: Double,
     val car: OfferCarData,
     var distance: Float
 )

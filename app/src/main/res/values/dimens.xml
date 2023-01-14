@@ -8,4 +8,10 @@
     <dimen name="dimen_32">32dp</dimen>
     <dimen name="dimen_60">60dp</dimen>
 
+    <dimen name="button_horizontal_margin">20dp</dimen>
+
+
+    <dimen name="margin_details_fragment">10dp</dimen>
+    <dimen name="corner_radius_details_fragment">10dp</dimen>
+
 </resources>
