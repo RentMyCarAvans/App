@@ -104,7 +104,11 @@
         android:id="@+id/rideDetailFragment"
         android:name="com.avans.rentmycar.ui.ride.RideDetailFragment"
         android:label="fragment_ride_detail"
-        tools:layout="@layout/fragment_ride_detail" />
+        tools:layout="@layout/fragment_ride_detail" >
+        <argument
+            android:name="id"
+            app:argType="long" />
+    </fragment>
     <fragment
         android:id="@+id/bookingListFragment"
         android:name="com.avans.rentmycar.ui.home.BookingListFragment"

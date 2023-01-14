@@ -3,7 +3,9 @@ package com.avans.rentmycar.ui.ride
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 
@@ -27,10 +29,12 @@ import java.util.*
 
 
 class RideFragment : Fragment(R.layout.fragment_ride) {
-    private var binding: FragmentRideBinding? = null
+    private var _binding: FragmentRideBinding? = null
     private val navigationArgs: RideFragmentArgs by navArgs()
 
     private lateinit var ride: Ride
+
+    private val binding get() = _binding!!
 
 
     private val rideViewModel: RideViewModel by activityViewModels{
@@ -39,13 +43,36 @@ class RideFragment : Fragment(R.layout.fragment_ride) {
         )
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+
+        _binding = FragmentRideBinding.inflate(inflater, container, false)
+        return binding.root
+
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentRideBinding.bind(view)
+        // get id
+        val args: HomeDetailFragmentArgs by navArgs()
+        val rideId = args.id
 
-        binding!!.btnEndride.setOnClickListener {
-            endRide()
-        }
+        Log.d("APP_ROB", rideId.toString())
+//        if (id > 0) {
+//            //  Observe a ride that is retrieved by id, set the Ride variable,
+//            rideViewModel.getRide(rideId).observe(this.viewLifecycleOwner) { selectedItem ->
+//                ride = selectedItem
+//                bindRide(ride)
+//            }
+//        } else {
+//            binding.btnEndride.setOnClickListener {
+//                endRide()
+//            }
+//        }
+
+
     }
 
 
@@ -57,16 +84,12 @@ class RideFragment : Fragment(R.layout.fragment_ride) {
      **/
 
     private fun endRide() {
+
         // get id
         val args: HomeDetailFragmentArgs by navArgs()
         val rideId = args.id
 
 
-        //  Observe a ride that is retrieved by id, set the Ride variable,
-        rideViewModel.getRide(rideId).observe(this.viewLifecycleOwner) {selectedItem ->
-            ride = selectedItem
-            bindRide(ride)
-        }
 
         // get current long/lat of device
         var location = SessionManager.getDeviceLocation()
@@ -83,7 +106,7 @@ class RideFragment : Fragment(R.layout.fragment_ride) {
     private fun bindRide(ride: Ride) {
         binding.apply{
 
-            binding?.btnEndride?.setOnClickListener {
+            binding.btnEndride.setOnClickListener {
                 endRide()
             }
         }
@@ -91,8 +114,8 @@ class RideFragment : Fragment(R.layout.fragment_ride) {
 
 
     override fun onDestroyView() {
-        binding = null
         super.onDestroyView()
+        _binding = null
     }
 
 
