@@ -64,6 +64,7 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
         }
 
 
+
         // Cancel booking
         binding.buttonBookingDetailCancelbooking.setOnClickListener {
             Log.d("[BDF]", "Cancel booking")
@@ -109,7 +110,7 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
     override fun onBiometricAuthenticateSuccess(result: androidx.biometric.BiometricPrompt.AuthenticationResult) {
         Toast.makeText(requireContext(), "Succes", Toast.LENGTH_SHORT)
             .show()
-        findNavController().navigate(R.id.action_homeDetailFragment2_to_rideFragment)
+        findNavController().navigate(R.id.action_bookingDetailFragment_to_rideFragment)
 
 
     }

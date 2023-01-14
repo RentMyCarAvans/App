@@ -24,13 +24,11 @@ import java.time.Instant
 import java.util.*
 
 
-// viewbinding in fragment : https://stackoverflow.com/questions/62952957/viewbinding-in-fragment
 class RideFragment : Fragment(R.layout.fragment_ride) {
     private var binding: FragmentRideBinding? = null
     private val navigationArgs: RideFragmentArgs by navArgs()
 
     private lateinit var ride: Ride
-
 
     private val rideViewModel: RideViewModel by activityViewModels{
         RideViewModelFactory(
@@ -59,7 +57,6 @@ class RideFragment : Fragment(R.layout.fragment_ride) {
         val args: HomeDetailFragmentArgs by navArgs()
         val rideId = args.id
 
-        // get ride from db
 
         //  Observe a ride that is retrieved by id, set the Ride variable,
         rideViewModel.getRide(rideId).observe(this.viewLifecycleOwner) {selectedItem ->
