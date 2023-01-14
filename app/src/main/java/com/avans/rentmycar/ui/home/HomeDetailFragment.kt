@@ -9,19 +9,24 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.avans.rentmycar.BaseApplication
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentHomeDetailBinding
 import com.avans.rentmycar.utils.BiometricAuthListener
 import com.avans.rentmycar.utils.SessionManager
 import com.avans.rentmycar.utils.showBiometricPrompt
 import com.avans.rentmycar.viewmodel.OfferViewModel
+import com.avans.rentmycar.viewmodel.RideViewModel
+import com.avans.rentmycar.viewmodel.RideViewModelFactory
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
+import java.time.Instant
 
 class HomeDetailFragment : Fragment(), BiometricAuthListener {
 
@@ -37,7 +42,11 @@ class HomeDetailFragment : Fragment(), BiometricAuthListener {
 
     private val viewModel: OfferViewModel by viewModels()
 
-
+    private val rideViewModel: RideViewModel by activityViewModels{
+        RideViewModelFactory(
+            (activity?.application as BaseApplication).database.rideDao()
+        )
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -60,7 +69,6 @@ class HomeDetailFragment : Fragment(), BiometricAuthListener {
         val offerStartDateTime = args.startDateTime
         val offerEndDateTime = args.endDateTime
         val carImageUrl = args.carImageUrl
-    Log.d("ROB_APP", args.toString())
         val offerViewModel = ViewModelProvider(this)[OfferViewModel::class.java]
 
         viewModel.getGeocodeResponse(offerPickupLocation)
@@ -151,11 +159,21 @@ class HomeDetailFragment : Fragment(), BiometricAuthListener {
 
 
     override fun onBiometricAuthenticateSuccess(result: androidx.biometric.BiometricPrompt.AuthenticationResult) {
-        Toast.makeText(requireContext(), "Succes", Toast.LENGTH_SHORT)
+        Toast.makeText(requireContext(), "Authentication successful. Starting the ride", Toast.LENGTH_SHORT)
             .show()
         findNavController().navigate(R.id.action_homeDetailFragment2_to_rideFragment)
 
+       saveRideToDB()
 
+    }
+
+    private fun saveRideToDB() {
+        val args: HomeDetailFragmentArgs by navArgs()
+        var location = SessionManager.getDeviceLocation()
+        var timeNow = Instant.now().toString()
+        rideViewModel.startRide(
+        rideId = args.id, startLongitude = location.longitude, startLatitude = location.latitude, startTimeStamp = timeNow
+    )
     }
 
 //    override fun onStart() {
