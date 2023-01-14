@@ -72,6 +72,9 @@
             android:id="@+id/action_carDetailFragment_to_editCarFragment"
             app:destination="@id/editCarFragment" />
         <action
+            android:id="@+id/action_carDetailFragment_to_carAddItemFragment"
+            app:destination="@id/editCarFragment" />
+        <action
             android:id="@+id/action_carDetailFragment_to_offerCarFragment"
             app:destination="@id/offerCarFragment" />
         <argument

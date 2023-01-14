@@ -27,10 +27,9 @@ class CarAdapter(
 
         @RequiresApi(Build.VERSION_CODES.O)
         fun bindData(carList: CarList) {
-            // TODO: Replace cute placeholder images with dumb pictures of cars
-            val random = (1..10).random() * 100
 
-            imageLoader.loadImage("http://placekitten.com/" + random + "/" + random, itemCarBinding.imageviewItemCarImage)
+            carList.image?.let { imageLoader.loadImage(it, itemCarBinding.imageviewItemCarImage) }
+
             itemCarBinding.textviewItemCarTitle.setText(carList.model)
             // itemCarBinding.textviewItemOfferDescription.isGone// TODO Set to visible if offer is present
             itemCarBinding.textviewItemOfferDescription.isVisible
