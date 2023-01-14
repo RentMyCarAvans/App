@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="0dp"
+        android:paddingBottom="0dp">
+
+        <LinearLayout
+            android:id="@+id/layout_item_booking_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imageview_item_booking_car_image"
+                android:layout_width="175dp"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical"
+                android:paddingVertical="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/textview_item_booking_car_name"
+                    style="@style/list_item_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="5dp"
+
+                    app:layout_constraintStart_toEndOf="@+id/imageview_item_booking_car_image"
+                    app:layout_constraintTop_toTopOf="@id/imageview_item_booking_car_image"
+                    tools:text="item_booking_car_name" />
+
+                <TextView
+                    android:id="@+id/textview_item_booking_startdate"
+                    style="@style/list_item_body_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+
+                    app:layout_constraintStart_toEndOf="@+id/imageview_item_booking_car_image"
+                    app:layout_constraintTop_toBottomOf="@id/textview_item_booking_car_name"
+                    tools:text="item_booking_startdate" />
+
+                <TextView
+                    android:id="@+id/textview_item_booking_enddate"
+                    style="@style/list_item_body_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginStart="10dp"
+                    app:layout_constraintStart_toEndOf="@+id/imageview_item_booking_car_image"
+                    app:layout_constraintTop_toBottomOf="@id/textview_item_booking_startdate"
+                    tools:text="item_booking_enddate" />
+
+                <TextView
+                    android:id="@+id/textview_item_booking_location"
+                    style="@style/list_item_body_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintStart_toEndOf="@id/imageview_item_booking_car_image"
+                    app:layout_constraintTop_toBottomOf="@id/textview_item_booking_enddate"
+                    tools:text="item_booking_location" />
+
+                <TextView
+                    android:id="@+id/textview_item_booking_distance"
+                    style="@style/list_item_body_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintStart_toEndOf="@id/imageview_item_booking_car_image"
+                    app:layout_constraintTop_toBottomOf="@id/textview_item_booking_location"
+                    tools:text="item_booking_dictance" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/silver"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_item_booking_container" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

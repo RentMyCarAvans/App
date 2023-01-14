@@ -1,42 +1,32 @@
 package com.avans.rentmycar.ui.home
 
-import android.hardware.biometrics.BiometricPrompt
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentHomeDetailBinding
-import com.avans.rentmycar.utils.BiometricAuthListener
 import com.avans.rentmycar.utils.SessionManager
-import com.avans.rentmycar.utils.showBiometricPrompt
+import com.avans.rentmycar.viewmodel.BookingViewModel
 import com.avans.rentmycar.viewmodel.OfferViewModel
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 
-class HomeDetailFragment : Fragment(), BiometricAuthListener {
+class HomeDetailFragment : Fragment() {
 
-    // Declare viewbinding
     private lateinit var _binding: FragmentHomeDetailBinding
     private val binding get() = _binding
 
-    // TODO: Refactor this page
-    var offerLat = 51.5837013
-    var offerLng = 4.797106
+    val args: HomeDetailFragmentArgs by navArgs()
 
     val mapFragment = MapsFragment()
-
-    private val viewModel: OfferViewModel by viewModels()
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,61 +42,40 @@ class HomeDetailFragment : Fragment(), BiometricAuthListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        val args: HomeDetailFragmentArgs by navArgs()
-        val offerId = args.id
-        val offerCarModel = args.carmodel
-        val offerPickupLocation = args.pickuplocation
-        val offerStartDateTime = args.startDateTime
-        val offerEndDateTime = args.endDateTime
-        val carImageUrl = args.carImageUrl
-    Log.d("ROB_APP", args.toString())
+        val bookingViewModel = ViewModelProvider(requireActivity())[BookingViewModel::class.java]
         val offerViewModel = ViewModelProvider(this)[OfferViewModel::class.java]
 
-        viewModel.getGeocodeResponse(offerPickupLocation)
+        val actionBar = (activity as AppCompatActivity).supportActionBar
 
-        viewModel.geocodeResult?.observe(viewLifecycleOwner) {
-            val geocodeResponse = viewModel.geocodeResult!!.value
-            if (geocodeResponse != null) {
-                offerLat = geocodeResponse.data?.get(0)?.latitude!!
-                offerLng = geocodeResponse.data.get(0)?.longitude!!
+        val offerId = args.id
+
+        offerViewModel.getOfferById(offerId)
+
+        offerViewModel.singleOffer.observe(viewLifecycleOwner) { offer ->
+            if (offer != null) {
+                binding.textviewHomeDetailCarName.setText(offer.car.model)
+                binding.textviewHomeDetailOfferPickuplocation.setText(offer.pickupLocation)
+                binding.textviewHomeDetailOfferDates.setText(offer.startDateTime + " - " + offer.endDateTime)
+
+                binding.imageviewHomeDetailCarImage.let {
+                    Glide.with(this).load(offer.car.image).into(it)
+                }
+
+                actionBar?.title = offer.car.model
+
+                if (mapFragment.isAdded) {
+                    mapFragment.setMapLocation(offer.pickupLocationLatitude, offer.pickupLocationLongitude)
+                }
+
             }
-
-            if (mapFragment.isAdded) {
-                mapFragment.setMapLocation(offerLat, offerLng)
-            }
-
-        }
-
-        // Set the offer data
-        binding.textviewHomeDetailOfferid.setText("Current OfferId: $offerId")
-        binding.textviewHomeDetailCarName.setText(offerCarModel)
-        binding.textviewHomeDetailOfferPickuplocation.setText(offerPickupLocation)
-        binding.textviewHomeDetailOfferDates.setText("$offerStartDateTime - $offerEndDateTime")
-
-
-        binding.imageviewHomeDetailCarImage.let {
-            Glide.with(this).load(carImageUrl).into(it)
-        }
-
-        // start ride button
-        binding.buttonHomeDetailStartRide.setOnClickListener {
-            showBiometricPrompt(
-                activity = requireActivity() as AppCompatActivity,
-                listener = this,
-                cryptoObject = null,
-                allowDeviceCredential = true,
-                title = getString(R.string.BiometricPrompt_title),
-                description = getString(R.string.BiometricPrompt_description),
-                subtitle = ""
-            )
         }
 
         // Setup Book Button
         binding.buttonHomeDetailBook.setOnClickListener {
-            offerViewModel.createBooking(offerId, SessionManager.getUserId(requireContext())!!)
+            bookingViewModel.createBooking(offerId, SessionManager.getUserId(requireContext())!!)
 
-            offerViewModel.createBookingResult.observe(viewLifecycleOwner) { response ->
+            bookingViewModel.createBookingResult.observe(viewLifecycleOwner) { response ->
+                // TODO: Check if value of response can be !null
                 if (response != null) {
                     Log.d("[HDF] Response", "Response: $response")
                     Log.d("[HDF] Resp.status", "Resp.status: " + response.status)
@@ -118,51 +87,13 @@ class HomeDetailFragment : Fragment(), BiometricAuthListener {
                         view.findNavController().navigate(action)
                     }
 
-                }
-                if (response == null) {
-                    Snackbar.make(view, "Booking failed", Snackbar.LENGTH_LONG).show()
-                    Log.e("[HDF]", "--- BOOKING FAILED ---")
                 } else {
-                    Snackbar.make(view, "Booking failed", Snackbar.LENGTH_LONG).show()
+                    Log.d("[HDF] Response", "Response: $response")
+                    Snackbar.make(view, "Booking creation failed", Snackbar.LENGTH_LONG).show()
                 }
             }
         }
 
-
-        // Set the title of the actionbar
-        val bar = (activity as AppCompatActivity).supportActionBar
-        bar?.title = offerCarModel
     }
-
-
-
-    override fun onBiometricAuthenticateError(error: Int, errMsg: String) {
-        when (error) {
-            BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED -> {
-                Toast.makeText(requireContext(), "Cancelled", Toast.LENGTH_SHORT)
-                    .show()
-            }
-            BiometricPrompt.BIOMETRIC_ERROR_NO_DEVICE_CREDENTIAL -> {
-                Toast.makeText(requireContext(), "No device credential", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        }
-    }
-
-
-    override fun onBiometricAuthenticateSuccess(result: androidx.biometric.BiometricPrompt.AuthenticationResult) {
-        Toast.makeText(requireContext(), "Succes", Toast.LENGTH_SHORT)
-            .show()
-        findNavController().navigate(R.id.action_homeDetailFragment2_to_rideFragment)
-
-
-    }
-
-//    override fun onStart() {
-//        super.onStart()
-////        if(mapFragment.isAdded) {
-////            mapFragment.setMapLocation(offerLat, offerLng)
-////        }
-//    }
 
 }
