@@ -17,9 +17,10 @@ class BookingViewModel : ViewModel() {
     var bookingCollection = MutableLiveData<Collection<BookingData>>()
     var bookingSingle = MutableLiveData<BookingData?>()
     val createBookingResult: MutableLiveData<CreateBookingResponse?> = MutableLiveData()
+    var cancelBookingResult: MutableLiveData<Boolean> = MutableLiveData(false)
 
     // ===== Bookings =====
-    fun setBookingCollection(bookings: Collection<BookingData>) {
+    private fun setBookingCollection(bookings: Collection<BookingData>) {
         Log.d("[BVM] setBookColl", "setBookingCollection: $bookings")
         bookingCollection.value = bookings
     }
@@ -60,7 +61,6 @@ class BookingViewModel : ViewModel() {
         }
     }
 
-    // TODO: Move all references to this method to the BookingViewModel
     fun createBooking(offerId: Long, customerId: Long) {
         viewModelScope.launch {
             try {
@@ -73,6 +73,20 @@ class BookingViewModel : ViewModel() {
                 createBookingResult.value = null
                 Log.d("[OVM] fail bookingresu", createBookingResult.value.toString())
                 Log.e("[OVM] fail crBResu", e.message.toString())
+            }
+        }
+    }
+
+    fun cancelBooking(offerId: Long){
+        viewModelScope.launch {
+            try {
+                val bookingRepository = BookingRepository()
+                val cancelBookingResponse = bookingRepository.cancelBooking(offerId)
+                Log.d("[OVM] suc cancelBooking", cancelBookingResponse.toString())
+                cancelBookingResult.value = cancelBookingResponse
+            } catch (e: Exception) {
+                Log.e("[OVM] fail cancelBookng", e.message.toString())
+                cancelBookingResult.value = false
             }
         }
     }

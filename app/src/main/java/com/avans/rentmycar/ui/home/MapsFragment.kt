@@ -139,15 +139,6 @@ class MapsFragment : Fragment() {
                             val bounds = mapBoundsBuilder.build()
                             googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, boundsPadding))
 
-                            // Adjust the bounds to include our location
-//                            val builder = LatLngBounds.Builder()
-//                            mapBoundsBuilder.include(deviceLocation)
-                            // TODO Offer locatie ipv hard coded value
-//                            mapBoundsBuilder.include(LatLng(51.5837013,4.797106))
-//                            val bounds = mapBoundsBuilder.build()
-//
-//                            // Move the camera to the user's location and zoom in!
-//                            googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 120))
 
                         }
                     }
