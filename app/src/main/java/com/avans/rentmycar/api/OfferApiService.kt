@@ -36,6 +36,9 @@ interface OfferService {
     @GET("/api/v1/bookings/{id}")
     suspend fun getBookingById(@Path("id") id:Long): Response<SingleBookingResponse>
 
+    @DELETE("/api/v1/bookings/{id}")
+    suspend fun cancelBooking(@Path("id") id:Long): Response<DeleteResponse>
+
 
     companion object {
         fun getApi(): OfferService? {

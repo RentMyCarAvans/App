@@ -50,17 +50,14 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
 
         bookingViewModel.bookingSingle.observe(viewLifecycleOwner) { booking ->
             if (booking != null) {
-                binding.textviewBookingDetailCarName.setText(booking.offer.car.model)
-                binding.textviewBookingDetailOfferPickuplocation.setText(booking.offer.pickupLocation)
-                binding.textviewBookingDetailOfferDates.setText(booking.offer.startDateTime + " - " + booking.offer.endDateTime)
+                binding.textviewBookingDetailCarName.text = booking.offer.car.model
+                binding.textviewBookingDetailOfferPickuplocation.text = booking.offer.pickupLocation
+                binding.textviewBookingDetailOfferDates.text = booking.offer.startDateTime + " - " + booking.offer.endDateTime
 
                 binding.imageviewBookingDetailCarImage.let {
                     Glide.with(this).load(booking.offer.car.image).into(it)
                 }
-
                 binding.bookingDetailTitle.text = booking.offer.car.model
-
-//                actionBar?.title = booking.offer.car.model
 
             }
         }
@@ -69,19 +66,23 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
         // Cancel booking
         binding.buttonBookingDetailCancelbooking.setOnClickListener {
             Log.d("[BDF]", "Cancel booking with id: $bookingId")
-            // TODO: Show dialog to confirm cancel booking
             context?.let { it1 ->
                 MaterialAlertDialogBuilder(it1)
                     .setTitle(getString(R.string.booking_cancel_dialog_title))
                     .setMessage(getString(R.string.booking_cancel_dialog_message))
                     .setNegativeButton(getString(R.string.booking_cancel_dialog_button_negative)) { dialog, which ->
-                        // Respond to negative button press
                         Log.d("[BDF]", "Booking with id: $bookingId NOT cancelled")
                     }
                     .setPositiveButton(getString(R.string.booking_cancel_dialog_button_positive)) { dialog, which ->
-                        // Respond to positive button press
-                        // TODO: Implement cancel booking in BookingRepository
                         Log.d("[BDF]", "Booking with id: $bookingId will be cancelled")
+                        bookingViewModel.cancelBooking(bookingId)
+                        bookingViewModel.cancelBookingResult.observe(viewLifecycleOwner) { result ->
+                            Log.d("[BDF]", "Booking with id: $bookingId cancelled: $result")
+                            if (result) {
+                                Toast.makeText(context, "Booking cancelled", Toast.LENGTH_SHORT).show()
+                                findNavController().navigate(R.id.action_bookingDetailFragment_to_homeFragment2)
+                            }
+                        }
                     }
                     .show()
             }

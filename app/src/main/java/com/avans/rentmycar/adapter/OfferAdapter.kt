@@ -44,8 +44,6 @@ class OfferAdapter(
                 ?.let { formatter.format(it) }
             val endDate: String? = parser.parse(offerData.endDateTime)?.let { formatter.format(it) }
 
-            // TODO: Replace cute placeholder images with dumb pictures of cars
-            val random = (1..10).random() * 100
             var carImage = ""
                 // TODO: Find a royalty free image to use as a placeholder and add it to the drawable folder
             carImage = if(offerData.car.image == null || offerData.car.image == "") {
