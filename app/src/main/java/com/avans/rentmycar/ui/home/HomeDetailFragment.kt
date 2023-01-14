@@ -36,13 +36,8 @@ class HomeDetailFragment : Fragment() {
 
     val mapFragment = MapsFragment()
 
-    private val viewModel: OfferViewModel by viewModels()
 
-    private val rideViewModel: RideViewModel by activityViewModels{
-        RideViewModelFactory(
-            (activity?.application as BaseApplication).database.rideDao()
-        )
-    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

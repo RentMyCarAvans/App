@@ -10,23 +10,35 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.avans.rentmycar.BaseApplication
 import com.avans.rentmycar.R
+import com.avans.rentmycar.databinding.AddCarItemBinding
 import com.avans.rentmycar.databinding.FragmentBookingDetailBinding
 import com.avans.rentmycar.utils.BiometricAuthListener
+import com.avans.rentmycar.utils.SessionManager
 import com.avans.rentmycar.utils.showBiometricPrompt
 import com.avans.rentmycar.viewmodel.BookingViewModel
+import com.avans.rentmycar.viewmodel.RideViewModel
+import com.avans.rentmycar.viewmodel.RideViewModelFactory
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
+import java.time.Instant
 
 class BookingDetailFragment : Fragment(), BiometricAuthListener {
 
-    private lateinit var _binding: FragmentBookingDetailBinding
-    private val binding get() = _binding
+    // var for binding the add_car_item layout
+    private var _binding: FragmentBookingDetailBinding? = null
+    private val binding get() = _binding!!
 
     private val args: BookingDetailFragmentArgs by navArgs()
-
+    private val rideViewModel: RideViewModel by activityViewModels{
+        RideViewModelFactory(
+            (activity?.application as BaseApplication).database.rideDao()
+        )
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -112,7 +124,21 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
             .show()
         findNavController().navigate(R.id.action_bookingDetailFragment_to_rideFragment)
 
-
+        saveRideToDB()
     }
 
+    private fun saveRideToDB() {
+        val args: HomeDetailFragmentArgs by navArgs()
+        var location = SessionManager.getDeviceLocation()
+        var timeNow = Instant.now().toString()
+        rideViewModel.startRide(
+            rideId = args.id, startLongitude = location.longitude, startLatitude = location.latitude, startTimeStamp = timeNow
+        )
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

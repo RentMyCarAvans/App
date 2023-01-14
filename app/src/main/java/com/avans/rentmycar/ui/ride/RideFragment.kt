@@ -4,6 +4,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 
 import androidx.fragment.app.Fragment
@@ -13,6 +14,7 @@ import androidx.lifecycle.map
 import androidx.navigation.fragment.navArgs
 import com.avans.rentmycar.BaseApplication
 import com.avans.rentmycar.R
+import com.avans.rentmycar.databinding.FragmentBookingDetailBinding
 import com.avans.rentmycar.databinding.FragmentRideBinding
 import com.avans.rentmycar.room.Ride
 import com.avans.rentmycar.ui.home.HomeDetailFragmentArgs
@@ -25,8 +27,11 @@ import java.util.*
 
 
 class RideFragment : Fragment(R.layout.fragment_ride) {
-    private var binding: FragmentRideBinding? = null
     private val navigationArgs: RideFragmentArgs by navArgs()
+
+    // var for binding the add_car_item layout
+    private var _binding: FragmentRideBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var ride: Ride
 
@@ -38,9 +43,8 @@ class RideFragment : Fragment(R.layout.fragment_ride) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentRideBinding.bind(view)
 
-        binding!!.btnEndride.setOnClickListener {
+        binding.btnEndride.setOnClickListener {
             endRide()
         }
     }
@@ -61,6 +65,7 @@ class RideFragment : Fragment(R.layout.fragment_ride) {
         //  Observe a ride that is retrieved by id, set the Ride variable,
         rideViewModel.getRide(rideId).observe(this.viewLifecycleOwner) {selectedItem ->
             ride = selectedItem
+            bindRide(ride)
         }
 //        val ride = rideViewModel.getRide(rideId)
 //        val startLatitude = ride.startLatitude
@@ -78,10 +83,18 @@ class RideFragment : Fragment(R.layout.fragment_ride) {
         // TODO do api call
     }
 
+    private fun bindRide(ride: Ride) {
+        binding.apply{
+
+            btnEndride.setOnClickListener {
+                endRide()
+            }
+        }
+    }
 
 
     override fun onDestroyView() {
-        binding = null
+        _binding = null
         super.onDestroyView()
     }
 
