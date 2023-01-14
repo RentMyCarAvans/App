@@ -71,4 +71,8 @@
     <string name="my_offers">Mijn aanbod</string>
     <string name="book_this_car">Book this car</string>
     <string name="start_riding">Start Riding</string>
+    <string name="booking_cancel_dialog_title">Cancel this booking?</string>
+    <string name="booking_cancel_dialog_message">Are you sure you want to cancel this booking?</string>
+    <string name="booking_cancel_dialog_button_negative">No, keep it</string>
+    <string name="booking_cancel_dialog_button_positive">Yes, continue cancel</string>
 </resources>

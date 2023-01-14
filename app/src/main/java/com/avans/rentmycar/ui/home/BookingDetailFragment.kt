@@ -18,7 +18,7 @@ import com.avans.rentmycar.utils.BiometricAuthListener
 import com.avans.rentmycar.utils.showBiometricPrompt
 import com.avans.rentmycar.viewmodel.BookingViewModel
 import com.bumptech.glide.Glide
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class BookingDetailFragment : Fragment(), BiometricAuthListener {
 
@@ -58,7 +58,9 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
                     Glide.with(this).load(booking.offer.car.image).into(it)
                 }
 
-                actionBar?.title = booking.offer.car.model
+                binding.bookingDetailTitle.text = booking.offer.car.model
+
+//                actionBar?.title = booking.offer.car.model
 
             }
         }
@@ -66,9 +68,24 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
 
         // Cancel booking
         binding.buttonBookingDetailCancelbooking.setOnClickListener {
-            Log.d("[BDF]", "Cancel booking")
+            Log.d("[BDF]", "Cancel booking with id: $bookingId")
             // TODO: Show dialog to confirm cancel booking
-            // TODO: Implement cancel booking in BookingRepository
+            context?.let { it1 ->
+                MaterialAlertDialogBuilder(it1)
+                    .setTitle(getString(R.string.booking_cancel_dialog_title))
+                    .setMessage(getString(R.string.booking_cancel_dialog_message))
+                    .setNegativeButton(getString(R.string.booking_cancel_dialog_button_negative)) { dialog, which ->
+                        // Respond to negative button press
+                        Log.d("[BDF]", "Booking with id: $bookingId NOT cancelled")
+                    }
+                    .setPositiveButton(getString(R.string.booking_cancel_dialog_button_positive)) { dialog, which ->
+                        // Respond to positive button press
+                        // TODO: Implement cancel booking in BookingRepository
+                        Log.d("[BDF]", "Booking with id: $bookingId will be cancelled")
+                    }
+                    .show()
+            }
+
         }
 
 
@@ -109,7 +126,7 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
     override fun onBiometricAuthenticateSuccess(result: androidx.biometric.BiometricPrompt.AuthenticationResult) {
         Toast.makeText(requireContext(), "Succes", Toast.LENGTH_SHORT)
             .show()
-        findNavController().navigate(R.id.action_homeDetailFragment2_to_rideFragment)
+        findNavController().navigate(R.id.action_bookingDetailFragment_to_rideFragment)
 
 
     }
