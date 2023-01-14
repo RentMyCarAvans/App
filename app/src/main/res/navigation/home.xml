@@ -67,6 +67,9 @@
         <action
             android:id="@+id/action_homeDetailFragment_to_homeFragment"
             app:destination="@id/homeFragment2" />
+        <action
+            android:id="@+id/action_homeDetailFragment2_to_rideFragment"
+            app:destination="@id/rideFragment" />
     </fragment>
     <fragment
         android:id="@+id/bookingDetailFragment"
@@ -99,6 +102,21 @@
             android:name="id"
             app:argType="long"
             android:defaultValue="0L" />
+        <argument
+            android:name="carmodel"
+            app:argType="string" />
+        <argument
+            android:name="pickuplocation"
+            app:argType="string" />
+        <argument
+            android:name="startDateTime"
+            app:argType="string" />
+        <argument
+            android:name="endDateTime"
+            app:argType="string" />
+        <argument
+            android:name="carImageUrl"
+            app:argType="string" />
         <action
             android:id="@+id/action_rideFragment_to_rideDetailFragment"
             app:destination="@id/rideDetailFragment" />

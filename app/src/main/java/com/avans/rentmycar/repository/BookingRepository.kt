@@ -29,5 +29,9 @@ class BookingRepository {
         return OfferService.getApi()?.createBooking(bookingDTO)?.body()
     }
 
+    suspend fun cancelBooking(bookingId: Long): Boolean {
+        return OfferService.getApi()?.cancelBooking(bookingId)?.isSuccessful ?: false
+    }
+
 
 }
