@@ -75,4 +75,6 @@
     <string name="booking_cancel_dialog_message">Weet je zeker dat je deze reservering wilt verwijderen?</string>
     <string name="booking_cancel_dialog_button_negative">Nee, behouden</string>
     <string name="booking_cancel_dialog_button_positive">Ja, verwijderen</string>
+
+    <string name="_1s_kilometer_driven">%1$s gereden kilometers</string>
 </resources>

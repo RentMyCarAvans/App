@@ -10,23 +10,39 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.avans.rentmycar.BaseApplication
 import com.avans.rentmycar.R
+import com.avans.rentmycar.databinding.AddCarItemBinding
 import com.avans.rentmycar.databinding.FragmentBookingDetailBinding
+import com.avans.rentmycar.ui.mycars.MyCarsFragmentDirections
 import com.avans.rentmycar.utils.BiometricAuthListener
+import com.avans.rentmycar.utils.SessionManager
 import com.avans.rentmycar.utils.showBiometricPrompt
 import com.avans.rentmycar.viewmodel.BookingViewModel
+import com.avans.rentmycar.viewmodel.RideViewModel
+import com.avans.rentmycar.viewmodel.RideViewModelFactory
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
+import java.time.Instant
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class BookingDetailFragment : Fragment(), BiometricAuthListener {
 
-    private lateinit var _binding: FragmentBookingDetailBinding
-    private val binding get() = _binding
+    // var for binding the add_car_item layout
+    private var _binding: FragmentBookingDetailBinding? = null
+    private val binding get() = _binding!!
+
+    private var bookingId : Long = 0L
 
     private val args: BookingDetailFragmentArgs by navArgs()
-
+    private val rideViewModel: RideViewModel by activityViewModels{
+        RideViewModelFactory(
+            (activity?.application as BaseApplication).database.rideDao()
+        )
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,7 +60,7 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
 
         val bookingViewModel = ViewModelProvider(requireActivity())[BookingViewModel::class.java]
 
-        val bookingId = args.id
+         bookingId = args.id
 
         bookingViewModel.getBookingById(bookingId)
 
@@ -61,6 +77,7 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
 
             }
         }
+
 
 
         // Cancel booking
@@ -120,16 +137,46 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
                 Toast.makeText(requireContext(), "No device credential", Toast.LENGTH_SHORT)
                     .show()
             }
+            else ->       {
+                Toast.makeText(requireContext(), "No Biometric Authentication installed. Please add PIN to use this app.", Toast.LENGTH_SHORT)
+                    .show()
+                doStartRiding()
+
+            }
+
         }
     }
 
 
     override fun onBiometricAuthenticateSuccess(result: androidx.biometric.BiometricPrompt.AuthenticationResult) {
-        Toast.makeText(requireContext(), "Succes", Toast.LENGTH_SHORT)
+        Toast.makeText(requireContext(), "Starting the ride..", Toast.LENGTH_SHORT)
             .show()
         findNavController().navigate(R.id.action_bookingDetailFragment_to_rideFragment)
 
-
+        doStartRiding()
     }
 
+    private fun saveRideToDB() {
+        val args: HomeDetailFragmentArgs by navArgs()
+        var location = SessionManager.getDeviceLocation()
+        var timeNow = Instant.now().toString()
+        rideViewModel.startRide(
+            rideId = args.id, startLongitude = location.longitude, startLatitude = location.latitude, startTimeStamp = timeNow
+        )
+    }
+
+    fun doStartRiding() {
+        // build action
+        val action = BookingDetailFragmentDirections.actionBookingDetailFragmentToRideFragment(bookingId)
+
+        findNavController().navigate(action)
+
+        saveRideToDB()
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

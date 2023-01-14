@@ -78,4 +78,5 @@
     <string name="booking_cancel_dialog_message">Are you sure you want to cancel this booking?</string>
     <string name="booking_cancel_dialog_button_negative">No, keep it</string>
     <string name="booking_cancel_dialog_button_positive">Yes, continue cancel</string>
+    <string name="_1s_kilometer_driven">%1$s kilometer driven</string>
 </resources>

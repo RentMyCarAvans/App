@@ -293,37 +293,20 @@
         android:layout_height="wrap_content"
         android:text="@string/edit_profile"
 
-        app:layout_constraintBottom_toTopOf="@+id/btn_statistics"
+        app:layout_constraintBottom_toTopOf="@+id/btn_logout"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/btn_statistics"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@id/btn_editProfile"
-        android:text="@string/show_statistics"
-        app:layout_constraintBottom_toTopOf="@id/btn_logout"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+
     <Button
         android:id="@+id/btn_logout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/logout"
         app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintBottom_toBottomOf="parent
+        app:layout_constraintBottom_toBottomOf="parent
 "
         />
 
-    <Button
-        android:id="@+id/btn_auth"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Authentication test"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-
-        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
