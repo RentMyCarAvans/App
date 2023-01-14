@@ -1,10 +1,9 @@
 package com.avans.rentmycar.api
 
 
-import com.avans.rentmycar.model.response.BookingResponse
-import com.avans.rentmycar.model.response.CreateBookingResponse
-import com.avans.rentmycar.model.response.CreateOfferResponse
-import com.avans.rentmycar.model.response.OfferResponse
+
+import com.avans.rentmycar.model.*
+import com.avans.rentmycar.model.response.*
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -12,6 +11,9 @@ interface OfferService {
 
     @GET("/api/v1/offers/unbooked")
     suspend fun getOpenOffers(): Response<OfferResponse>
+
+    @GET("/api/v1/offers/{id}")
+    suspend fun getOfferById(@Path("id") id:Long): Response<SingleOfferResponse>
 
     @POST("/api/v1/bookings/")
     suspend fun createBooking(@Body bookingDTO: BookingDTO): Response<CreateBookingResponse>
@@ -30,6 +32,9 @@ interface OfferService {
 
     @GET("/api/v1/offers")
     suspend fun getOffersByUserId(@Query("userId") userId: Long): Response<OfferResponse>
+
+    @GET("/api/v1/bookings/{id}")
+    suspend fun getBookingById(@Path("id") id:Long): Response<SingleBookingResponse>
 
 
     companion object {

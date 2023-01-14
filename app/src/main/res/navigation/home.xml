@@ -52,6 +52,9 @@
         <action
             android:id="@+id/action_homeFragment2_to_homeDetailFragment2"
             app:destination="@id/homeDetailFragment2" />
+        <action
+            android:id="@+id/action_homeFragment2_to_bookingDetailFragment"
+            app:destination="@id/bookingDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/homeDetailFragment2"
@@ -61,27 +64,28 @@
         <argument
             android:name="id"
             app:argType="long" />
-        <argument
-            android:name="carmodel"
-            app:argType="string" />
-        <argument
-            android:name="pickuplocation"
-            app:argType="string" />
-        <argument
-            android:name="startDateTime"
-            app:argType="string" />
-        <argument
-            android:name="endDateTime"
-            app:argType="string" />
-        <argument
-            android:name="carImageUrl"
-            app:argType="string" />
         <action
             android:id="@+id/action_homeDetailFragment_to_homeFragment"
             app:destination="@id/homeFragment2" />
         <action
             android:id="@+id/action_homeDetailFragment2_to_rideFragment"
             app:destination="@id/rideFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bookingDetailFragment"
+        android:name="com.avans.rentmycar.ui.home.BookingDetailFragment"
+        android:label="fragment_booking_detail"
+        tools:layout="@layout/fragment_booking_detail" >
+        <action
+            android:id="@+id/action_bookingDetailFragment_to_homeFragment2"
+            app:destination="@id/homeFragment2" />
+        <argument
+            android:name="id"
+            app:argType="long"
+            android:defaultValue="0L" />
+        <action
+            android:id="@+id/action_bookingDetailFragment_to_bookingListFragment"
+            app:destination="@id/bookingListFragment" />
     </fragment>
     <fragment
         android:id="@+id/rideFragment"
@@ -101,4 +105,13 @@
         android:name="com.avans.rentmycar.ui.ride.RideDetailFragment"
         android:label="fragment_ride_detail"
         tools:layout="@layout/fragment_ride_detail" />
+    <fragment
+        android:id="@+id/bookingListFragment"
+        android:name="com.avans.rentmycar.ui.home.BookingListFragment"
+        android:label="fragment_booking_list"
+        tools:layout="@layout/fragment_booking_list" >
+        <action
+            android:id="@+id/action_bookingListFragment_to_bookingDetailFragment"
+            app:destination="@id/bookingDetailFragment" />
+    </fragment>
 </navigation>

@@ -47,8 +47,9 @@ class OfferAdapter(
             // TODO: Replace cute placeholder images with dumb pictures of cars
             val random = (1..10).random() * 100
             var carImage = ""
-            carImage = if(offerData.car.image == null) {
-                "http://placekitten.com/$random/$random"
+                // TODO: Find a royalty free image to use as a placeholder and add it to the drawable folder
+            carImage = if(offerData.car.image == null || offerData.car.image == "") {
+                "https://www.thecarwiz.com/images/listing_vehicle_placeholder.jpg"
             } else {
                 offerData.car.image
             }
@@ -59,7 +60,6 @@ class OfferAdapter(
             offerEndDate.text = itemView.context.getString(R.string.offer_returnBefore, endDate)
             offerLocation.text = offerData.pickupLocation
 
-            Log.d("[OAdapt] distance", "distance: " + offerData.distance)
 
             if (offerData.distance < 1000) { // If the distance < 1000, show the distance in meters
                 offerDistance.text = offerData.distance.toInt().toString() + "m"
@@ -71,7 +71,6 @@ class OfferAdapter(
                 offerDistance.text = "..."
             }
 
-            Log.d("[OfferAdapter locPerm]", "Location permission: ${SessionManager.getLocationPermissionGranted()}")
 
             if(!SessionManager.getLocationPermissionGranted()){
                 itemOfferBinding.textviewItemOfferDistance.visibility = View.GONE
