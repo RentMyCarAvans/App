@@ -269,7 +269,7 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH) + 1,
             calendar.get(Calendar.DAY_OF_MONTH) + 1,
-            calendar.get(Calendar.HOUR_OF_DAY) + added_hours,
+            calendar.get(Calendar.HOUR),
             calendar.get(Calendar.MINUTE),
             calendar.get(Calendar.SECOND)
         )
