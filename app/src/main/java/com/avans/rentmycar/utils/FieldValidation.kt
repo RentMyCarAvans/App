@@ -84,9 +84,11 @@ object FieldValidation {
         // Check if a given liceseplate matches a pattern
         for (pattern in listOfLicensePlatePatterns) {
             if (Pattern.matches(pattern, licensePlate)) {
+         //       Log.d("[RMC][FieldValidation]", "isValidLicensePlate() => \"Car with licenseplate $licensePlate has a match on pattern $pattern\"")
                 return true
             }
         }
+       // Log.d("[RMC][FieldValidation]", "isValidLicensePlate() => \"Car with licenseplate $licensePlate has no match with a pattern")
         return false
     }
 
