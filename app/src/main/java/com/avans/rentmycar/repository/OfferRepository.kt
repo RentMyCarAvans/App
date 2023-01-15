@@ -2,12 +2,12 @@ package com.avans.rentmycar.repository
 
 import android.util.Log
 import com.avans.rentmycar.api.BookingDTO
+import com.avans.rentmycar.api.CarApiService
 import com.avans.rentmycar.api.OfferDTO
 import com.avans.rentmycar.api.OfferService
-import com.avans.rentmycar.model.response.BookingData
-import com.avans.rentmycar.model.response.CreateBookingResponse
-import com.avans.rentmycar.model.response.CreateOfferResponse
-import com.avans.rentmycar.model.response.OfferData
+import com.avans.rentmycar.model.request.CarRequest
+import com.avans.rentmycar.model.request.OfferRequest
+import com.avans.rentmycar.model.response.*
 
 class OfferRepository {
 
@@ -53,6 +53,12 @@ class OfferRepository {
         offerDTO.pickupLocation = pickupLocation
         offerDTO.carId = carId
         return OfferService.getApi()?.createOffer(offerDTO)?.body()
+    }
+
+    suspend fun updateOffer(Id: Long, offerRequest: OfferRequest) : CreateOfferResponse? {
+        Log.d("[RMC][CarRepository]", "createCar => CarApiService invoked for id " + Id)
+        Log.d("[RMC][CarRepository]", "createCar => Requestr: " + offerRequest.toString())
+        return OfferService.getApi()?.updateOffer(Id, offerRequest)?.body()
     }
 
 }

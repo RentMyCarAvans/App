@@ -64,6 +64,9 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
     var saveYear = 0
     var saveHour = 0
 
+    var offerId: Long = 0L
+    var carId: Long = 0L
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG,"onCreate()")
@@ -122,6 +125,7 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
         binding.buttonCarSave.setOnClickListener {
             Log.d(TAG, "onViewCreated() => Button SAVE clicked. Invoke CarApiService")
             Log.d(TAG, "onViewCreated() => args = " + args)
+            Log.d(TAG, "onViewCreated() => Carid = " + args.carid)
 
             if (args.startdate.isNullOrEmpty() && args.enddate.isNullOrEmpty()) {
                 createOffer(args.id.toInt())
@@ -154,6 +158,8 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
         binding.txtInputOfferCarLocation.setText(args.location)
         // binding.txtInputOfferCarLocation.setText(SessionManager.getDeviceLocationReadable())
         binding.textviewOfferCarLicensePlate.text = (args.licenseplate)
+        offerId = args.id.toLong()
+        carId = args.carid
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -203,7 +209,25 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
 
     private fun updateOffer(){
         Log.d(TAG, "updateOffer()")
-        // TODO Make call to the OfferRepository
+        val offerViewModel: OfferViewModel by viewModels()
+
+        // Cast inputfields
+        val offerStartDate: TextView = binding.textviewOfferCarStartDatetime
+        val startDate: String = offerStartDate.text.toString()
+
+        val offerEndDate: TextView = binding.textviewOfferCarEndDatetime
+        val endDate: String = offerEndDate.text.toString()
+
+        val offerLocation: TextInputEditText = binding.txtInputOfferCarLocation
+        val location: String = offerLocation.text.toString()
+
+        Log.d(TAG, "updateOffer() => startDate = " + startDate)
+        Log.d(TAG, "updateOffer() => endDate = " + endDate)
+        Log.d(TAG, "updateOffer() => location = " + location)
+        Log.d(TAG, "updateOffer() => carId = " + carId)
+
+        offerViewModel.updateOffer(offerId, startDate, endDate, location, carId)
+        Log.d(TAG, "createOffer() => After calling viewModel.createOffer().")
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {

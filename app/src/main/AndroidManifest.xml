@@ -24,7 +24,6 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
-        android:name=".BaseApplication"
         android:theme="@style/Theme.RentMyCar"
         android:usesCleartextTraffic="true"
         tools:targetApi="33">

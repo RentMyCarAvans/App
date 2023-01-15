@@ -52,9 +52,10 @@ class MyOffersFragment : Fragment() {
                 offer.startDateTime,
                 offer.endDateTime,
                 offer.pickupLocation,
-                offer.car.model
+                offer.car.model,
+                offer.car.id
             )
-            Log.d(TAG,"onViewCreated() => Clicked on offer item " + offer.id + " with model " + offer.car.model + ". Navigate to edit offer screen")
+            Log.d(TAG,"onViewCreated() => Clicked on offer item " + offer.id + " for carmodel " + offer.car.model + " with carid " + offer.car.id + ". Navigate to edit offer screen")
             findNavController().navigate(action)
         }
 

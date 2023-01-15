@@ -52,10 +52,8 @@ dependencies {
     implementation("androidx.biometric:biometric:1.2.0-alpha05")
     implementation 'androidx.room:room-common:2.4.3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
-    
+
+
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.1'
 
@@ -95,7 +93,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-script-runtime:1.7.21")
 
 //Glide
-    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    implementation 'com.github.bumptech.glide:glide:4.14.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
@@ -114,7 +112,22 @@ dependencies {
     // To use Kotlin annotation processing tool (kapt)
     annotationProcessor ("androidx.room:room-compiler:$room_version")
 
-//    // work
-//    implementation("androidx.work:work-runtime-ktx:$work_version")
+    // Android Testing Support Library's runner and rules
+    testImplementation 'junit:junit:4.13.2'
+    implementation 'androidx.test.ext:junit-ktx:1.1.5'
 
+
+    androidTestImplementation("androidx.room:room-testing:$room_version")
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.5.1')
+
+    // Espresso UI Testing
+
+    implementation('androidx.test.espresso:espresso-core:3.5.1')
+    androidTestImplementation('androidx.test.espresso:espresso-contrib:3.5.1')
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
+
+    implementation "androidx.test:rules:1.5.0"
+
+    //For runBlockingTest, CoroutineDispatcher etc.
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2'
 }
