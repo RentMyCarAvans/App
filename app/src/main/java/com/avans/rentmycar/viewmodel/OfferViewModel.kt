@@ -71,13 +71,13 @@ class OfferViewModel : ViewModel() {
     // ===== Offers =====
     fun setOfferCollection(offers: Collection<OfferData>) {
 
-        Log.d("[OVM] setOffColl", "setOfferCollection: $offers")
+//        Log.d("[OVM] setOffColl", "setOfferCollection: $offers")
 
-        Log.d("[OVM] setOffColl", "setOfferCollection numberOfSeatsFilter.value: ${numberOfSeatsFilter.value}")
-        Log.d("[OVM] setOffColl", "setOfferCollection maxDistanceInKmFilter.value: ${maxDistanceInKmFilter.value}")
+//        Log.d("[OVM] setOffColl", "setOfferCollection numberOfSeatsFilter.value: ${numberOfSeatsFilter.value}")
+//        Log.d("[OVM] setOffColl", "setOfferCollection maxDistanceInKmFilter.value: ${maxDistanceInKmFilter.value}")
 
         var filteredOffers = offers.filter { it.car.numberOfSeats >= numberOfSeatsFilter.value!! }
-                Log.d("[OVM] setOffColl", "setOfferCollection filteredOffers na seats: $filteredOffers")
+//                Log.d("[OVM] setOffColl", "setOfferCollection filteredOffers na seats: $filteredOffers")
 
 //        filteredOffers = filteredOffers.filter { it.distance <= (maxDistanceInKmFilter.value!! * 1000) }
 //        Log.d("[OVM] setOffColl", "setOfferCollection filteredOffers na distance: $filteredOffers")
@@ -88,40 +88,37 @@ class OfferViewModel : ViewModel() {
             filteredOffers = filteredOffers.filter { it.car.type != "ICE" }
         }
 
-        Log.d("[OVM] setOffColl", "setOfferCollection filteredOffers na ICE check: $filteredOffers")
+//        Log.d("[OVM] setOffColl", "setOfferCollection filteredOffers na ICE check: $filteredOffers")
 
 
         if (!checkboxFuelTypeBevFilter.value!!) {
             filteredOffers = filteredOffers.filter { it.car.type != "BEV" }
         }
 
-        Log.d("[OVM] setOffColl", "setOfferCollection filteredOffers na BEV check: $filteredOffers")
+//        Log.d("[OVM] setOffColl", "setOfferCollection filteredOffers na BEV check: $filteredOffers")
 
 
         if (!checkboxFuelTypeFcevFilter.value!!) {
             filteredOffers = filteredOffers.filter { it.car.type != "FCEV" }
         }
 
-        Log.d("[OVM] setOffColl", "setOfferCollection filteredOffers na FCEV check: $filteredOffers")
+//        Log.d("[OVM] setOffColl", "setOfferCollection filteredOffers na FCEV check: $filteredOffers")
 
 
-        Log.d("[OVM] setOffColl", "setOfferCollection: filteredOffers: $filteredOffers")
+//        Log.d("[OVM] setOffColl", "setOfferCollection: filteredOffers: $filteredOffers")
 
         offerCollection.value = filteredOffers
     }
 
     fun getOfferById(id: Long) {
-        Log.d("[OVM] getOfferById", "getOfferById called for id: $id")
+//        Log.d("[OVM] getOfferById", "getOfferById called for id: $id")
 
         if (offerCollection.value?.find { it.id == id } != null) {
-            Log.d("[OVM] getOfferById", "getOfferById: offer found in offerCollection")
+//            Log.d("[OVM] getOfferById", "getOfferById: offer found in offerCollection")
             singleOffer.value = offerCollection.value?.find { it.id == id }
         }
 
-        Log.d(
-            "[OVM] getOfferById",
-            "getOfferById: offer not found in offerCollection, getting it from repository"
-        )
+
         viewModelScope.launch {
             try {
                 val offer = offerRepository.getOfferById(id)
@@ -139,7 +136,7 @@ class OfferViewModel : ViewModel() {
 
     // ===== Repository Interaction =====
     fun getOffers() {
-        Log.d("[OVM] getOffers", "getOffers called")
+//        Log.d("[OVM] getOffers", "getOffers called")
         viewModelScope.launch {
             try {
                 val offerResponse = offerRepository.getOpenOffers()
@@ -177,38 +174,16 @@ class OfferViewModel : ViewModel() {
         val deviceLocation = Location("deviceLocation")
         deviceLocation.latitude = SessionManager.getDeviceLocation().latitude
         deviceLocation.longitude = SessionManager.getDeviceLocation().longitude
-        Log.d("[OVM] deviceLocation", "deviceLocation: $deviceLocation")
         offers.forEach { offer ->
 
-            Log.d("[OVM] ========", "=================================")
+            val carLocation = Location("carLocation")
+            carLocation.latitude = offer.pickupLocationLatitude
+            carLocation.longitude = offer.pickupLocationLongitude
 
-            Log.d("[OVM] uOfferWithDist", "offer: $offer")
-
-            val pickupLocationLatLng = LatLng(
-                offer.pickupLocationLatitude,
-                offer.pickupLocationLatitude
-            )
-            Log.d("[OVM] uOfferWithDist", "pickupLocationLatLng: $pickupLocationLatLng")
-
-            val pickupLocationLocation = Location("pickupLocation")
-
-            if (pickupLocationLatLng != null) {
-                pickupLocationLocation.latitude = pickupLocationLatLng.latitude
-                pickupLocationLocation.longitude = pickupLocationLatLng.longitude
-            }
-
-            Log.d("[OVM] uOfferWithDist", "pickupLocationLocation 2: $pickupLocationLocation")
-
-            val distance = pickupLocationLocation.distanceTo(deviceLocation)
-            Log.d("[OVM] uOfferWithDist", "distance: $distance")
+            val distance = carLocation.distanceTo(deviceLocation)
             offer.distance = distance
 
-
         }
-
-        Log.d("[OVM] uOfferWithDist", "offers after everything: $offers")
-
-
 
         return offers.sortedBy { offer -> offer.distance }
     }
