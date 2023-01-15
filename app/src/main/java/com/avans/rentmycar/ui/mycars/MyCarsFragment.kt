@@ -56,7 +56,7 @@ class MyCarsFragment : Fragment() {
                 car.colorType,
                 car.mileage.toString(),
                 car.licensePlate,
-                car.image, // TODO: Change to carImageURL
+                car.image,
                 car.vehicleType.toString()
             )
             Log.d(TAG,"onViewCreated() => Clicked on item with model " + car.model + ". Navigate to detailscreen")

@@ -201,9 +201,9 @@ class CarAddItemFragment : Fragment() {
         }
         carViewModel.createCar(
             colorType = color,
-            image = "", // TODO
+            image = "https://www.thecarwiz.com/images/listing_vehicle_placeholder.jpg", // placeholder
             licensePlate = licensePlate,
-            mileage = 100, // TODO
+            mileage = 0,
             model = model,
             numberOfSeats = nrOfSeats.toInt(),
             type = mType,

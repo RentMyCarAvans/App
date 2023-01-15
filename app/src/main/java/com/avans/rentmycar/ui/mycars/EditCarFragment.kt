@@ -67,7 +67,7 @@ class EditCarFragment : Fragment() {
         binding.txtInputCarNrOfDoors.setText(args.numberofseats)
         binding.txtInputCarColor.setText(args.color)
         binding.txtInputCarModel.setText(args.brand)
-        binding.txtInputCarVehicle.setText("Personenauto")  // TODO Is not in navArgs and database
+        binding.txtInputCarVehicle.setText(args.vehicletype)
         binding.txtInputCarYear.setText(args.year)
         binding.txtInputCarNrOfSeats.setText(args.numberofseats)
         binding.txtInputCarMileage.setText(args.mileage)
@@ -122,7 +122,7 @@ class EditCarFragment : Fragment() {
             carViewModel.updateCar(
                 id = Id.toInt(),
                 colorType = color,
-                image = "", // TODO
+                image = "https://www.thecarwiz.com/images/listing_vehicle_placeholder.jpg", // placeholder
                 licensePlate = licensePlate,
                 mileage = mileage.toInt(),
                 model = model,
