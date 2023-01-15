@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.avans.rentmycar.api.MapsApiService
+import com.avans.rentmycar.model.request.CarRequest
+import com.avans.rentmycar.model.request.OfferRequest
 import com.avans.rentmycar.model.response.*
 import com.avans.rentmycar.repository.OfferRepository
 import com.avans.rentmycar.utils.SessionManager
@@ -22,6 +24,7 @@ class OfferViewModel : ViewModel() {
 //    val createBookingResult: MutableLiveData<CreateBookingResponse?> = MutableLiveData()
 //    var geocodeResult: MutableLiveData<GeocodeResponsePositionstack?>? = MutableLiveData()
     val createOfferResult: MutableLiveData<CreateOfferResponse?> = MutableLiveData()
+    val updateOfferResult: MutableLiveData<CreateOfferResponse?> = MutableLiveData()
 //    var geocodeResult: MutableLiveData<GeocodeResponse?>? = MutableLiveData()
 
 
@@ -243,6 +246,30 @@ class OfferViewModel : ViewModel() {
                 Log.d("[RMC][OfferViewModel]", "createOffer() => Exception message: " + e.message.toString() )
             }
         }
+    }
+
+    fun updateOffer( id: Long,
+                     startDateTime: String,
+                     endDateTime: String,
+                     pickupLocation: String,
+                     carId: Long) {
+        Log.d("[RMC][OfferViewModel]", "updateOffer() => id $id, startDateTime $startDateTime, endDateTime $endDateTime location $pickupLocation carid $carId" )
+        viewModelScope.launch {
+            try {
+                val offerRequest = OfferRequest(startDateTime = startDateTime,
+                    endDateTime = endDateTime,
+                    pickupLocation = pickupLocation,
+                    carId = carId)
+                Log.d("[RMC][OfferVM", "updateOffer() => offerRequest = " + offerRequest)
+                val response = offerRepository.updateOffer(id, offerRequest = offerRequest)
+                updateOfferResult.value = response
+            } catch (e: Exception) {
+                Log.d("[RMC][OfferViewModel]", "updateOffer() => Exception: " + createOfferResult.value.toString() )
+                Log.d("[RMC][OfferViewModel]", "updateOffer() => Exception message: " + e.message.toString() )
+            }
+        }
+
+
     }
 
 //    fun getGeocodeResponse(pickupLocation: String) {

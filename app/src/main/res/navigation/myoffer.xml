@@ -35,6 +35,9 @@
         <argument
             android:name="licenseplate"
             app:argType="string" />
+        <argument
+            android:name="carid"
+            app:argType="long" />
         <action
             android:id="@+id/action_offerCarFragment2_to_myOffersFragment"
             app:destination="@id/myOffersFragment" />

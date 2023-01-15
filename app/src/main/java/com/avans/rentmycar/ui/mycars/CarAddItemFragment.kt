@@ -36,6 +36,8 @@ import com.avans.rentmycar.utils.SessionManager
 import com.avans.rentmycar.viewmodel.CarViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * [CarAddItemFragment] Add a new car by licenseplate.
@@ -199,9 +201,9 @@ class CarAddItemFragment : Fragment() {
         }
         carViewModel.createCar(
             colorType = color,
-            image = "", // TODO
+            image = "https://www.thecarwiz.com/images/listing_vehicle_placeholder.jpg", // placeholder
             licensePlate = licensePlate,
-            mileage = 100, // TODO
+            mileage = 0,
             model = model,
             numberOfSeats = nrOfSeats.toInt(),
             type = mType,
@@ -261,11 +263,15 @@ class CarAddItemFragment : Fragment() {
     }
 
     private fun validateYearOfManufacture(): Boolean {
+        val formatter = SimpleDateFormat("yyyy")
+        val date = Date()
+        val currentYear : Int = formatter.format(date).toInt()
+        Log.d(TAG, "Current year: " + currentYear)
         if (binding.txtInputCarYear.text.toString().trim().isEmpty()) {
             binding.txtLayCarYearAdd.error = getString(R.string.required_field)
             binding.txtInputCarYear.requestFocus()
             return false
-        } else if  (binding.txtInputCarYear.text.toString().toInt() > 2023) {
+        } else if  (binding.txtInputCarYear.text.toString().toInt() > currentYear) {
             binding.txtLayCarYearAdd.error = "Year cannot be in the future. Please select another year"
             binding.txtInputCarYear.requestFocus()
             return false
