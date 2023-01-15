@@ -10,12 +10,8 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.BookingListItemBinding
-import com.avans.rentmycar.databinding.ItemBookingBinding
-import com.avans.rentmycar.databinding.ItemOfferBinding
 import com.avans.rentmycar.model.response.BookingData
-import com.avans.rentmycar.model.response.OfferData
 import com.avans.rentmycar.utils.ImageLoader
-import com.avans.rentmycar.utils.SessionManager
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -32,7 +28,6 @@ class BookingAdapter(
         private val bookingStartDate = itemBookingBinding.textviewItemBookingStartdate
         private val bookingEndDate = itemBookingBinding.textviewItemBookingEnddate
         private val bookingLocation = itemBookingBinding.textviewItemBookingLocation
-        private val bookingDistance = itemBookingBinding.textviewItemBookingDistance
 
         @SuppressLint("SetTextI18n")
         @RequiresApi(Build.VERSION_CODES.O)
@@ -59,19 +54,6 @@ class BookingAdapter(
             bookingStartDate.text = itemView.context.getString(R.string.offer_pickupAfter, startDate)
             bookingEndDate.text = itemView.context.getString(R.string.offer_returnBefore, endDate)
             bookingLocation.text = bookingData.offer.pickupLocation
-
-            Log.d("[BAdapt] distance", "distance: " + bookingData.offer.distance)
-
-            if (bookingData.offer.distance < 1000) { // If the distance < 1000, show the distance in meters
-                bookingDistance.text = bookingData.offer.distance.toInt().toString() + "m"
-            } else if (bookingData.offer.distance > 1000) { // If the distance > 1000, show the distance in kilometers
-                val distanceInKm = bookingData.offer.distance / 1000
-                // set distanceInKm to 1 decimal
-                bookingDistance.text = String.format("%.1f", distanceInKm) + "km"
-            } else {
-                bookingDistance.text = "..."
-            }
-
         }
 
     }
