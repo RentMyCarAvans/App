@@ -37,6 +37,8 @@ class HomeBottomSheetDialogFragment : BottomSheetDialogFragment() {
         val bevCheckbox = view.findViewById<View>(R.id.checkbox_home_sheet_bev) as CheckBox
         val fvecCheckbox = view.findViewById<View>(R.id.checkbox_home_sheet_fcev) as CheckBox
 
+        val showOwnCarsCheckbox = view.findViewById<View>(R.id.checkbox_home_sheet_owncar) as CheckBox
+
         val numberOfSeatsSlider = view.findViewById<View>(R.id.slider_home_sheet_seats) as Slider
         val maxdistanceSlider = view.findViewById<View>(R.id.slider_home_sheet_maxdistance) as Slider
 
@@ -50,10 +52,25 @@ class HomeBottomSheetDialogFragment : BottomSheetDialogFragment() {
         iceCheckbox.isChecked = viewModel.checkboxFuelTypeIceFilter.value ?: true
         bevCheckbox.isChecked = viewModel.checkboxFuelTypeBevFilter.value ?: true
         fvecCheckbox.isChecked = viewModel.checkboxFuelTypeFcevFilter.value ?: true
+        showOwnCarsCheckbox.isChecked = viewModel.checkboxShowOwnCarsFilter.value ?: false
 
         numberOfSeatsSlider.value = viewModel.numberOfSeatsFilter.value?.toFloat() ?: 4f
         maxdistanceSlider.value = viewModel.maxDistanceInKmFilter.value?.toFloat() ?: 50f
 
+
+    maxdistanceSlider.addOnChangeListener { slider, value, fromUser ->
+
+        // If the value of maxdistanceSLider == 100, change the label to 100+
+        if (maxdistanceSlider.value == 100f) {
+            maxdistanceSlider.setLabelFormatter { value ->
+                if (value == 100f) {
+                    "100+"
+                } else {
+                    value.toInt().toString()
+                }
+            }
+        }
+    }
 
         view.findViewById<View>(R.id.button_home_sheet_filter)?.setOnClickListener {
 
@@ -63,9 +80,16 @@ class HomeBottomSheetDialogFragment : BottomSheetDialogFragment() {
             viewModel.setCheckboxFuelTypeIceFilter(iceCheckbox.isChecked)
             viewModel.setCheckboxFuelTypeBevFilter(bevCheckbox.isChecked)
             viewModel.setCheckboxFuelTypeFcevFilter(fvecCheckbox.isChecked)
+            viewModel.setCheckboxShowOwnCarsFilter(showOwnCarsCheckbox.isChecked)
 
             viewModel.setNumberOfSeatsFilter(numberOfSeatsSlider.value.toInt())
-            viewModel.setMaxDistanceInKmFilter(maxdistanceSlider.value)
+
+
+            if(maxdistanceSlider.value == 100f){
+                viewModel.setMaxDistanceInKmFilter(99999.99f)
+            } else {
+                viewModel.setMaxDistanceInKmFilter(maxdistanceSlider.value)
+            }
 
             viewModel.getOffers()
 

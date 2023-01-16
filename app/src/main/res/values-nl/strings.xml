@@ -77,4 +77,5 @@
     <string name="booking_cancel_dialog_button_positive">Ja, verwijderen</string>
     <string name="item_offer_my_car">Mijn Auto</string>
     <string name="_1s_kilometer_driven">%1$s gereden kilometers</string>
+    <string name="show_my_own_cars">Toon mijn auto\'s</string>
 </resources>
