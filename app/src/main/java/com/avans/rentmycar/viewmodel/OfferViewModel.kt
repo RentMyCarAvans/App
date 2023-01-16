@@ -73,49 +73,17 @@ class OfferViewModel : ViewModel() {
     // ===== Offers =====
     fun setOfferCollection(offers: Collection<OfferData>) {
 
-//        Log.d("[OVM] setOffColl", "setOfferCollection: $offers")
-
-//        Log.d("[OVM] setOffColl", "setOfferCollection numberOfSeatsFilter.value: ${numberOfSeatsFilter.value}")
-//        Log.d("[OVM] setOffColl", "setOfferCollection maxDistanceInKmFilter.value: ${maxDistanceInKmFilter.value}")
-
         var filteredOffers = offers.filter { it.car.numberOfSeats >= numberOfSeatsFilter.value!! }
-//                Log.d("[OVM] setOffColl", "setOfferCollection filteredOffers na seats: $filteredOffers")
 
-//        filteredOffers = filteredOffers.filter { it.distance <= (maxDistanceInKmFilter.value!! * 1000) }
-//        Log.d("[OVM] setOffColl", "setOfferCollection filteredOffers na distance: $filteredOffers")
-
-
-
-        if (!checkboxFuelTypeIceFilter.value!!) {
-            filteredOffers = filteredOffers.filter { it.car.type != "ICE" }
-        }
-
-//        Log.d("[OVM] setOffColl", "setOfferCollection filteredOffers na ICE check: $filteredOffers")
-
-
-        if (!checkboxFuelTypeBevFilter.value!!) {
-            filteredOffers = filteredOffers.filter { it.car.type != "BEV" }
-        }
-
-//        Log.d("[OVM] setOffColl", "setOfferCollection filteredOffers na BEV check: $filteredOffers")
-
-
-        if (!checkboxFuelTypeFcevFilter.value!!) {
-            filteredOffers = filteredOffers.filter { it.car.type != "FCEV" }
-        }
-
-//        Log.d("[OVM] setOffColl", "setOfferCollection filteredOffers na FCEV check: $filteredOffers")
-
-        if(currentUserId != null) {
+        if (maxDistanceInKmFilter.value!! < 100.0f) filteredOffers = filteredOffers.filter { it.distance <= (maxDistanceInKmFilter.value!! * 1000) }
+        if (!checkboxFuelTypeIceFilter.value!!) filteredOffers = filteredOffers.filter { it.car.type != "ICE" }
+        if (!checkboxFuelTypeBevFilter.value!!) filteredOffers = filteredOffers.filter { it.car.type != "BEV" }
+        if (!checkboxFuelTypeFcevFilter.value!!) filteredOffers = filteredOffers.filter { it.car.type != "FCEV" }
+        if (currentUserId != null) {
             if (!checkboxShowOwnCarsFilter.value!!) {
                 filteredOffers = filteredOffers.filter { it.car.user.id != currentUserId }
             }
-            Log.d("[OVM] setOffColl", "setOfferCollection filteredOffers na showOwnCars check: $filteredOffers")
         }
-
-
-
-//        Log.d("[OVM] setOffColl", "setOfferCollection: filteredOffers: $filteredOffers")
 
         offerCollection.value = filteredOffers
         isLoading.value = false
@@ -123,13 +91,10 @@ class OfferViewModel : ViewModel() {
 
     fun getOfferById(id: Long) {
         isLoading.value = true
-//        Log.d("[OVM] getOfferById", "getOfferById called for id: $id")
 
         if (offerCollection.value?.find { it.id == id } != null) {
-//            Log.d("[OVM] getOfferById", "getOfferById: offer found in offerCollection")
             singleOffer.value = offerCollection.value?.find { it.id == id }
         }
-
 
         viewModelScope.launch {
             try {
@@ -148,30 +113,19 @@ class OfferViewModel : ViewModel() {
 
     // ===== Repository Interaction =====
     fun getOffers() {
-//        Log.d("[OVM] getOffers", "getOffers called")
         viewModelScope.launch {
             try {
                 val offerResponse = offerRepository.getOpenOffers()
-                Log.d("[OVM] getOffers", "offerResponse: $offerResponse")
 
                 if(SessionManager.getLocationPermissionGranted()) {
-                    Log.d("[OVM] getOffers", "Location permission granted. Show offers with distances.")
-
-
                     val stringFromCoordinatesDeviceLocation = SessionManager.getDeviceLocation().latitude.toString() + "," + SessionManager.getDeviceLocation().longitude.toString()
-                    Log.d("[OVM] getOffers", "stringFromCoordinatesDeviceLocation: $stringFromCoordinatesDeviceLocation")
                     val readableDeviceLocation = MapsApiService.getApi()?.getAddressFromLatLong(stringFromCoordinatesDeviceLocation)
-                    Log.d("[OVM] getOffers", "readableDeviceLocation: $readableDeviceLocation")
                     SessionManager.setDeviceLocationReadable(readableDeviceLocation?.data?.get(0)?.label!!)
-
-//                    TODO: Check why distance is not working correctly anymore
                     setOfferCollection(updateOfferDataWithDistance(offerResponse))
-
                 } else {
                     Log.d("[OVM] getOffers", "Location permission not granted. Show offers without distances.")
                     setOfferCollection(offerResponse)
                 }
-
             } catch (e: Exception) {
                 Log.e("[OfferVM] getOffers", e.message.toString())
             }
@@ -182,7 +136,6 @@ class OfferViewModel : ViewModel() {
 
 
     suspend fun updateOfferDataWithDistance(offers: Collection<OfferData>): Collection<OfferData> {
-
         val deviceLocation = Location("deviceLocation")
         deviceLocation.latitude = SessionManager.getDeviceLocation().latitude
         deviceLocation.longitude = SessionManager.getDeviceLocation().longitude
@@ -194,9 +147,7 @@ class OfferViewModel : ViewModel() {
 
             val distance = carLocation.distanceTo(deviceLocation)
             offer.distance = distance
-
         }
-
         return offers.sortedBy { offer -> offer.distance }
     }
 
@@ -258,20 +209,5 @@ class OfferViewModel : ViewModel() {
 
 
     }
-
-//    fun getGeocodeResponse(pickupLocation: String) {
-//        viewModelScope.launch {
-//            try {
-//                val geocodeResponse = MapsApiService.getApi()?.getLatLongFromAddress(pickupLocation)
-//                Log.i("[OfferVM] geocodeResp", geocodeResponse.toString())
-//                geocodeResult?.value = geocodeResponse
-//            } catch (e: Exception) {
-//                Log.e("[OfferVM] getGeoRespon", e.message.toString())
-//            }
-//        }
-//
-//    }
-
-
 
 }
