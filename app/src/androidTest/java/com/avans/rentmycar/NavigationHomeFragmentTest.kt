@@ -19,7 +19,7 @@ import org.junit.runner.RunWith
 class NavigationHomeFragmentTest {
 
     @Test
-    fun testHomeFragmentNavigation(){
+    fun testHomeFragmentNavigationButtonMyBookings(){
 
         // Setup
         val activityScenario = ActivityScenario.launch(MainActivity::class.java)
@@ -32,52 +32,21 @@ class NavigationHomeFragmentTest {
         onView(withId(R.id.button_home_mybookings))
             .check(matches(isDisplayed()))
 
+    }
+
+    @Test
+    fun testHomeFragmentNavigationButtonAvailableCars(){
+
+        // Setup
+        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
+
         // Nav to Available cars
-        //onView(withId(R.id.button_home_availablecars))  // should correspond with id in fragmentxml
-        //    .perform(NavigationViewActions.navigateTo(R.id.mycars))
+        onView(withId(R.id.button_home_availablecars))  // should correspond with id in fragmentxml
+            .perform(click())
 
 
         // Verify that the Available cars is displayed
-        //onView(withId(R.id.button_home_availablecars))
-        //    .check(matches(isDisplayed()))
-
-    }
-
-    @Test
-    fun testHomeProfileFragmentNavigation(){
-
-        // Setup
-        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
-
-       // onView(withId(R.id.profileFragment))
-       //     .perform(click())
-    }
-
-    @Test
-    fun testMyCarsFragmentNavigation(){
-
-        // Setup
-        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
-
-        // Nav to Available cars
-        onView(withText("Offer My Car"))  // should correspond with id in fragmentxml
-            .perform(NavigationViewActions.navigateTo(R.id.mycars))
-
-    }
-
-    @Test
-    fun testMyOffersFragmentNavigation(){
-
-        // Setup
-        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
-
-
-    }
-
-    @Test
-    fun testMyCarsFragmentXXX(){
-        Log.d("RMCUT","testMyCarsFragmentXXX")
-        val scenario = launchFragmentInContainer<MyCarsFragment>(
-            initialState = Lifecycle.State.INITIALIZED)
+        onView(withId(R.id.button_home_availablecars))
+            .check(matches(isDisplayed()))
     }
 }
