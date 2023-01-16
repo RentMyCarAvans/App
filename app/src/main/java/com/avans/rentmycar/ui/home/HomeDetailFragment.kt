@@ -13,6 +13,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentHomeDetailBinding
+import com.avans.rentmycar.utils.DateTimeConverter
 import com.avans.rentmycar.utils.SessionManager
 import com.avans.rentmycar.viewmodel.BookingViewModel
 import com.avans.rentmycar.viewmodel.OfferViewModel
@@ -53,9 +54,13 @@ class HomeDetailFragment : Fragment() {
 
         offerViewModel.singleOffer.observe(viewLifecycleOwner) { offer ->
             if (offer != null) {
+
+                val startDate = DateTimeConverter.convertDatabaseDateTimeToReadableDateTime(offer.startDateTime)
+                val endDate = DateTimeConverter.convertDatabaseDateTimeToReadableDateTime(offer.endDateTime)
+
                 binding.textviewHomeDetailCarName.setText(offer.car.model)
                 binding.textviewHomeDetailOfferPickuplocation.setText(offer.pickupLocation)
-                binding.textviewHomeDetailOfferDates.setText(offer.startDateTime + " - " + offer.endDateTime)
+                binding.textviewHomeDetailOfferDates.setText(startDate + " - " + endDate)
 
                 binding.imageviewHomeDetailCarImage.let {
                     Glide.with(this).load(offer.car.image).into(it)
