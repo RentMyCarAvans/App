@@ -64,6 +64,7 @@ class HomeDetailFragment : Fragment() {
                 if(offer.car.user.id == SessionManager.getUserId(requireContext())) {
                     binding.buttonHomeDetailBook.isEnabled = false
                     binding.buttonHomeDetailBook.text = getString(R.string.cannot_book_own_car)
+                    binding.buttonHomeDetailBook.setBackgroundColor(resources.getColor(R.color.gray))
                 }
 
                 actionBar?.title = offer.car.model
