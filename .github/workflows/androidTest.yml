@@ -1,0 +1,12 @@
+#Workflow name
+name: Automated Andriod Unit Tests
+on: [push]
+jobs:
+  #Test's job
+  tests:
+    name: Unit tests
+    #Run on Ubuntu using the latest version
+    runs-on: ubuntu-latest
+    #Job's steps
+    steps: 
+    - uses: asadmansr/android-test-report-action@v1.2.0
