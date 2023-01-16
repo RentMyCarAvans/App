@@ -61,6 +61,12 @@ class HomeDetailFragment : Fragment() {
                     Glide.with(this).load(offer.car.image).into(it)
                 }
 
+                if(offer.car.user.id == SessionManager.getUserId(requireContext())) {
+                    binding.buttonHomeDetailBook.isEnabled = false
+                    binding.buttonHomeDetailBook.text = getString(R.string.cannot_book_own_car)
+                    binding.buttonHomeDetailBook.setBackgroundColor(resources.getColor(R.color.gray))
+                }
+
                 actionBar?.title = offer.car.model
 
                 if (mapFragment.isAdded) {
@@ -69,6 +75,8 @@ class HomeDetailFragment : Fragment() {
 
             }
         }
+
+
 
         // Setup Book Button
         binding.buttonHomeDetailBook.setOnClickListener {
