@@ -117,4 +117,14 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <TextView
+        android:id="@+id/textview_item_offer_owner_banner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+    style="@style/offer_banner"
+        android:translationX="-45dp"
+        android:translationY="10dp"
+        android:text="@string/item_offer_my_car"
+        tools:text="My Car" />
+
 </androidx.cardview.widget.CardView>

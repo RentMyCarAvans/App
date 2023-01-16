@@ -1,16 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="16dp"
-    app:behavior_hideable="false">
+<!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    app:behavior_hideable="false">-->
 
+    <LinearLayout
+    android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:behavior_hideable="false">
+
+<LinearLayout
+    android:layout_marginTop="16dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_gravity="center"
+    >
 
     <CheckBox
         android:id="@+id/checkbox_home_sheet_ice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
         android:text="@string/ice"
         app:layout_constraintBottom_toTopOf="@id/textView_home_sheet_fueltype"
         app:layout_constraintEnd_toStartOf="@id/checkbox_home_sheet_bev"
@@ -22,6 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/bev"
+        android:layout_marginHorizontal="20dp"
 
         app:layout_constraintBottom_toTopOf="@id/textView_home_sheet_fueltype"
         app:layout_constraintEnd_toStartOf="@id/checkbox_home_sheet_fcev"
@@ -33,22 +49,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/fcev"
+        android:layout_marginHorizontal="20dp"
+
         app:layout_constraintBottom_toTopOf="@id/textView_home_sheet_fueltype"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/checkbox_home_sheet_bev"
         app:layout_constraintTop_toTopOf="parent" />
+</LinearLayout>
 
     <TextView
         android:id="@+id/textView_home_sheet_fueltype"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/fuel_type"
-        app:layout_constraintTop_toBottomOf="@id/checkbox_home_sheet_bev"
+        android:layout_gravity="center"
         app:layout_constraintBottom_toTopOf="@+id/divider_home_sheet_fueltype"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:textAlignment="center"
- />
+        app:layout_constraintTop_toBottomOf="@id/checkbox_home_sheet_bev" />
 
     <com.google.android.material.divider.MaterialDivider
         android:id="@+id/divider_home_sheet_fueltype"
@@ -63,12 +81,13 @@
     <com.google.android.material.slider.Slider
         android:id="@+id/slider_home_sheet_seats"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:stepSize="1"
         android:value="2"
         android:valueFrom="1"
         android:valueTo="6"
+        app:tickVisible="true"
         app:labelBehavior="visible"
         app:layout_constraintBottom_toTopOf="@id/slider_home_sheet_maxdistance"
         app:layout_constraintEnd_toEndOf="parent"
@@ -83,6 +102,8 @@
         app:layout_constraintBottom_toTopOf="@+id/divider_home_sheet_seats"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:layout_gravity="center"
+
         android:textAlignment="center"
         app:layout_constraintTop_toBottomOf="@+id/slider_home_sheet_seats" />
 
@@ -99,7 +120,7 @@
     <com.google.android.material.slider.Slider
         android:id="@+id/slider_home_sheet_maxdistance"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:value="50"
         android:valueFrom="1"
@@ -120,6 +141,8 @@
         app:layout_constraintBottom_toTopOf="@+id/divider_home_sheet_distance"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:layout_gravity="center"
+
         android:textAlignment="center"
         app:layout_constraintTop_toBottomOf="@+id/slider_home_sheet_maxdistance" />
 
@@ -128,21 +151,45 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@id/button_home_sheet_filter"
+        app:layout_constraintBottom_toTopOf="@id/checkbox_home_sheet_owncar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView_home_sheet_maxdistance" />
 
-    <Button
-        android:id="@+id/button_home_sheet_filter"
-        android:layout_width="@dimen/dimen_0"
-        android:layout_height="@dimen/dimen_60"
-        android:text="@string/filter"
-        android:background="@color/blue_200"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <CheckBox
+        android:id="@+id/checkbox_home_sheet_owncar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
+        android:layout_gravity="center"
+
+        android:textColor="@color/gray"
+        android:text="@string/show_my_own_cars"
+        app:layout_constraintBottom_toTopOf="@id/divider_home_sheet_owncar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/divider_home_sheet_distance" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider_home_sheet_owncar"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@id/button_home_sheet_filter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/checkbox_home_sheet_owncar" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_home_sheet_filter"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_60"
+        android:text="@string/filter"
+        android:background="@color/blue_200"
+        android:layout_gravity="center"
+ />
+
+</LinearLayout>
+
+<!--</androidx.constraintlayout.widget.ConstraintLayout>-->
