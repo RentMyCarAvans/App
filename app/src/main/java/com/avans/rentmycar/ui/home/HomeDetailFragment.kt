@@ -62,9 +62,19 @@ class HomeDetailFragment : Fragment() {
                 binding.textviewHomeDetailOfferPickuplocation.setText(offer.pickupLocation)
                 binding.textviewHomeDetailOfferDates.setText(startDate + " - " + endDate)
 
-                binding.imageviewHomeDetailCarImage.let {
-                    Glide.with(this).load(offer.car.image).into(it)
+
+                val carImageUrl = offer.car.image
+                if(carImageUrl.isNullOrEmpty()) {
+                    binding.imageviewHomeDetailCarImage.let {
+                        Glide.with(this).load("https://www.thecarwiz.com/images/listing_vehicle_placeholder.jpg").into(it)
+                    }
+                } else {
+                    binding.imageviewHomeDetailCarImage.let {
+                        Glide.with(this).load(carImageUrl).into(it)
+                    }
                 }
+
+
 
                 if(offer.car.user.id == SessionManager.getUserId(requireContext())) {
                     binding.buttonHomeDetailBook.isEnabled = false

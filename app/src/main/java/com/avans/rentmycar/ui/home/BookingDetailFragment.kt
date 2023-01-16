@@ -72,9 +72,18 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
                 binding.textviewBookingDetailOfferPickuplocation.text = booking.offer.pickupLocation
                 binding.textviewBookingDetailOfferDates.text = startDate + " - " + endDate
 
-                binding.imageviewBookingDetailCarImage.let {
-                    Glide.with(this).load(booking.offer.car.image).into(it)
+
+                val carImageUrl = booking.offer.car.image
+                if(carImageUrl.isNullOrEmpty()) {
+                    binding.imageviewBookingDetailCarImage.let {
+                        Glide.with(this).load("https://www.thecarwiz.com/images/listing_vehicle_placeholder.jpg").into(it)
+                    }
+                } else {
+                    binding.imageviewBookingDetailCarImage.let {
+                        Glide.with(this).load(carImageUrl).into(it)
+                    }
                 }
+
                 binding.bookingDetailTitle.text = booking.offer.car.model
 
             }

@@ -55,7 +55,7 @@ class HomeBottomSheetDialogFragment : BottomSheetDialogFragment() {
         showOwnCarsCheckbox.isChecked = viewModel.checkboxShowOwnCarsFilter.value ?: false
 
         numberOfSeatsSlider.value = viewModel.numberOfSeatsFilter.value?.toFloat() ?: 4f
-        maxdistanceSlider.value = viewModel.maxDistanceInKmFilter.value?.toFloat() ?: 50f
+        maxdistanceSlider.value = viewModel.maxDistanceInKmFilter.value?.toFloat() ?: 75f
 
 
     maxdistanceSlider.addOnChangeListener { slider, value, fromUser ->
@@ -82,14 +82,10 @@ class HomeBottomSheetDialogFragment : BottomSheetDialogFragment() {
             viewModel.setCheckboxFuelTypeFcevFilter(fvecCheckbox.isChecked)
             viewModel.setCheckboxShowOwnCarsFilter(showOwnCarsCheckbox.isChecked)
 
+            viewModel.setMaxDistanceInKmFilter(maxdistanceSlider.value)
+
             viewModel.setNumberOfSeatsFilter(numberOfSeatsSlider.value.toInt())
 
-
-            if(maxdistanceSlider.value == 100f){
-                viewModel.setMaxDistanceInKmFilter(99999.99f)
-            } else {
-                viewModel.setMaxDistanceInKmFilter(maxdistanceSlider.value)
-            }
 
             viewModel.getOffers()
 
