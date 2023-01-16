@@ -32,8 +32,11 @@ import com.avans.rentmycar.viewmodel.UserViewModel
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.LocalDateTime.now
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 /**
@@ -58,11 +61,20 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
     var hour = 0
     var minute = 0
 
+
     var saveMinute = 0
     var saveDay = 0
     var saveMonth = 0
     var saveYear = 0
     var saveHour = 0
+
+    var setDateTimeForEnd = false
+
+    var saveMinuteEnd = 0
+    var saveDayEnd = 0
+    var saveMonthEnd = 0
+    var saveYearEnd = 0
+    var saveHourEnd = 0
 
     var offerId: Long = 0L
     var carId: Long = 0L
@@ -71,7 +83,6 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG,"onCreate()")
     }
 
     override fun onCreateView(
@@ -80,7 +91,6 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentOfferBinding.inflate(inflater, container, false)
-        Log.d(TAG, "onCreateView()")
         return binding.root
     }
 
@@ -89,14 +99,9 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val args: OfferCarFragmentArgs by navArgs()
-        Log.d(TAG, "onViewCreated() => Checking navArgs Car offer")
-        Log.d(TAG, "onViewCreated() => navArgs: " + args.toString())
 
         // Observe userresult when retrieving userdata
         viewModel.userResult.observe(viewLifecycleOwner) {
-            Log.d(TAG, "onViewCreated() => observer userResult triggerd:" + viewModel.userResult.value.toString())
-            //bindIt(it)
-            Log.d(TAG, "onViewCreated() => it" + it.toString())
             when (it) {
 
                 is BaseResponse.Loading -> {
@@ -117,9 +122,16 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
         setDefaults(args)
 
         val mBtn_dateTimePicker = view.findViewById<Button>(R.id.button_car_offer_start_datetime)
+        val mBtn_dateTimePickerEnd = view.findViewById<Button>(R.id.button_car_offer_end_datetime)
 
         mBtn_dateTimePicker.setOnClickListener {
-            Log.d(TAG, "onViewCreated() => Button STARTDATE clicked")
+            setDateTimeForEnd = false
+            getDateTimeCalender()
+            DatePickerDialog(it.context,this,year, month, day).show()
+        }
+
+        mBtn_dateTimePickerEnd.setOnClickListener {
+            setDateTimeForEnd = true
             getDateTimeCalender()
             DatePickerDialog(it.context,this,year, month, day).show()
         }
@@ -141,11 +153,9 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
                     TAG,
                     "onViewCreated() => Offer made for car " + args.licenseplate + ". Return to home"
                 )
-                findNavController().navigate(R.id.action_offerCarFragment_to_mycars)
             } else {
                 Log.d(TAG, "onViewCreated() => Offer updated for car " + args.licenseplate + ". Return to my offers")
                 updateOffer()
-                findNavController().navigate(R.id.action_offerCarFragment2_to_myOffersFragment)
             }
         }
     }
@@ -201,8 +211,31 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
         Log.d(TAG, "createOffer() => location = " + location)
         Log.d(TAG, "createOffer() => carId = " + carId)
 
-        offerViewModel.createOffer(startDate, endDate, location, carId)
-        Log.d(TAG, "createOffer() => After calling viewModel.createOffer().")
+
+        if (checkIfEndDateIsAfterStartDate(startDate, endDate)) {
+            offerViewModel.createOffer(startDate, endDate, location, carId)
+            findNavController().navigate(R.id.action_offerCarFragment_to_mycars)
+        } else {
+            Snackbar.make(
+                binding.root,
+                "Start date can not be after end date",
+                Snackbar.LENGTH_LONG
+            ).show()
+        }
+
+    }
+
+    private fun checkIfEndDateIsAfterStartDate(startDate: String, endDate: String): Boolean {
+        Log.d(TAG, "checkIfEndDateIsAfterStartDate()")
+        val startDateTime = LocalDateTime.parse(startDate, DateTimeFormatter.ISO_DATE_TIME).toEpochSecond(
+            ZoneOffset.UTC)
+        val endDateTime = LocalDateTime.parse(endDate, DateTimeFormatter.ISO_DATE_TIME).toEpochSecond(ZoneOffset.UTC)
+        Log.d(TAG, "checkIfEndDateIsAfterStartDate() => startDateTime = " + startDateTime)
+        Log.d(TAG, "checkIfEndDateIsAfterStartDate() => endDateTime = " + endDateTime)
+        return endDateTime> startDateTime
+        Log.d(TAG, "checkIfEndDateIsAfterStartDate() => startDateTime = " + startDate)
+        Log.d(TAG, "checkIfEndDateIsAfterStartDate() => endDateTime = " + endDate)
+        return endDateTime>startDateTime
     }
 
     private fun updateOffer(){
@@ -224,31 +257,63 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
         Log.d(TAG, "updateOffer() => location = " + location)
         Log.d(TAG, "updateOffer() => carId = " + carId)
 
-        offerViewModel.updateOffer(offerId, startDate, endDate, location, carId)
-        Log.d(TAG, "createOffer() => After calling viewModel.createOffer().")
+        if (checkIfEndDateIsAfterStartDate(startDate, endDate)) {
+            offerViewModel.updateOffer(offerId, startDate, endDate, location, carId)
+            findNavController().navigate(R.id.action_offerCarFragment2_to_myOffersFragment)
+        } else {
+            Snackbar.make(
+                binding.root,
+                "Start date can not be after end date",
+                Snackbar.LENGTH_LONG
+            ).show()
+        }
+
+
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         Log.d(TAG, "onDateSet()" )
-        saveDay = dayOfMonth
-        saveMonth = month + 1
-        saveYear = year
+        if(!setDateTimeForEnd) {
+            saveDay = dayOfMonth
+            saveMonth = month + 1
+            saveYear = year
+            Log.d(TAG, "onDateSet() : $saveDay-$saveMonth-$saveYear" )
 
-        Log.d(TAG, "onDateSet() before getDateTimeCalender: $saveDay-$saveMonth-$saveYear" )
+        } else {
+            saveDayEnd = dayOfMonth
+            saveMonthEnd = month + 1
+            saveYearEnd = year
+            Log.d(TAG, "onDateSet() : $saveDayEnd-$saveMonthEnd-$saveYearEnd" )
+
+        }
+
         getDateTimeCalender()
-        Log.d(TAG, "onDateSet() after getDateTimeCalender: $saveDay-$saveMonth-$saveYear" )
+//        Log.d(TAG, "onDateSet() after getDateTimeCalender: $saveDay-$saveMonth-$saveYear" )
 
         TimePickerDialog(context, this, hour, minute, true).show()
     }
 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
         Log.d(TAG, "onTimeSet()" )
-        saveHour = hourOfDay
-        saveMinute = minute
-        Log.d(TAG, "onTimeSet() : $saveHour:$saveMinute" )
+        if(!setDateTimeForEnd) {
+            saveHour = hourOfDay
+            saveMinute = minute
+            Log.d(TAG, "onTimeSet() !setDateTimeForEnd: $saveHour:$saveMinute")
 
-        var date = "$saveYear-$saveMonth-$saveDay $saveHour:$saveMinute"
-        binding.textviewOfferCarStartDatetime.text =date
+            var date = "$saveYear-${saveMonth.toString().padStart(2, '0')}-${
+                saveDay.toString().padStart(2, '0')
+            }T${saveHour.toString().padStart(2, '0')}:${saveMinute.toString().padStart(2, '0')}:00"
+            binding.textviewOfferCarStartDatetime.text = date
+        } else {
+            saveHourEnd = hourOfDay
+            saveMinuteEnd = minute
+            Log.d(TAG, "onTimeSet() YES END setDateTimeForEnd: $saveHourEnd:$saveMinuteEnd")
+
+            var dateEnd = "$saveYearEnd-${saveMonthEnd.toString().padStart(2, '0')}-${
+                saveDayEnd.toString().padStart(2, '0')
+            }T${saveHourEnd.toString().padStart(2, '0')}:${saveMinuteEnd.toString().padStart(2, '0')}:00"
+            binding.textviewOfferCarEndDatetime.text = dateEnd
+        }
     }
 
     private fun getDateTimeCalender(){
