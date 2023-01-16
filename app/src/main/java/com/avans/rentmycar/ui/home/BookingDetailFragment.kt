@@ -163,12 +163,15 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
     }
 
     fun doStartRiding() {
+        saveRideToDB()
+
         // build action
+
         val action = BookingDetailFragmentDirections.actionBookingDetailFragmentToRideFragment(bookingId)
 
         findNavController().navigate(action)
 
-        saveRideToDB()
+
     }
 
 
