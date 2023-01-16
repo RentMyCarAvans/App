@@ -77,4 +77,5 @@
     <string name="booking_cancel_dialog_button_positive">Ja, verwijderen</string>
 
     <string name="_1s_kilometer_driven">%1$s gereden kilometers</string>
+    <string name="cannot_book_own_car">Je kunt je eigen auto niet boeken</string>
 </resources>
