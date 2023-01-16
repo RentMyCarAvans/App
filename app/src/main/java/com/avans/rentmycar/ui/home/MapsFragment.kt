@@ -131,8 +131,7 @@ class MapsFragment : Fragment() {
                             val deviceLocation = LatLng(currentLatLng.latitude, currentLatLng.longitude)
                             Log.d("[MAPS] getMapsAc devloc", "Location: $deviceLocation")
 
-                            googleMap.addMarker(MarkerOptions().position(deviceLocation).title("TEST").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)))
-                            // Change the marker icon
+                            googleMap.addMarker(MarkerOptions().position(deviceLocation))
 
                             addDeviceMarker(deviceLocation)
                             mapBoundsBuilder.include(deviceLocation)
