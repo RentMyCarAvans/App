@@ -63,7 +63,6 @@ class OfferListFragment : Fragment() {
                     Snackbar.make(it1, "No offers found", Snackbar.LENGTH_LONG).show()
                 }
             }
-            binding.progressIndicatorHomeFragment.visibility = View.INVISIBLE
         }
 
 
@@ -91,6 +90,14 @@ class OfferListFragment : Fragment() {
         // Filter options
         binding.btnBottomSheetModal.setOnClickListener {
             HomeBottomSheetDialogFragment().show(childFragmentManager, "HomeBottomSheetDialogFragment")
+        }
+
+        offerViewModel.isLoading.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.progressIndicatorHomeFragment.visibility = View.VISIBLE
+            } else {
+                binding.progressIndicatorHomeFragment.visibility = View.GONE
+            }
         }
 
     } // end of onStart()

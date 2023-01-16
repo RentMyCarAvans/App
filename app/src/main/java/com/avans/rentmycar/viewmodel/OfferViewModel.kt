@@ -20,6 +20,7 @@ class OfferViewModel : ViewModel() {
     private val offerRepository = OfferRepository()
 
     var currentUserId: Long? = null
+    val isLoading:MutableLiveData<Boolean> = MutableLiveData(true)
 
     // ===== Results of the API calls =====
     val createOfferResult: MutableLiveData<CreateOfferResponse?> = MutableLiveData()
@@ -117,9 +118,11 @@ class OfferViewModel : ViewModel() {
 //        Log.d("[OVM] setOffColl", "setOfferCollection: filteredOffers: $filteredOffers")
 
         offerCollection.value = filteredOffers
+        isLoading.value = false
     }
 
     fun getOfferById(id: Long) {
+        isLoading.value = true
 //        Log.d("[OVM] getOfferById", "getOfferById called for id: $id")
 
         if (offerCollection.value?.find { it.id == id } != null) {
