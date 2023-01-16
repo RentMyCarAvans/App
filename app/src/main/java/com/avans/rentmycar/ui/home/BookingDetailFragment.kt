@@ -17,6 +17,7 @@ import com.avans.rentmycar.BaseApplication
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentBookingDetailBinding
 import com.avans.rentmycar.utils.BiometricAuthListener
+import com.avans.rentmycar.utils.DateTimeConverter
 import com.avans.rentmycar.utils.SessionManager
 import com.avans.rentmycar.utils.showBiometricPrompt
 import com.avans.rentmycar.viewmodel.BookingViewModel
@@ -63,9 +64,13 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
 
         bookingViewModel.bookingSingle.observe(viewLifecycleOwner) { booking ->
             if (booking != null) {
+
+                val startDate = DateTimeConverter.convertDatabaseDateTimeToReadableDateTime(booking.offer.startDateTime)
+                val endDate = DateTimeConverter.convertDatabaseDateTimeToReadableDateTime(booking.offer.endDateTime)
+
                 binding.textviewBookingDetailCarName.text = booking.offer.car.model
                 binding.textviewBookingDetailOfferPickuplocation.text = booking.offer.pickupLocation
-                binding.textviewBookingDetailOfferDates.text = booking.offer.startDateTime + " - " + booking.offer.endDateTime
+                binding.textviewBookingDetailOfferDates.text = startDate + " - " + endDate
 
                 binding.imageviewBookingDetailCarImage.let {
                     Glide.with(this).load(booking.offer.car.image).into(it)

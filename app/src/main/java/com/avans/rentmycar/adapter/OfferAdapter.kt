@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.ItemOfferBinding
 import com.avans.rentmycar.model.response.OfferData
+import com.avans.rentmycar.utils.DateTimeConverter
 import com.avans.rentmycar.utils.ImageLoader
 import com.avans.rentmycar.utils.SessionManager
 import java.text.SimpleDateFormat
@@ -39,13 +40,8 @@ class OfferAdapter(
         @RequiresApi(Build.VERSION_CODES.O)
         fun bindData(offerData: OfferData) {
 
-            // Convert the datetime strings to a more readable format
-            val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
-            val formatter = SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault())
-
-            val startDate: String? = parser.parse(offerData.startDateTime)
-                ?.let { formatter.format(it) }
-            val endDate: String? = parser.parse(offerData.endDateTime)?.let { formatter.format(it) }
+            val startDate = DateTimeConverter.convertDatabaseDateTimeToReadableDateTime(offerData.startDateTime)
+            val endDate = DateTimeConverter.convertDatabaseDateTimeToReadableDateTime(offerData.endDateTime)
 
             var carImage = ""
                 // TODO: Find a royalty free image to use as a placeholder and add it to the drawable folder
