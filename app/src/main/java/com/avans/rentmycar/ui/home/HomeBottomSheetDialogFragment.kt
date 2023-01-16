@@ -85,12 +85,6 @@ class HomeBottomSheetDialogFragment : BottomSheetDialogFragment() {
             viewModel.setNumberOfSeatsFilter(numberOfSeatsSlider.value.toInt())
 
 
-            if(maxdistanceSlider.value == 100f){
-                viewModel.setMaxDistanceInKmFilter(99999.99f)
-            } else {
-                viewModel.setMaxDistanceInKmFilter(maxdistanceSlider.value)
-            }
-
             viewModel.getOffers()
 
         }
