@@ -52,15 +52,6 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/test"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:hint="TEST"
-
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/img_profile_picture"
-        android:autofillHints="test" />
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/lastname_label"
         android:layout_width="match_parent"
