@@ -47,7 +47,7 @@
     <fragment
         android:id="@+id/homeFragment2"
         android:name="com.avans.rentmycar.ui.home.HomeFragment"
-        android:label="fragment_home"
+        android:label="@string/offers_title"
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment2_to_homeDetailFragment2"
@@ -59,7 +59,7 @@
     <fragment
         android:id="@+id/homeDetailFragment2"
         android:name="com.avans.rentmycar.ui.home.HomeDetailFragment"
-        android:label="fragment_home_detail"
+        android:label="@string/offers_title"
         tools:layout="@layout/fragment_home_detail">
         <argument
             android:name="id"
