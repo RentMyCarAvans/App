@@ -32,8 +32,11 @@ import com.avans.rentmycar.viewmodel.UserViewModel
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.LocalDateTime.now
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 /**
@@ -71,7 +74,6 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG,"onCreate()")
     }
 
     override fun onCreateView(
@@ -80,7 +82,6 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentOfferBinding.inflate(inflater, container, false)
-        Log.d(TAG, "onCreateView()")
         return binding.root
     }
 
@@ -89,14 +90,9 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val args: OfferCarFragmentArgs by navArgs()
-        Log.d(TAG, "onViewCreated() => Checking navArgs Car offer")
-        Log.d(TAG, "onViewCreated() => navArgs: " + args.toString())
 
         // Observe userresult when retrieving userdata
         viewModel.userResult.observe(viewLifecycleOwner) {
-            Log.d(TAG, "onViewCreated() => observer userResult triggerd:" + viewModel.userResult.value.toString())
-            //bindIt(it)
-            Log.d(TAG, "onViewCreated() => it" + it.toString())
             when (it) {
 
                 is BaseResponse.Loading -> {
@@ -119,7 +115,6 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
         val mBtn_dateTimePicker = view.findViewById<Button>(R.id.button_car_offer_start_datetime)
 
         mBtn_dateTimePicker.setOnClickListener {
-            Log.d(TAG, "onViewCreated() => Button STARTDATE clicked")
             getDateTimeCalender()
             DatePickerDialog(it.context,this,year, month, day).show()
         }
@@ -141,11 +136,9 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
                     TAG,
                     "onViewCreated() => Offer made for car " + args.licenseplate + ". Return to home"
                 )
-                findNavController().navigate(R.id.action_offerCarFragment_to_mycars)
             } else {
                 Log.d(TAG, "onViewCreated() => Offer updated for car " + args.licenseplate + ". Return to my offers")
                 updateOffer()
-                findNavController().navigate(R.id.action_offerCarFragment2_to_myOffersFragment)
             }
         }
     }
@@ -201,8 +194,31 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
         Log.d(TAG, "createOffer() => location = " + location)
         Log.d(TAG, "createOffer() => carId = " + carId)
 
-        offerViewModel.createOffer(startDate, endDate, location, carId)
-        Log.d(TAG, "createOffer() => After calling viewModel.createOffer().")
+
+        if (checkIfEndDateIsAfterStartDate(startDate, endDate)) {
+            offerViewModel.createOffer(startDate, endDate, location, carId)
+            findNavController().navigate(R.id.action_offerCarFragment_to_mycars)
+        } else {
+            Snackbar.make(
+                binding.root,
+                "Start date can not be after end date",
+                Snackbar.LENGTH_LONG
+            ).show()
+        }
+
+    }
+
+    private fun checkIfEndDateIsAfterStartDate(startDate: String, endDate: String): Boolean {
+        Log.d(TAG, "checkIfEndDateIsAfterStartDate()")
+        val startDateTime = LocalDateTime.parse(startDate, DateTimeFormatter.ISO_DATE_TIME).toEpochSecond(
+            ZoneOffset.UTC)
+        val endDateTime = LocalDateTime.parse(endDate, DateTimeFormatter.ISO_DATE_TIME).toEpochSecond(ZoneOffset.UTC)
+        Log.d(TAG, "checkIfEndDateIsAfterStartDate() => startDateTime = " + startDateTime)
+        Log.d(TAG, "checkIfEndDateIsAfterStartDate() => endDateTime = " + endDateTime)
+        return endDateTime> startDateTime
+        Log.d(TAG, "checkIfEndDateIsAfterStartDate() => startDateTime = " + startDate)
+        Log.d(TAG, "checkIfEndDateIsAfterStartDate() => endDateTime = " + endDate)
+        return endDateTime>startDateTime
     }
 
     private fun updateOffer(){
@@ -224,8 +240,18 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
         Log.d(TAG, "updateOffer() => location = " + location)
         Log.d(TAG, "updateOffer() => carId = " + carId)
 
-        offerViewModel.updateOffer(offerId, startDate, endDate, location, carId)
-        Log.d(TAG, "createOffer() => After calling viewModel.createOffer().")
+        if (checkIfEndDateIsAfterStartDate(startDate, endDate)) {
+            offerViewModel.updateOffer(offerId, startDate, endDate, location, carId)
+            findNavController().navigate(R.id.action_offerCarFragment2_to_myOffersFragment)
+        } else {
+            Snackbar.make(
+                binding.root,
+                "Start date can not be after end date",
+                Snackbar.LENGTH_LONG
+            ).show()
+        }
+
+
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
@@ -247,7 +273,7 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
         saveMinute = minute
         Log.d(TAG, "onTimeSet() : $saveHour:$saveMinute" )
 
-        var date = "$saveYear-$saveMonth-$saveDay $saveHour:$saveMinute"
+        var date = "$saveYear-${saveMonth.toString().padStart(2,'0')}-${saveDay.toString().padStart(2,'0')}T${saveHour.toString().padStart(2,'0')}:${saveMinute.toString().padStart(2,'0')}:00"
         binding.textviewOfferCarStartDatetime.text =date
     }
 
