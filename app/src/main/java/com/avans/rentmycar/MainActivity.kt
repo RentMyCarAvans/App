@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -22,11 +21,7 @@ import com.avans.rentmycar.utils.SessionManager
 import com.bumptech.glide.annotation.GlideModule
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 
@@ -34,13 +29,11 @@ import com.google.android.material.snackbar.Snackbar
 @GlideModule
 class MainActivity : AppCompatActivity() {
     private val TAG = "[RMC][MainActivity]"
-    private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
 
 
     @SuppressLint("MissingPermission")
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -106,28 +99,23 @@ class MainActivity : AppCompatActivity() {
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         // ===== Get the device location =====
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Log.d(TAG, "Checking if location permission is granted")
-            if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                Log.d(TAG, "Location permission is granted")
-                SessionManager.setLocationPermissionGranted(true)
+        Log.d(TAG, "Checking if location permission is granted")
+        if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            Log.d(TAG, "Location permission is granted")
+            SessionManager.setLocationPermissionGranted(true)
 
-                fusedLocationClient.getCurrentLocation(PRIORITY_HIGH_ACCURACY, null
+            fusedLocationClient.getCurrentLocation(PRIORITY_HIGH_ACCURACY, null
 
-                ).addOnSuccessListener { location: Location? ->
-                    if (location != null) {
-                        Log.d("[Main] getCurLoc", "Location: ${location.latitude}, ${location.longitude}")
-                        SessionManager.setDeviceLocation(LatLng(location.latitude, location.longitude))
+            ).addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    Log.d("[Main] getCurLoc", "Location: ${location.latitude}, ${location.longitude}")
+                    SessionManager.setDeviceLocation(LatLng(location.latitude, location.longitude))
 
-                    } else {
-                        Log.e("[Main] getCurLoc", "Location is null")
-                    }
+                } else {
+                    Log.e("[Main] getCurLoc", "Location is null")
                 }
-
             }
-        } else {
-            Log.w("[Main] Location", "Location permission not granted")
-            SessionManager.setLocationPermissionGranted(false)
+
         }
 
     }

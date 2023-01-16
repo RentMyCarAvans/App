@@ -15,9 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.avans.rentmycar.BaseApplication
 import com.avans.rentmycar.R
-import com.avans.rentmycar.databinding.AddCarItemBinding
 import com.avans.rentmycar.databinding.FragmentBookingDetailBinding
-import com.avans.rentmycar.ui.mycars.MyCarsFragmentDirections
 import com.avans.rentmycar.utils.BiometricAuthListener
 import com.avans.rentmycar.utils.SessionManager
 import com.avans.rentmycar.utils.showBiometricPrompt
@@ -25,7 +23,6 @@ import com.avans.rentmycar.viewmodel.BookingViewModel
 import com.avans.rentmycar.viewmodel.RideViewModel
 import com.avans.rentmycar.viewmodel.RideViewModelFactory
 import com.bumptech.glide.Glide
-import com.google.android.material.snackbar.Snackbar
 import java.time.Instant
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -138,9 +135,9 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
                     .show()
             }
             else ->       {
-                Toast.makeText(requireContext(), "No Biometric Authentication installed. Please add PIN to use this app.", Toast.LENGTH_SHORT)
+                Toast.makeText(requireContext(), "No Biometric Authentication installed. Please add PIN to start the ride.", Toast.LENGTH_LONG)
                     .show()
-                doStartRiding()
+//                doStartRiding()
 
             }
 
@@ -151,7 +148,7 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
     override fun onBiometricAuthenticateSuccess(result: androidx.biometric.BiometricPrompt.AuthenticationResult) {
         Toast.makeText(requireContext(), "Starting the ride..", Toast.LENGTH_SHORT)
             .show()
-        findNavController().navigate(R.id.action_bookingDetailFragment_to_rideFragment)
+//        findNavController().navigate(R.id.action_bookingDetailFragment_to_rideFragment)
 
         doStartRiding()
     }
@@ -166,12 +163,15 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
     }
 
     fun doStartRiding() {
+        saveRideToDB()
+
         // build action
+
         val action = BookingDetailFragmentDirections.actionBookingDetailFragmentToRideFragment(bookingId)
 
         findNavController().navigate(action)
 
-        saveRideToDB()
+
     }
 
 

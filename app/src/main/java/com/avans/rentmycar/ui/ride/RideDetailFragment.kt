@@ -1,13 +1,11 @@
 package com.avans.rentmycar.ui.ride
 
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
+
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -16,17 +14,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.avans.rentmycar.BaseApplication
 import com.avans.rentmycar.R
-import com.avans.rentmycar.databinding.FragmentRideBinding
 import com.avans.rentmycar.databinding.FragmentRideDetailBinding
 import com.avans.rentmycar.room.Ride
 import com.avans.rentmycar.ui.home.HomeDetailFragmentArgs
-import com.avans.rentmycar.utils.*
 import com.avans.rentmycar.utils.LocationUtils.calculateDistance
 import com.avans.rentmycar.viewmodel.RideViewModel
 import com.avans.rentmycar.viewmodel.RideViewModelFactory
 
-import java.util.*
-import kotlin.random.Random.Default.nextInt
+import kotlin.math.roundToInt
 
 
 // viewbinding in fragment : https://stackoverflow.com/questions/62952957/viewbinding-in-fragment
@@ -99,9 +94,9 @@ class RideDetailFragment : Fragment(R.layout.fragment_ride_detail)  {
 
     private fun bindRide(ride: Ride) {
         binding.apply{
-            binding.textviewBonuspointsValue.text = "Earned bonuspoints " + (100..1337).random().toString() + "km" // mock bonuspoints for now
-            binding.textviewKmdrivenValue.text = "Kilometer driven " + calculateDistance(ride.startLatitude!!, ride.startLongitude!!, ride.endLatitude!!+0.2, ride.endLongitude!! + 0.1).toString()
-            binding.textviewMaxspeedValue.text = "Max speed " + (50..130).random().toString() // mock max speed for now
+            binding.textviewBonuspointsValue.text = "Earned bonuspoints " + (100..1337).random().toString()  // mock bonuspoints for now
+            binding.textviewKmdrivenValue.text = "Kilometer driven " + calculateDistance(ride.startLatitude!!, ride.startLongitude!!, ride.endLatitude!!+0.2, ride.endLongitude!! + 0.1).roundToInt().toString() + "km"
+            binding.textviewMaxspeedValue.text = "Max speed " + (50..130).random().toString()  + " km/h"// mock max speed for now
             binding.textviewStartRideDate.text = "Ride started " +  ride.startTimeStamp
             binding.textviewEndRideDate.text = "Ride Ended " + ride.endTimeStamp
         }

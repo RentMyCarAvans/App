@@ -2,6 +2,7 @@ package com.avans.rentmycar.ui.profile
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -60,14 +61,14 @@ class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail) {
 
                 }
                 is BaseResponse.Error -> {
-                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT)
+                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
                     Log.d("APP", "was error!!")
 
                 }
                 is BaseResponse.Success -> {
                     stopLoading()
                     Log.d("APP", "was success!!")
-                    Glide.with(this).load("${Constant.BASE_URL}/api/v1/users/profilephoto/${it.data?.data?.id}").centerCrop().placeholder(R.drawable.noprofilepic).into(binding!!.imgProfilePicture);
+                    Glide.with(this).load("${Constant.BASE_URL}/api/v1/users/profilephoto/${it.data?.data?.id}").centerCrop().placeholder(R.drawable.noprofilepic).into(binding!!.imgProfilePicture)
                     view.findViewById<TextInputEditText>(R.id.firstname_input).setText(it.data?.data?.firstName)
                     view.findViewById<TextInputEditText>(R.id.lastname_input).setText(it.data?.data?.lastName)
                     view.findViewById<TextInputEditText>(R.id.address_input).setText(it.data?.data?.address)
@@ -89,6 +90,10 @@ class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail) {
         val userId = getUserId(requireContext())
         val updatedUser = CreateUpdateUserRequest(userId!!, firstName, lastName, null, null, null, null,address, city, telephone)
         viewModel.setUser(updatedUser, userId)
+        val snack = Snackbar.make(requireView(), getString(R.string.success_update_profile), Snackbar.LENGTH_LONG)
+        snack.view.setBackgroundColor(Color.parseColor("#3CB043"))
+        snack.show()
+
     }
 
 
@@ -152,17 +157,6 @@ class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail) {
                     binding!!.imgProfilePicture.setImageURI(selectedImageUri)
                 }
             }
-
-
-//        if (requestCode == Activity.RESULT_OK) {
-//            data?.data?.let { uri ->
-//                binding!!.profileImage.setImageURI(uri)
-//
-//                uploadImage(uri.toString())
-//
-//            }
-//        } else super.onActivityResult(requestCode, resultCode, data)
-//        }
 
         }
     }
