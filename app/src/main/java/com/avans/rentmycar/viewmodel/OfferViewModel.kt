@@ -14,6 +14,9 @@ import com.avans.rentmycar.repository.OfferRepository
 import com.avans.rentmycar.utils.SessionManager
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 
 class OfferViewModel : ViewModel() {
 
@@ -90,6 +93,8 @@ class OfferViewModel : ViewModel() {
                 filteredOffers = filteredOffers.filter { it.car.user.id != currentUserId }
             }
         }
+
+        filteredOffers = filteredOffers.filter { LocalDateTime.parse(it.endDateTime, DateTimeFormatter.ISO_DATE_TIME).toEpochSecond(ZoneOffset.UTC) * 1000 > System.currentTimeMillis() }
 
         offerCollection.value = filteredOffers
         isLoading.value = false
