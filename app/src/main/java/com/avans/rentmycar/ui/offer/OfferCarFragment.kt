@@ -61,11 +61,20 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
     var hour = 0
     var minute = 0
 
+
     var saveMinute = 0
     var saveDay = 0
     var saveMonth = 0
     var saveYear = 0
     var saveHour = 0
+
+    var setDateTimeForEnd = false
+
+    var saveMinuteEnd = 0
+    var saveDayEnd = 0
+    var saveMonthEnd = 0
+    var saveYearEnd = 0
+    var saveHourEnd = 0
 
     var offerId: Long = 0L
     var carId: Long = 0L
@@ -113,8 +122,16 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
         setDefaults(args)
 
         val mBtn_dateTimePicker = view.findViewById<Button>(R.id.button_car_offer_start_datetime)
+        val mBtn_dateTimePickerEnd = view.findViewById<Button>(R.id.button_car_offer_end_datetime)
 
         mBtn_dateTimePicker.setOnClickListener {
+            setDateTimeForEnd = false
+            getDateTimeCalender()
+            DatePickerDialog(it.context,this,year, month, day).show()
+        }
+
+        mBtn_dateTimePickerEnd.setOnClickListener {
+            setDateTimeForEnd = true
             getDateTimeCalender()
             DatePickerDialog(it.context,this,year, month, day).show()
         }
@@ -256,25 +273,47 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         Log.d(TAG, "onDateSet()" )
-        saveDay = dayOfMonth
-        saveMonth = month + 1
-        saveYear = year
+        if(!setDateTimeForEnd) {
+            saveDay = dayOfMonth
+            saveMonth = month + 1
+            saveYear = year
+            Log.d(TAG, "onDateSet() : $saveDay-$saveMonth-$saveYear" )
 
-        Log.d(TAG, "onDateSet() before getDateTimeCalender: $saveDay-$saveMonth-$saveYear" )
+        } else {
+            saveDayEnd = dayOfMonth
+            saveMonthEnd = month + 1
+            saveYearEnd = year
+            Log.d(TAG, "onDateSet() : $saveDayEnd-$saveMonthEnd-$saveYearEnd" )
+
+        }
+
         getDateTimeCalender()
-        Log.d(TAG, "onDateSet() after getDateTimeCalender: $saveDay-$saveMonth-$saveYear" )
+//        Log.d(TAG, "onDateSet() after getDateTimeCalender: $saveDay-$saveMonth-$saveYear" )
 
         TimePickerDialog(context, this, hour, minute, true).show()
     }
 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
         Log.d(TAG, "onTimeSet()" )
-        saveHour = hourOfDay
-        saveMinute = minute
-        Log.d(TAG, "onTimeSet() : $saveHour:$saveMinute" )
+        if(!setDateTimeForEnd) {
+            saveHour = hourOfDay
+            saveMinute = minute
+            Log.d(TAG, "onTimeSet() !setDateTimeForEnd: $saveHour:$saveMinute")
 
-        var date = "$saveYear-${saveMonth.toString().padStart(2,'0')}-${saveDay.toString().padStart(2,'0')}T${saveHour.toString().padStart(2,'0')}:${saveMinute.toString().padStart(2,'0')}:00"
-        binding.textviewOfferCarStartDatetime.text =date
+            var date = "$saveYear-${saveMonth.toString().padStart(2, '0')}-${
+                saveDay.toString().padStart(2, '0')
+            }T${saveHour.toString().padStart(2, '0')}:${saveMinute.toString().padStart(2, '0')}:00"
+            binding.textviewOfferCarStartDatetime.text = date
+        } else {
+            saveHourEnd = hourOfDay
+            saveMinuteEnd = minute
+            Log.d(TAG, "onTimeSet() YES END setDateTimeForEnd: $saveHourEnd:$saveMinuteEnd")
+
+            var dateEnd = "$saveYearEnd-${saveMonthEnd.toString().padStart(2, '0')}-${
+                saveDayEnd.toString().padStart(2, '0')
+            }T${saveHourEnd.toString().padStart(2, '0')}:${saveMinuteEnd.toString().padStart(2, '0')}:00"
+            binding.textviewOfferCarEndDatetime.text = dateEnd
+        }
     }
 
     private fun getDateTimeCalender(){
