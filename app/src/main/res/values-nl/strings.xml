@@ -42,7 +42,7 @@
     <string name="licenseplate">kenteken</string>
     <string name="offers_title">Aanbiedingen</string>
     <string name="home_availablecars">Beschikbare Auto\'s</string>
-    <string name="home_mybookings">Mijn Reserveringen</string>
+    <string name="home_mybookings">Mijn Boekingen</string>
     <string name="home_myoffers">My Offers (werkt nog niet)</string>
     <string name="offer_pickupAfter">Ophalen na: %1$s</string>
     <string name="offer_returnBefore">Terugbrengen voor: %1$s</string>
@@ -75,6 +75,6 @@
     <string name="booking_cancel_dialog_message">Weet je zeker dat je deze reservering wilt verwijderen?</string>
     <string name="booking_cancel_dialog_button_negative">Nee, behouden</string>
     <string name="booking_cancel_dialog_button_positive">Ja, verwijderen</string>
-
+    <string name="item_offer_my_car">Mijn Auto</string>
     <string name="_1s_kilometer_driven">%1$s gereden kilometers</string>
 </resources>

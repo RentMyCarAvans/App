@@ -24,6 +24,7 @@ class OfferAdapter(
     lateinit var itemOfferBinding: ItemOfferBinding
 
 
+
     inner class OfferViewHolder(container: View) : RecyclerView.ViewHolder(container) {
         private val offerCarImage = itemOfferBinding.imageviewItemOfferCarImage
         private val offerCarName = itemOfferBinding.textviewItemOfferCarName
@@ -31,6 +32,8 @@ class OfferAdapter(
         private val offerEndDate = itemOfferBinding.textviewItemOfferEnddate
         private val offerLocation = itemOfferBinding.textviewItemOfferLocation
         private val offerDistance = itemOfferBinding.textviewItemOfferDistance
+
+        private val offerOwnerBanner = itemOfferBinding.textviewItemOfferOwnerBanner
 
         @SuppressLint("SetTextI18n")
         @RequiresApi(Build.VERSION_CODES.O)
@@ -57,6 +60,14 @@ class OfferAdapter(
             offerStartDate.text = itemView.context.getString(R.string.offer_pickupAfter, startDate)
             offerEndDate.text = itemView.context.getString(R.string.offer_returnBefore, endDate)
             offerLocation.text = offerData.pickupLocation
+
+            val currentUserId = SessionManager.getUserId(context = itemOfferBinding.root.context)
+
+            if(offerData.car.user.id == currentUserId) {
+                offerOwnerBanner.visibility = View.VISIBLE
+            } else {
+                offerOwnerBanner.visibility = View.GONE
+            }
 
 
             if (offerData.distance < 1000) { // If the distance < 1000, show the distance in meters
