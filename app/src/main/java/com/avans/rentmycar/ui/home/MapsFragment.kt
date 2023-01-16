@@ -31,7 +31,7 @@ class MapsFragment : Fragment() {
     private lateinit var lastLocation: Location
     private val mapBoundsBuilder = LatLngBounds.Builder()
 
-    private val boundsPadding = 100
+    private val boundsPadding = 150
 
     var rmcChildFragmentManager: FragmentManager? = null
 
@@ -131,8 +131,7 @@ class MapsFragment : Fragment() {
                             val deviceLocation = LatLng(currentLatLng.latitude, currentLatLng.longitude)
                             Log.d("[MAPS] getMapsAc devloc", "Location: $deviceLocation")
 
-                            googleMap.addMarker(MarkerOptions().position(deviceLocation).title("TEST").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)))
-                            // Change the marker icon
+                            googleMap.addMarker(MarkerOptions().position(deviceLocation))
 
                             addDeviceMarker(deviceLocation)
                             mapBoundsBuilder.include(deviceLocation)
@@ -184,7 +183,7 @@ class MapsFragment : Fragment() {
 
 
 
-    fun setMapLocation(latToSet: Double, lngToSet: Double) {
+    fun setMapLocation(latToSet: Double, lngToSet: Double, markerTitle: String, pickupLocation: String) {
         Log.d("[MAPS]", "setMapLoc called")
         if (!isAdded) return
         Log.d("[MAPS]", "setMapLoc called 2")
@@ -204,8 +203,8 @@ class MapsFragment : Fragment() {
 
             val myMarkerOptions = MarkerOptions()
                 .position(location)
-                .title("Offer.car.model")
-                .snippet("More information or not?")
+                .title(markerTitle)
+                .snippet(pickupLocation)
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
             val carMarker = googleMap.addMarker(myMarkerOptions)
 
