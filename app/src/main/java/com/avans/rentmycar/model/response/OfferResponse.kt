@@ -42,7 +42,7 @@ data class OfferCarData(
 	val vehicleType: String,
 	val createdAt: String,
 	val updatedAt: String,
-	val owner: OfferUserData
+	val user: OfferUserData
 )
 
 data class OfferUserData(

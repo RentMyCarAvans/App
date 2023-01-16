@@ -1,5 +1,6 @@
 package com.avans.rentmycar.viewmodel
 
+import android.app.Activity
 import android.location.Location
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -18,27 +19,23 @@ class OfferViewModel : ViewModel() {
 
     private val offerRepository = OfferRepository()
 
+    var currentUserId: Long? = null
+
     // ===== Results of the API calls =====
-    // TODO: Refactor this
-//    val bookingsResult: MutableLiveData<Collection<BookingData>> = MutableLiveData()
-//    val createBookingResult: MutableLiveData<CreateBookingResponse?> = MutableLiveData()
-//    var geocodeResult: MutableLiveData<GeocodeResponsePositionstack?>? = MutableLiveData()
     val createOfferResult: MutableLiveData<CreateOfferResponse?> = MutableLiveData()
     val updateOfferResult: MutableLiveData<CreateOfferResponse?> = MutableLiveData()
-//    var geocodeResult: MutableLiveData<GeocodeResponse?>? = MutableLiveData()
-
 
     // ===== Variables for the API calls =====
     val offerCollection = MutableLiveData<Collection<OfferData>>()
     val myOfferCollection = MutableLiveData<Collection<OfferData>>()
     val singleOffer = MutableLiveData<OfferData?>()
 
-
     // ===== Filter options =====
     // Checkbox Filters
     val checkboxFuelTypeIceFilter: MutableLiveData<Boolean> = MutableLiveData(true)
     val checkboxFuelTypeBevFilter: MutableLiveData<Boolean> = MutableLiveData(true)
     val checkboxFuelTypeFcevFilter: MutableLiveData<Boolean> = MutableLiveData(true)
+    val checkboxShowOwnCarsFilter: MutableLiveData<Boolean> = MutableLiveData(true)
 
     // Slider Filters
     val numberOfSeatsFilter: MutableLiveData<Int> = MutableLiveData(2)
@@ -57,6 +54,10 @@ class OfferViewModel : ViewModel() {
 
     fun setCheckboxFuelTypeFcevFilter(boolean: Boolean) {
         checkboxFuelTypeFcevFilter.value = boolean
+    }
+
+    fun setCheckboxShowOwnCarsFilter(boolean: Boolean) {
+        checkboxShowOwnCarsFilter.value = boolean
     }
 
     fun setNumberOfSeatsFilter(number: Int) {
@@ -103,6 +104,14 @@ class OfferViewModel : ViewModel() {
         }
 
 //        Log.d("[OVM] setOffColl", "setOfferCollection filteredOffers na FCEV check: $filteredOffers")
+
+        if(currentUserId != null) {
+            if (!checkboxShowOwnCarsFilter.value!!) {
+                filteredOffers = filteredOffers.filter { it.car.user.id != currentUserId }
+            }
+            Log.d("[OVM] setOffColl", "setOfferCollection filteredOffers na showOwnCars check: $filteredOffers")
+        }
+
 
 
 //        Log.d("[OVM] setOffColl", "setOfferCollection: filteredOffers: $filteredOffers")

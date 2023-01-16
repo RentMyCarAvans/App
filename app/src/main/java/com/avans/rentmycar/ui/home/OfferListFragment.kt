@@ -39,6 +39,7 @@ class OfferListFragment : Fragment() {
         super.onStart()
 
         val offerViewModel = ViewModelProvider(requireActivity())[OfferViewModel::class.java]
+        offerViewModel.currentUserId = SessionManager.getUserId(context = requireContext())
 
         val offerAdapter = OfferAdapter(GlideImageLoader(view?.context as AppCompatActivity)) { offer ->
             val action = HomeFragmentDirections.actionHomeFragment2ToHomeDetailFragment2(
