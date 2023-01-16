@@ -158,7 +158,9 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
         binding.textviewOfferCarStartDatetime.text = args.startdate
         binding.textviewOfferCarEndDatetime.text = args.enddate
         binding.txtInputOfferCarLocation.setText(args.location)
-        // binding.txtInputOfferCarLocation.setText(SessionManager.getDeviceLocationReadable())
+        if(args.location.isNullOrEmpty()) {
+            binding.txtInputOfferCarLocation.setText(SessionManager.getDeviceLocationReadable())
+        }
         binding.textviewOfferCarLicensePlate.text = (args.licenseplate)
         offerId = args.id.toLong()
         carId = args.carid
@@ -176,12 +178,6 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
             binding.textviewOfferCarEndDatetime.text = getCurrentDateTime(defaultHoursToAddForEndDateTime)
         }
 
-        // If no location is provided, then use the address of the current user as a default location
-        if (args.location.isNullOrEmpty()){
-            val userViewModel: UserViewModel by viewModels()
-            val userId = SessionManager.getUserId(requireContext())
-            userViewModel.getUser(userId!!)
-        }
     }
 
     private fun createOffer(id: Int) {
@@ -235,7 +231,7 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         Log.d(TAG, "onDateSet()" )
         saveDay = dayOfMonth
-        saveMonth = month
+        saveMonth = month + 1
         saveYear = year
 
         Log.d(TAG, "onDateSet() before getDateTimeCalender: $saveDay-$saveMonth-$saveYear" )
