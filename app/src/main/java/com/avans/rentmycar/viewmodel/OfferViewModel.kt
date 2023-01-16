@@ -40,7 +40,7 @@ class OfferViewModel : ViewModel() {
 
     // Slider Filters
     val numberOfSeatsFilter: MutableLiveData<Int> = MutableLiveData(2)
-    val maxDistanceInKmFilter: MutableLiveData<Float> = MutableLiveData(100.0f)
+    val maxDistanceInKmFilter: MutableLiveData<Float> = MutableLiveData(75.0f)
 
 
 
@@ -75,7 +75,13 @@ class OfferViewModel : ViewModel() {
 
         var filteredOffers = offers.filter { it.car.numberOfSeats >= numberOfSeatsFilter.value!! }
 
+        Log.d("[OVM]", "filteredOffers voor km: ${filteredOffers}")
+        Log.d("[OVM]", "maxDistanceInKmFilter.value: ${maxDistanceInKmFilter.value}")
+
         if (maxDistanceInKmFilter.value!! < 100.0f) filteredOffers = filteredOffers.filter { it.distance <= (maxDistanceInKmFilter.value!! * 1000) }
+
+        Log.d("[OVM]", "filteredOffers na km: ${filteredOffers}")
+
         if (!checkboxFuelTypeIceFilter.value!!) filteredOffers = filteredOffers.filter { it.car.type != "ICE" }
         if (!checkboxFuelTypeBevFilter.value!!) filteredOffers = filteredOffers.filter { it.car.type != "BEV" }
         if (!checkboxFuelTypeFcevFilter.value!!) filteredOffers = filteredOffers.filter { it.car.type != "FCEV" }
