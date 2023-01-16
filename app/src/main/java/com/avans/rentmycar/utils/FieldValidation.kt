@@ -2,6 +2,7 @@ package com.avans.rentmycar.utils
 
 import android.util.Log
 import android.util.Patterns
+import androidx.core.util.PatternsCompat
 import java.util.regex.Pattern
 
 object FieldValidation {
@@ -12,7 +13,7 @@ object FieldValidation {
      * @return true if matches with email address else false
      */
     fun isValidEmail(email: String): Boolean {
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
+        return PatternsCompat.EMAIL_ADDRESS.matcher(email).matches()
     }
 
     /**
