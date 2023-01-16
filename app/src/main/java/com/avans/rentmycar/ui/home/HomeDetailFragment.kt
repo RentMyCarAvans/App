@@ -70,7 +70,7 @@ class HomeDetailFragment : Fragment() {
                 actionBar?.title = offer.car.model
 
                 if (mapFragment.isAdded) {
-                    mapFragment.setMapLocation(offer.pickupLocationLatitude, offer.pickupLocationLongitude)
+                    mapFragment.setMapLocation(offer.pickupLocationLatitude, offer.pickupLocationLongitude, offer.car.model, offer.pickupLocation)
                 }
 
             }
