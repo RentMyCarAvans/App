@@ -67,6 +67,8 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
     var offerId: Long = 0L
     var carId: Long = 0L
 
+    val defaultHoursToAddForEndDateTime = 8
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG,"onCreate()")
@@ -169,9 +171,9 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
         if (args.startdate.isNullOrEmpty() && args.enddate.isNullOrEmpty()) {
             Log.d(TAG, "setDefaults() => setting default dates on startdate and enddate because they are null")
             Log.d(TAG, "setDefaults() => Default startdate: " + getCurrentDateTime(0))
-            Log.d(TAG, "setDefaults() => Default enddate: " + getCurrentDateTime(8))
+            Log.d(TAG, "setDefaults() => Default enddate: " + getCurrentDateTime(defaultHoursToAddForEndDateTime))
             binding.textviewOfferCarStartDatetime.text = getCurrentDateTime(0)
-            binding.textviewOfferCarEndDatetime.text = getCurrentDateTime(8)
+            binding.textviewOfferCarEndDatetime.text = getCurrentDateTime(defaultHoursToAddForEndDateTime)
         }
 
         // If no location is provided, then use the address of the current user as a default location
@@ -265,14 +267,21 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
     @RequiresApi(Build.VERSION_CODES.O)
     private fun getCurrentDateTime(added_hours: Int) : String{
         val calendar = Calendar.getInstance()
+        calendar.timeZone = TimeZone.getDefault()
         val current = LocalDateTime.of(
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH) + 1,
             calendar.get(Calendar.DAY_OF_MONTH) + 1,
-            calendar.get(Calendar.HOUR_OF_DAY) + added_hours,
+            calendar.get(Calendar.HOUR_OF_DAY),
             calendar.get(Calendar.MINUTE),
             calendar.get(Calendar.SECOND)
         )
+
+        // Add hours to current date if needed
+        if(added_hours > 0){
+            val adjustedDate = current.plusHours(added_hours.toLong())
+            return adjustedDate.toString()
+        }
 
         return current.toString()
     }
