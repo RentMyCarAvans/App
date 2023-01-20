@@ -2,18 +2,16 @@ package com.avans.rentmycar.ui.home
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.avans.rentmycar.R
 import com.avans.rentmycar.adapter.OfferAdapter
-import com.avans.rentmycar.databinding.FragmentHomeBinding
 import com.avans.rentmycar.databinding.FragmentOfferListBinding
 import com.avans.rentmycar.utils.GlideImageLoader
 import com.avans.rentmycar.utils.SessionManager
@@ -30,7 +28,7 @@ class OfferListFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentOfferListBinding.inflate(inflater, container, false)
         return binding.root
     } // end of onCreateView()
@@ -88,9 +86,15 @@ class OfferListFragment : Fragment() {
         }
 
         // Filter options
-        binding.btnBottomSheetModal.setOnClickListener {
+        binding.buttonOfferlistFilter.setOnClickListener {
             HomeBottomSheetDialogFragment().show(childFragmentManager, "HomeBottomSheetDialogFragment")
         }
+
+        binding.buttonOfferlistClearfilter.setOnClickListener{
+            offerViewModel.clearFilter()
+        }
+
+
 
         offerViewModel.isLoading.observe(viewLifecycleOwner) {
             if (it) {

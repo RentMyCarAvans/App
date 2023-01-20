@@ -22,8 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/blue_500"
-            android:layout_marginBottom="45dp"
-            app:layout_constraintBottom_toTopOf="@id/btnBottomSheetModal"
+            android:layout_marginBottom="55dp"
+            app:layout_constraintBottom_toTopOf="@id/button_offerlist_filter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_home_title"
@@ -33,14 +33,28 @@
 
     <Button
         style="@style/primaryButton"
-        android:id="@+id/btnBottomSheetModal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/button_offerlist_filter"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        app:layout_constraintHorizontal_weight="3"
 
         android:text="@string/filter_by"
         android:layout_marginBottom="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/button_offerlist_clearfilter"
+        />
+    <Button
+        style="@style/secondaryButton"
+        android:id="@+id/button_offerlist_clearfilter"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+
+        app:layout_constraintHorizontal_weight="1"
+        android:text="@string/clear_filter"
+        android:layout_marginBottom="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/button_offerlist_filter"
         app:layout_constraintEnd_toEndOf="parent"
         />
 
