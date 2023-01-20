@@ -68,6 +68,14 @@ object SessionManager {
         editor.apply()
     }
 
+    fun saveFloat(context: Context, key: String, value: Float) {
+        val prefs: SharedPreferences =
+            context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
+        val editor = prefs.edit()
+        editor.putFloat(key, value)
+        editor.apply()
+    }
+
     fun getString(context: Context, key: String): String? {
         val prefs: SharedPreferences =
             context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
@@ -84,6 +92,12 @@ object SessionManager {
         val prefs: SharedPreferences =
             context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
         return prefs.getBoolean(key, false)
+    }
+
+    fun getFloat(context: Context, key: String): Float? {
+        val prefs: SharedPreferences =
+            context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
+        return prefs.getFloat(key, 0.0F)
     }
 
     /**
