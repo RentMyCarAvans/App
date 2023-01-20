@@ -60,6 +60,14 @@ object SessionManager {
         editor.apply()
     }
 
+    fun saveBoolean(context: Context, key: String, value: Boolean) {
+        val prefs: SharedPreferences =
+            context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
+        val editor = prefs.edit()
+        editor.putBoolean(key, value)
+        editor.apply()
+    }
+
     fun getString(context: Context, key: String): String? {
         val prefs: SharedPreferences =
             context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
@@ -70,6 +78,12 @@ object SessionManager {
         val prefs: SharedPreferences =
             context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
         return prefs.getLong(key, 1L )
+    }
+
+    fun getBoolean(context: Context, key: String): Boolean? {
+        val prefs: SharedPreferences =
+            context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
+        return prefs.getBoolean(key, false)
     }
 
     /**
