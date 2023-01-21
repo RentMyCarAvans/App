@@ -83,4 +83,5 @@
     <string name="item_offer_my_car">My Car</string>
     <string name="show_my_own_cars">Show my own cars</string>
     <string name="cannot_book_own_car">Can not book your own car</string>
+    <string name="clear_filter">Clear filter</string>
 </resources>

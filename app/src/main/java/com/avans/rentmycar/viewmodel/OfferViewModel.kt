@@ -1,18 +1,16 @@
 package com.avans.rentmycar.viewmodel
 
-import android.app.Activity
 import android.location.Location
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.avans.rentmycar.api.MapsApiService
-import com.avans.rentmycar.model.request.CarRequest
 import com.avans.rentmycar.model.request.OfferRequest
-import com.avans.rentmycar.model.response.*
+import com.avans.rentmycar.model.response.CreateOfferResponse
+import com.avans.rentmycar.model.response.OfferData
 import com.avans.rentmycar.repository.OfferRepository
 import com.avans.rentmycar.utils.SessionManager
-import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -26,8 +24,8 @@ class OfferViewModel : ViewModel() {
     val isLoading:MutableLiveData<Boolean> = MutableLiveData(true)
 
     // ===== Results of the API calls =====
-    val createOfferResult: MutableLiveData<CreateOfferResponse?> = MutableLiveData()
-    val updateOfferResult: MutableLiveData<CreateOfferResponse?> = MutableLiveData()
+    private val createOfferResult: MutableLiveData<CreateOfferResponse?> = MutableLiveData()
+    private val updateOfferResult: MutableLiveData<CreateOfferResponse?> = MutableLiveData()
 
     // ===== Variables for the API calls =====
     val offerCollection = MutableLiveData<Collection<OfferData>>()
@@ -74,16 +72,16 @@ class OfferViewModel : ViewModel() {
 
 
     // ===== Offers =====
-    fun setOfferCollection(offers: Collection<OfferData>) {
+    private fun setOfferCollection(offers: Collection<OfferData>) {
 
         var filteredOffers = offers.filter { it.car.numberOfSeats >= numberOfSeatsFilter.value!! }
 
-        Log.d("[OVM]", "filteredOffers voor km: ${filteredOffers}")
+        Log.d("[OVM]", "filteredOffers voor km: $filteredOffers")
         Log.d("[OVM]", "maxDistanceInKmFilter.value: ${maxDistanceInKmFilter.value}")
 
         if (maxDistanceInKmFilter.value!! < 100.0f) filteredOffers = filteredOffers.filter { it.distance <= (maxDistanceInKmFilter.value!! * 1000) }
 
-        Log.d("[OVM]", "filteredOffers na km: ${filteredOffers}")
+        Log.d("[OVM]", "filteredOffers na km: $filteredOffers")
 
         if (!checkboxFuelTypeIceFilter.value!!) filteredOffers = filteredOffers.filter { it.car.type != "ICE" }
         if (!checkboxFuelTypeBevFilter.value!!) filteredOffers = filteredOffers.filter { it.car.type != "BEV" }
@@ -146,7 +144,7 @@ class OfferViewModel : ViewModel() {
 
 
 
-    suspend fun updateOfferDataWithDistance(offers: Collection<OfferData>): Collection<OfferData> {
+    private fun updateOfferDataWithDistance(offers: Collection<OfferData>): Collection<OfferData> {
         val deviceLocation = Location("deviceLocation")
         deviceLocation.latitude = SessionManager.getDeviceLocation().latitude
         deviceLocation.longitude = SessionManager.getDeviceLocation().longitude
@@ -219,6 +217,17 @@ class OfferViewModel : ViewModel() {
         }
 
 
+    }
+
+
+    fun clearFilter() {
+        checkboxFuelTypeIceFilter.value = true
+        checkboxFuelTypeBevFilter.value = true
+        checkboxFuelTypeFcevFilter.value = true
+        checkboxShowOwnCarsFilter.value = true
+        numberOfSeatsFilter.value = 2
+        maxDistanceInKmFilter.value = 75.0f
+        this.getOffers()
     }
 
 }

@@ -7,7 +7,7 @@
 
     <style name="secondaryButton">
         <item name="android:backgroundTint">@color/silver</item>
-        <item name="android:textColor">@color/warning</item>
+        <item name="android:textColor">@color/black</item>
         <item name="android:layout_marginHorizontal" tools:targetApi="o">@dimen/button_horizontal_margin</item>
     </style>
 
