@@ -49,13 +49,13 @@ class HomeBottomSheetDialogFragment : BottomSheetDialogFragment() {
             view.findViewById<View>(R.id.textView_home_sheet_maxdistance).visibility = View.GONE
         }
 
-        iceCheckbox.isChecked = viewModel.checkboxFuelTypeIceFilter.value ?: true
-        bevCheckbox.isChecked = viewModel.checkboxFuelTypeBevFilter.value ?: true
-        fvecCheckbox.isChecked = viewModel.checkboxFuelTypeFcevFilter.value ?: true
-        showOwnCarsCheckbox.isChecked = viewModel.checkboxShowOwnCarsFilter.value ?: false
+        iceCheckbox.isChecked = (SessionManager.getBoolean(context = requireContext(), "fuelTypeIceFilter") ?: true)
+        bevCheckbox.isChecked = (SessionManager.getBoolean(context = requireContext(), "fuelTypeBevFilter") ?: true)
+        fvecCheckbox.isChecked =  (SessionManager.getBoolean(context = requireContext(), "fuelTypeFcevFilter") ?: true)
+        showOwnCarsCheckbox.isChecked =  (SessionManager.getBoolean(context = requireContext(), "showOwnCarsFilter") ?: true)
 
-        numberOfSeatsSlider.value = viewModel.numberOfSeatsFilter.value?.toFloat() ?: 4f
-        maxdistanceSlider.value = viewModel.maxDistanceInKmFilter.value?.toFloat() ?: 75f
+        numberOfSeatsSlider.value =  (SessionManager.getFloat(context = requireContext(), "numberOfSeatsFilter") ?: 4f)
+        maxdistanceSlider.value =  (SessionManager.getFloat(context = requireContext(), "maxDistanceInKmFilter") ?: 75f)
 
 
     maxdistanceSlider.addOnChangeListener { slider, value, fromUser ->
@@ -75,6 +75,16 @@ class HomeBottomSheetDialogFragment : BottomSheetDialogFragment() {
         view.findViewById<View>(R.id.button_home_sheet_filter)?.setOnClickListener {
 
             dismiss() // This dismisses the bottom sheet modal
+
+            // Save the values of the checkboxes and sliders to the shared preferences
+            SessionManager.saveBoolean(context = requireContext(), "fuelTypeIceFilter", iceCheckbox.isChecked)
+            SessionManager.saveBoolean(context = requireContext(), "fuelTypeBevFilter", bevCheckbox.isChecked)
+            SessionManager.saveBoolean(context = requireContext(), "fuelTypeFcevFilter", fvecCheckbox.isChecked)
+            SessionManager.saveBoolean(context = requireContext(), "showOwnCarsFilter", showOwnCarsCheckbox.isChecked)
+
+            SessionManager.saveFloat(context = requireContext(), "numberOfSeatsFilter", numberOfSeatsSlider.value)
+            SessionManager.saveFloat(context = requireContext(), "maxDistanceInKmFilter", maxdistanceSlider.value)
+
 
             // Update all data in the ViewModel
             viewModel.setCheckboxFuelTypeIceFilter(iceCheckbox.isChecked)

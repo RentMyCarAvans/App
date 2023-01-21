@@ -1,6 +1,7 @@
 package com.avans.rentmycar.ui.home
 
 import android.os.Bundle
+import android.se.omapi.Session
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -24,19 +25,32 @@ class OfferListFragment : Fragment() {
     private lateinit var _binding: FragmentOfferListBinding
     private val binding get() = _binding
 
+    private lateinit var offerViewModel: OfferViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentOfferListBinding.inflate(inflater, container, false)
+        offerViewModel = ViewModelProvider(requireActivity())[OfferViewModel::class.java]
+
         return binding.root
     } // end of onCreateView()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        offerViewModel.setCheckboxFuelTypeIceFilter(SessionManager.getBoolean(context = requireContext(), "fuelTypeIceFilter") ?: true)
+        offerViewModel.setCheckboxFuelTypeBevFilter(SessionManager.getBoolean(context = requireContext(), "fuelTypeBevFilter") ?: true)
+        offerViewModel.setCheckboxFuelTypeFcevFilter(SessionManager.getBoolean(context = requireContext(), "fuelTypeFcevFilter") ?: true)
+        offerViewModel.setCheckboxShowOwnCarsFilter(SessionManager.getBoolean(context = requireContext(), "showOwnCarsFilter") ?: true)
+        offerViewModel.setNumberOfSeatsFilter(SessionManager.getFloat(context = requireContext(), "numberOfSeatsFilter")?.toInt() ?: 4)
+        offerViewModel.setMaxDistanceInKmFilter(SessionManager.getFloat(context = requireContext(), "maxDistanceInKmFilter") ?: 75f)
+    }
 
     override fun onStart() {
         super.onStart()
 
-        val offerViewModel = ViewModelProvider(requireActivity())[OfferViewModel::class.java]
         offerViewModel.currentUserId = SessionManager.getUserId(context = requireContext())
 
         val offerAdapter = OfferAdapter(GlideImageLoader(view?.context as AppCompatActivity)) { offer ->
@@ -91,6 +105,12 @@ class OfferListFragment : Fragment() {
         }
 
         binding.buttonOfferlistClearfilter.setOnClickListener{
+            SessionManager.saveBoolean(context = requireContext(), "fuelTypeIceFilter", true)
+            SessionManager.saveBoolean(context = requireContext(), "fuelTypeBevFilter", true)
+            SessionManager.saveBoolean(context = requireContext(), "fuelTypeFcevFilter", true)
+            SessionManager.saveBoolean(context = requireContext(), "showOwnCarsFilter", true)
+            SessionManager.saveFloat(context = requireContext(), "numberOfSeatsFilter", 2f)
+            SessionManager.saveFloat(context = requireContext(), "maxDistanceInKmFilter", 75f)
             offerViewModel.clearFilter()
         }
 
