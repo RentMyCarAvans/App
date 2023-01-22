@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.avans.rentmycar.api.MapsApiService
 import com.avans.rentmycar.model.request.OfferRequest
 import com.avans.rentmycar.model.response.CreateOfferResponse
+import com.avans.rentmycar.model.response.DeleteResponse
 import com.avans.rentmycar.model.response.OfferData
 import com.avans.rentmycar.repository.OfferRepository
 import com.avans.rentmycar.utils.SessionManager
@@ -24,8 +25,9 @@ class OfferViewModel : ViewModel() {
     val isLoading:MutableLiveData<Boolean> = MutableLiveData(true)
 
     // ===== Results of the API calls =====
-    private val createOfferResult: MutableLiveData<CreateOfferResponse?> = MutableLiveData()
-    private val updateOfferResult: MutableLiveData<CreateOfferResponse?> = MutableLiveData()
+    val createOfferResult: MutableLiveData<CreateOfferResponse?> = MutableLiveData()
+    val updateOfferResult: MutableLiveData<CreateOfferResponse?> = MutableLiveData()
+    val deleteOfferResult: MutableLiveData<DeleteResponse?> = MutableLiveData()
 
     // ===== Variables for the API calls =====
     val offerCollection = MutableLiveData<Collection<OfferData>>()
@@ -228,6 +230,19 @@ class OfferViewModel : ViewModel() {
         numberOfSeatsFilter.value = 2
         maxDistanceInKmFilter.value = 75.0f
         this.getOffers()
+    }
+
+    fun cancelOffer(id: Long) {
+        viewModelScope.launch {
+            try {
+                val response = offerRepository.cancelOffer(id)
+                deleteOfferResult.value = response
+            } catch (e: Exception) {
+                Log.d("[RMC][OfferViewModel]", "deleteOffer() => Exception: " + createOfferResult.value.toString() )
+                Log.d("[RMC][OfferViewModel]", "deleteOffer() => Exception message: " + e.message.toString() )
+            }
+        }
+
     }
 
 }

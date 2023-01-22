@@ -84,4 +84,7 @@
     <string name="show_my_own_cars">Show my own cars</string>
     <string name="cannot_book_own_car">Can not book your own car</string>
     <string name="clear_filter">Clear filter</string>
+    <string name="cancel_this_booking">Cancel this offer</string>
+    <string name="offer_cancelled">Offer cancelled</string>
+    <string name="offer_cant_be_cancelled">Offer can\'t be cancelled</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.avans.rentmycar.ui.home
 
+import android.R
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,11 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
-import com.avans.rentmycar.R
 import com.avans.rentmycar.databinding.FragmentHomeDetailBinding
 import com.avans.rentmycar.utils.DateTimeConverter
 import com.avans.rentmycar.utils.SessionManager
@@ -19,6 +18,7 @@ import com.avans.rentmycar.viewmodel.BookingViewModel
 import com.avans.rentmycar.viewmodel.OfferViewModel
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
+
 
 class HomeDetailFragment : Fragment() {
 
@@ -35,7 +35,7 @@ class HomeDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         childFragmentManager.beginTransaction()
-            .replace(R.id.frameLayout_home_detail_map, mapFragment).commit()
+            .replace(com.avans.rentmycar.R.id.frameLayout_home_detail_map, mapFragment).commit()
         _binding = FragmentHomeDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -75,11 +75,14 @@ class HomeDetailFragment : Fragment() {
                 }
 
 
-
+                // If the current user is the owner of the offer, change the button text to "Cancel this offer" and add a click listener to delete the offer
                 if(offer.car.user.id == SessionManager.getUserId(requireContext())) {
-                    binding.buttonHomeDetailBook.isEnabled = false
-                    binding.buttonHomeDetailBook.text = getString(R.string.cannot_book_own_car)
-                    binding.buttonHomeDetailBook.setBackgroundColor(resources.getColor(R.color.gray))
+                    binding.buttonHomeDetailBook.text = getString(com.avans.rentmycar.R.string.cancel_this_booking)
+                    binding.buttonHomeDetailBook.setOnClickListener {
+                        offerViewModel.cancelOffer(offer.id)
+                        Snackbar.make(view, getString(com.avans.rentmycar.R.string.offer_cancelled), Snackbar.LENGTH_SHORT).show()
+                        view.findNavController().navigate(com.avans.rentmycar.R.id.action_homeDetailFragment_to_homeFragment)
+                    }
                 }
 
                 actionBar?.title = offer.car.model
