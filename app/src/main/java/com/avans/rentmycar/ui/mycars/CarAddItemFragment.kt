@@ -16,6 +16,7 @@
 
 package com.avans.rentmycar.ui.mycars
 
+import android.graphics.Color.red
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -73,12 +74,15 @@ class CarAddItemFragment : Fragment() {
             val licensePlate: String = kenteken.text.toString()
 
             // Validate licenseplate before API call
-            if (validateLicensePlate()){
+            if (validateLicensePlate()) {
                 // invoke RdwApiService for retrieval of cardetails of the given licenseplate
-                Log.d(TAG, "onViewCreated() => invoke RdwApiService for licenseplate: " + licensePlate)
+                Log.d(
+                    TAG,
+                    "onViewCreated() => invoke RdwApiService for licenseplate: " + licensePlate
+                )
                 carViewModel.getRdwCarDetails(kenteken.text.toString())
                 Snackbar.make(view, "Car details retrieved at the RDW", Snackbar.LENGTH_LONG)
-                .show()
+                    .show()
             }
         }
 
@@ -93,10 +97,15 @@ class CarAddItemFragment : Fragment() {
 
         carViewModel.rdwResponse.observe(viewLifecycleOwner) {
             Log.d(TAG, "onViewCreated() => observer rdwResponse triggerd")
-            if (carViewModel.rdwResponse.value!!.isEmpty()){
-                Snackbar.make(view, "Error saving Car. Please try again later", Snackbar.LENGTH_LONG)
-                    .show()
-                }
+            if (carViewModel.rdwResponse.value!!.isEmpty()) {
+                val snackbar = Snackbar.make(
+                    view,
+                    "Error saving Car. Please try again later",
+                    Snackbar.LENGTH_LONG
+                )
+                snackbar.view.setBackgroundColor(resources.getColor(R.color.warning))
+                snackbar.show()
+            }
             bindUI(it)
         }
 
@@ -109,13 +118,21 @@ class CarAddItemFragment : Fragment() {
                 }
                 is BaseResponse.Error -> {
                     Toast.makeText(context, "Error", Toast.LENGTH_LONG).show()
-                    Snackbar.make(view, "An error occurred while fetching your data. Please try again later", Snackbar.LENGTH_LONG)
-                            .show()
+                    val snackbar = Snackbar.make(
+                        view,
+                        "An error occurred while fetching your data. Please try again later",
+                        Snackbar.LENGTH_LONG
+                    )
+                    snackbar.view.setBackgroundColor(resources.getColor(R.color.warning))
+                    snackbar.show()
                     Log.d(TAG, "onViewCreated() => observer BaseResponse.Error")
 
                 }
                 is BaseResponse.Success -> {
-                    Log.d(TAG, "onViewCreated() => observer BaseResponse.Success. Return to MyCarsFragment ")
+                    Log.d(
+                        TAG,
+                        "onViewCreated() => observer BaseResponse.Success. Return to MyCarsFragment "
+                    )
                     val action = CarDetailFragmentDirections.actionCarDetailFragmentToMycars()
                     findNavController().navigate(action)
                 }
@@ -136,12 +153,17 @@ class CarAddItemFragment : Fragment() {
      */
     fun bindUI(it: List<RdwResponseItem>) {
         Log.d(TAG, "bindUI() => voertuigsoort: " + it[0].voertuigsoort + " merk: " + it[0].merk)
-        binding.txtInputCarModel.setText( it[0].merk + "- " + it[0].handelsbenaming)
+        binding.txtInputCarModel.setText(it[0].merk + "- " + it[0].handelsbenaming)
         binding.txtInputCarVehicle.setText(it[0].voertuigsoort)
         binding.txtInputCarNrOfDoors.setText(it[0].aantalDeuren)
         binding.txtInputCarNrOfSeats.setText(it[0].aantalZitplaatsen)
         binding.txtInputCarColor.setText(it[0].eersteKleur)
-        binding.txtInputCarYear.setText(it[0].datumEersteToelating?.substring(0,4)) // substring year of date with format yyyymmdd
+        binding.txtInputCarYear.setText(
+            it[0].datumEersteToelating?.substring(
+                0,
+                4
+            )
+        ) // substring year of date with format yyyymmdd
     }
 
     private fun validateLicensePlate(): Boolean {
@@ -187,7 +209,7 @@ class CarAddItemFragment : Fragment() {
         Log.d(TAG, "createCar() => colorType = " + color)
         Log.d(TAG, "createCar() => licensePlate = " + licensePlate)
         Log.d(TAG, "createCar() => model = " + model)
-        Log.d(TAG, "createCar() => numberOfSeats = " + nrOfSeats.toInt(),)
+        Log.d(TAG, "createCar() => numberOfSeats = " + nrOfSeats.toInt())
         Log.d(TAG, "createCar() => type = " + type)
         Log.d(TAG, "createCar() => vehicleType = " + vehicleType)
         Log.d(TAG, "createCar() => yearOfManufacture = " + year.toInt())
@@ -265,14 +287,15 @@ class CarAddItemFragment : Fragment() {
     private fun validateYearOfManufacture(): Boolean {
         val formatter = SimpleDateFormat("yyyy")
         val date = Date()
-        val currentYear : Int = formatter.format(date).toInt()
+        val currentYear: Int = formatter.format(date).toInt()
         Log.d(TAG, "Current year: " + currentYear)
         if (binding.txtInputCarYear.text.toString().trim().isEmpty()) {
             binding.txtLayCarYearAdd.error = getString(R.string.required_field)
             binding.txtInputCarYear.requestFocus()
             return false
-        } else if  (binding.txtInputCarYear.text.toString().toInt() > currentYear) {
-            binding.txtLayCarYearAdd.error = "Year cannot be in the future. Please select another year"
+        } else if (binding.txtInputCarYear.text.toString().toInt() > currentYear) {
+            binding.txtLayCarYearAdd.error =
+                "Year cannot be in the future. Please select another year"
             binding.txtInputCarYear.requestFocus()
             return false
         } else {

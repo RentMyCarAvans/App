@@ -68,14 +68,22 @@ class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail) {
                 is BaseResponse.Success -> {
                     stopLoading()
                     Log.d("APP", "was success!!")
-                    Glide.with(this).load("${Constant.BASE_URL}/api/v1/users/profilephoto/${it.data?.data?.id}").centerCrop().placeholder(R.drawable.noprofilepic).into(binding!!.imgProfilePicture)
-                    view.findViewById<TextInputEditText>(R.id.firstname_input).setText(it.data?.data?.firstName)
-                    view.findViewById<TextInputEditText>(R.id.lastname_input).setText(it.data?.data?.lastName)
-                    view.findViewById<TextInputEditText>(R.id.address_input).setText(it.data?.data?.address)
-                    view.findViewById<TextInputEditText>(R.id.telephone_input).setText(it.data?.data?.telephone)
-                    view.findViewById<TextInputEditText>(R.id.city_input).setText(it.data?.data?.city)
+                    Glide.with(this)
+                        .load("${Constant.BASE_URL}/api/v1/users/profilephoto/${it.data?.data?.id}")
+                        .centerCrop().placeholder(R.drawable.noprofilepic)
+                        .into(binding!!.imgProfilePicture)
+                    view.findViewById<TextInputEditText>(R.id.firstname_input)
+                        .setText(it.data?.data?.firstName)
+                    view.findViewById<TextInputEditText>(R.id.lastname_input)
+                        .setText(it.data?.data?.lastName)
+                    view.findViewById<TextInputEditText>(R.id.address_input)
+                        .setText(it.data?.data?.address)
+                    view.findViewById<TextInputEditText>(R.id.telephone_input)
+                        .setText(it.data?.data?.telephone)
+                    view.findViewById<TextInputEditText>(R.id.city_input)
+                        .setText(it.data?.data?.city)
 
-                    }
+                }
             }
         }
     }
@@ -88,9 +96,24 @@ class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail) {
         val city = view?.findViewById<TextInputEditText>(R.id.city_input)?.text.toString()
         val telephone = view?.findViewById<TextInputEditText>(R.id.telephone_input)?.text.toString()
         val userId = getUserId(requireContext())
-        val updatedUser = CreateUpdateUserRequest(userId!!, firstName, lastName, null, null, null, null,address, city, telephone)
+        val updatedUser = CreateUpdateUserRequest(
+            userId!!,
+            firstName,
+            lastName,
+            null,
+            null,
+            null,
+            null,
+            address,
+            city,
+            telephone
+        )
         viewModel.setUser(updatedUser, userId)
-        val snack = Snackbar.make(requireView(), getString(R.string.success_update_profile), Snackbar.LENGTH_LONG)
+        val snack = Snackbar.make(
+            requireView(),
+            getString(R.string.success_update_profile),
+            Snackbar.LENGTH_LONG
+        )
         snack.view.setBackgroundColor(Color.parseColor("#3CB043"))
         snack.show()
 
@@ -129,7 +152,10 @@ class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail) {
             try {
                 userRepo.uploadProfilePhoto(filePart)
             } catch (e: Exception) { // if something happens to the network
-                Snackbar.make(binding!!.root, "Something went wrong", Snackbar.LENGTH_SHORT).show()
+                val snackbar =
+                    Snackbar.make(binding!!.root, "Something went wrong", Snackbar.LENGTH_SHORT)
+                snackbar.view.setBackgroundColor(resources.getColor(R.color.warning))
+                snackbar.show()
                 Log.d("APP", e.toString())
                 return@launch
             }
@@ -160,6 +186,7 @@ class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail) {
 
         }
     }
+
     private fun stopLoading() {
         binding?.progressBar?.visibility = View.GONE
     }

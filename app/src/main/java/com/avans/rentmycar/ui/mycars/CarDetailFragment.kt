@@ -54,7 +54,7 @@ class CarDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         Log.d(TAG, "onCreateView()")
-        return inflater.inflate(R.layout.fragment_mycars_detail,container, false)
+        return inflater.inflate(R.layout.fragment_mycars_detail, container, false)
     }
 
     /**
@@ -86,11 +86,15 @@ class CarDetailFragment : Fragment() {
 
         Log.d(TAG, "onViewCreated() => Checking navArgs Car detail")
         Log.d(TAG, "onViewCreated() => navArgs: " + args.toString())
-        Log.d(TAG, "onViewCreated() => Selected item with model " + args.brand + " and id " +args.id)
+        Log.d(
+            TAG,
+            "onViewCreated() => Selected item with model " + args.brand + " and id " + args.id
+        )
 
         // TODO: Replace with binding
         val imageViewCar = view.findViewById<ImageView>(R.id.iv_car_image)
-        Glide.with(this).load(args.carimageurl).centerCrop().placeholder(R.drawable.audi).into(imageViewCar);
+        Glide.with(this).load(args.carimageurl).centerCrop().placeholder(R.drawable.audi)
+            .into(imageViewCar);
         view.findViewById<TextView>(R.id.tv_car_brand).text = args.brand.toString()
         view.findViewById<TextView>(R.id.tv_car_year).text = args.year
         view.findViewById<TextView>(R.id.tv_car_licenseplate).text = args.licenseplate
@@ -109,17 +113,34 @@ class CarDetailFragment : Fragment() {
         binding.buttonDeleteCar.setOnClickListener {
             Log.d(TAG, "onViewCreated() => Button DELETE clicked. Invoke CarApiService")
             carViewModel.deleteCarById(args.id.toInt())
-                Snackbar.make(view, "Car " + args.brand + " with licenseplate " + args.licenseplate + "deleted", Snackbar.LENGTH_LONG)
-                    .show()
-            Log.d(TAG, "onViewCreated() => Car "+ args.brand + " with licenseplate " + args.licenseplate + " deleted. Return to home")
+            val snackbar = Snackbar.make(
+                view,
+                "Car " + args.brand + " with licenseplate " + args.licenseplate + "deleted",
+                Snackbar.LENGTH_LONG
+            )
+            snackbar.show()
+            Log.d(
+                TAG,
+                "onViewCreated() => Car " + args.brand + " with licenseplate " + args.licenseplate + " deleted. Return to home"
+            )
             findNavController().navigate(R.id.action_carDetailFragment_to_mycars)
         }
 
         binding.buttonEditCarimageFab.setOnClickListener {
             Log.d(TAG, "onViewCreated() => Button EDIT clicked. Go to the Edit fragment")
             val action =
-              //  CarDetailFragmentDirections.actionCarDetailFragmentToEditCarFragment(args.id, args.color, args.brand, args.mileage, args.licenseplate, args.numberofseats, args.year, args.carimageurl, args.vehicletype)
-            CarDetailFragmentDirections.actionCarDetailFragmentToCarAddItemFragment(args.id, args.color, args.brand, args.mileage, args.licenseplate, args.numberofseats, args.year, args.carimageurl, args.vehicletype)
+                //  CarDetailFragmentDirections.actionCarDetailFragmentToEditCarFragment(args.id, args.color, args.brand, args.mileage, args.licenseplate, args.numberofseats, args.year, args.carimageurl, args.vehicletype)
+                CarDetailFragmentDirections.actionCarDetailFragmentToCarAddItemFragment(
+                    args.id,
+                    args.color,
+                    args.brand,
+                    args.mileage,
+                    args.licenseplate,
+                    args.numberofseats,
+                    args.year,
+                    args.carimageurl,
+                    args.vehicletype
+                )
             view.findNavController().navigate(action)
         }
 
@@ -128,7 +149,14 @@ class CarDetailFragment : Fragment() {
             val current = LocalDateTime.now()
 
             val offerDirection =
-                CarDetailFragmentDirections.actionCarDetailFragmentToOfferCarFragment(args.id, null, null, null, args.licenseplate, args.id.toLong())
+                CarDetailFragmentDirections.actionCarDetailFragmentToOfferCarFragment(
+                    args.id,
+                    null,
+                    null,
+                    null,
+                    args.licenseplate,
+                    args.id.toLong()
+                )
             view.findNavController().navigate(offerDirection)
         }
     }
