@@ -26,7 +26,7 @@ import java.util.*
 
 
 // viewbinding in fragment : https://stackoverflow.com/questions/62952957/viewbinding-in-fragment
-class ProfileFragment : Fragment(R.layout.fragment_profile)  {
+class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private var binding: FragmentProfileBinding? = null
     private val viewModel: UserViewModel by viewModels()
 
@@ -58,7 +58,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile)  {
                 is BaseResponse.Error -> {
                     Log.d("RentMyCarApp", "ERROR, API DOWN?")
                     showLoading()
-                    Snackbar.make(view, "Error", Snackbar.LENGTH_LONG).show()
+                    val snackbar = Snackbar.make(view, "Error", Snackbar.LENGTH_LONG)
+                    snackbar.view.setBackgroundColor(resources.getColor(R.color.warning))
+                    snackbar.show()
                 }
                 is BaseResponse.Success -> {
                     Log.d("RentMyCarApp", "success")
@@ -71,31 +73,32 @@ class ProfileFragment : Fragment(R.layout.fragment_profile)  {
                     binding!!.textviewPhone.text = it.data?.data?.telephone
                     binding!!.textviewLocation.text = it.data?.data?.city
                     binding!!.textviewBirthdate.text = it.data?.data?.dateOfBirth
-                    binding!!.textviewBonuspoint.text = it.data?.data?.bonusPoints.toString() + " " + getString(R.string.bonuspoints)
-                    Glide.with(this).load("${Constant.BASE_URL}/api/v1/users/profilephoto/${it.data?.data?.id}").centerCrop().placeholder(R.drawable.noprofilepic).into(binding!!.imgProfilePicture);
+                    binding!!.textviewBonuspoint.text =
+                        it.data?.data?.bonusPoints.toString() + " " + getString(R.string.bonuspoints)
+                    Glide.with(this)
+                        .load("${Constant.BASE_URL}/api/v1/users/profilephoto/${it.data?.data?.id}")
+                        .centerCrop().placeholder(R.drawable.noprofilepic)
+                        .into(binding!!.imgProfilePicture);
 
                     if (it.data?.data?.isVerifiedUser == true) {
                         binding!!.textviewVerifiedUser.text = getString(R.string.verified_user)
-                    } else {binding!!.textviewVerifiedUser.text = getString(R.string.not_verified_user)    }
+                    } else {
+                        binding!!.textviewVerifiedUser.text = getString(R.string.not_verified_user)
+                    }
 
                 }
             }
         }
 
 
-
-
-
     }
 
 
-
-
-     fun stopLoading() {
+    fun stopLoading() {
         binding?.progressBar?.visibility = View.GONE
     }
 
-     private fun showLoading() {
+    private fun showLoading() {
         binding?.progressBar?.visibility = View.VISIBLE
     }
 
@@ -103,7 +106,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile)  {
         clearData(requireContext())
 
         val navController: NavController =
-           findNavController()
+            findNavController()
         navController.run {
             popBackStack()
             navigate(R.id.home)
@@ -114,7 +117,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile)  {
         binding = null
         super.onDestroyView()
     }
-
 
 
 }

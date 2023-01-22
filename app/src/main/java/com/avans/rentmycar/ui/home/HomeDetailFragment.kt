@@ -55,8 +55,10 @@ class HomeDetailFragment : Fragment() {
         offerViewModel.singleOffer.observe(viewLifecycleOwner) { offer ->
             if (offer != null) {
 
-                val startDate = DateTimeConverter.convertDatabaseDateTimeToReadableDateTime(offer.startDateTime)
-                val endDate = DateTimeConverter.convertDatabaseDateTimeToReadableDateTime(offer.endDateTime)
+                val startDate =
+                    DateTimeConverter.convertDatabaseDateTimeToReadableDateTime(offer.startDateTime)
+                val endDate =
+                    DateTimeConverter.convertDatabaseDateTimeToReadableDateTime(offer.endDateTime)
 
                 binding.textviewHomeDetailCarName.setText(offer.car.model)
                 binding.textviewHomeDetailOfferPickuplocation.setText(offer.pickupLocation)
@@ -64,9 +66,11 @@ class HomeDetailFragment : Fragment() {
 
 
                 val carImageUrl = offer.car.image
-                if(carImageUrl.isNullOrEmpty()) {
+                if (carImageUrl.isNullOrEmpty()) {
                     binding.imageviewHomeDetailCarImage.let {
-                        Glide.with(this).load("https://www.thecarwiz.com/images/listing_vehicle_placeholder.jpg").into(it)
+                        Glide.with(this)
+                            .load("https://www.thecarwiz.com/images/listing_vehicle_placeholder.jpg")
+                            .into(it)
                     }
                 } else {
                     binding.imageviewHomeDetailCarImage.let {
@@ -76,24 +80,34 @@ class HomeDetailFragment : Fragment() {
 
 
                 // If the current user is the owner of the offer, change the button text to "Cancel this offer" and add a click listener to delete the offer
-                if(offer.car.user.id == SessionManager.getUserId(requireContext())) {
-                    binding.buttonHomeDetailBook.text = getString(com.avans.rentmycar.R.string.cancel_this_booking)
+                if (offer.car.user.id == SessionManager.getUserId(requireContext())) {
+                    binding.buttonHomeDetailBook.text =
+                        getString(com.avans.rentmycar.R.string.cancel_this_booking)
                     binding.buttonHomeDetailBook.setOnClickListener {
                         offerViewModel.cancelOffer(offer.id)
-                        Snackbar.make(view, getString(com.avans.rentmycar.R.string.offer_cancelled), Snackbar.LENGTH_SHORT).show()
-                        view.findNavController().navigate(com.avans.rentmycar.R.id.action_homeDetailFragment_to_homeFragment)
+                        Snackbar.make(
+                            view,
+                            getString(com.avans.rentmycar.R.string.offer_cancelled),
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                        view.findNavController()
+                            .navigate(com.avans.rentmycar.R.id.action_homeDetailFragment_to_homeFragment)
                     }
                 }
 
                 actionBar?.title = offer.car.model
 
                 if (mapFragment.isAdded) {
-                    mapFragment.setMapLocation(offer.pickupLocationLatitude, offer.pickupLocationLongitude, offer.car.model, offer.pickupLocation)
+                    mapFragment.setMapLocation(
+                        offer.pickupLocationLatitude,
+                        offer.pickupLocationLongitude,
+                        offer.car.model,
+                        offer.pickupLocation
+                    )
                 }
 
             }
         }
-
 
 
         // Setup Book Button
@@ -106,8 +120,13 @@ class HomeDetailFragment : Fragment() {
                     Log.d("[HDF] Response", "Response: $response")
                     Log.d("[HDF] Resp.status", "Resp.status: " + response.status)
                     if (response.status == 201) {
-                        Snackbar.make(view, "Booking created successfully", Snackbar.LENGTH_LONG)
-                            .show()
+                        val snackbar = Snackbar.make(
+                            view,
+                            "Booking created successfully",
+                            Snackbar.LENGTH_LONG
+                        )
+                        snackbar.view.setBackgroundColor(resources.getColor(com.avans.rentmycar.R.color.warning))
+                        snackbar.show()
                         val action =
                             HomeDetailFragmentDirections.actionHomeDetailFragmentToHomeFragment()
                         view.findNavController().navigate(action)
@@ -115,7 +134,10 @@ class HomeDetailFragment : Fragment() {
 
                 } else {
                     Log.d("[HDF] Response", "Response: $response")
-                    Snackbar.make(view, "Booking creation failed", Snackbar.LENGTH_LONG).show()
+                    val snackbar =
+                        Snackbar.make(view, "Booking creation failed", Snackbar.LENGTH_LONG)
+                    snackbar.view.setBackgroundColor(resources.getColor(com.avans.rentmycar.R.color.warning))
+                    snackbar.show()
                 }
             }
         }
