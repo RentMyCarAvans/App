@@ -33,14 +33,15 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
     private var _binding: FragmentBookingDetailBinding? = null
     private val binding get() = _binding!!
 
-    private var bookingId : Long = 0L
+    private var bookingId: Long = 0L
 
     private val args: BookingDetailFragmentArgs by navArgs()
-    private val rideViewModel: RideViewModel by activityViewModels{
+    private val rideViewModel: RideViewModel by activityViewModels {
         RideViewModelFactory(
             (activity?.application as BaseApplication).database.rideDao()
         )
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -58,15 +59,17 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
 
         val bookingViewModel = ViewModelProvider(requireActivity())[BookingViewModel::class.java]
 
-         bookingId = args.id
+        bookingId = args.id
 
         bookingViewModel.getBookingById(bookingId)
 
         bookingViewModel.bookingSingle.observe(viewLifecycleOwner) { booking ->
             if (booking != null) {
 
-                val startDate = DateTimeConverter.convertDatabaseDateTimeToReadableDateTime(booking.offer.startDateTime)
-                val endDate = DateTimeConverter.convertDatabaseDateTimeToReadableDateTime(booking.offer.endDateTime)
+                val startDate =
+                    DateTimeConverter.convertDatabaseDateTimeToReadableDateTime(booking.offer.startDateTime)
+                val endDate =
+                    DateTimeConverter.convertDatabaseDateTimeToReadableDateTime(booking.offer.endDateTime)
 
                 binding.textviewBookingDetailCarName.text = booking.offer.car.model
                 binding.textviewBookingDetailOfferPickuplocation.text = booking.offer.pickupLocation
@@ -74,9 +77,11 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
 
 
                 val carImageUrl = booking.offer.car.image
-                if(carImageUrl.isNullOrEmpty()) {
+                if (carImageUrl.isNullOrEmpty()) {
                     binding.imageviewBookingDetailCarImage.let {
-                        Glide.with(this).load("https://www.thecarwiz.com/images/listing_vehicle_placeholder.jpg").into(it)
+                        Glide.with(this)
+                            .load("https://www.thecarwiz.com/images/listing_vehicle_placeholder.jpg")
+                            .into(it)
                     }
                 } else {
                     binding.imageviewBookingDetailCarImage.let {
@@ -86,15 +91,18 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
 
                 binding.bookingDetailTitle.text = booking.offer.car.model
 
-                if(booking.status != "APPROVED"){
+                if (booking.status != "APPROVED") {
                     binding.buttonBookingDetailStartride.isEnabled = false
                     binding.buttonBookingDetailStartride.visibility = View.GONE
+                }
 
+                if (booking.status != "APPROVED" && booking.status != "PENDING") {
+                    binding.buttonBookingDetailCancelbooking.isEnabled = false
+                    binding.buttonBookingDetailCancelbooking.visibility = View.GONE
                 }
 
             }
         }
-
 
 
         // Cancel booking
@@ -113,7 +121,8 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
                         bookingViewModel.cancelBookingResult.observe(viewLifecycleOwner) { result ->
                             Log.d("[BDF]", "Booking with id: $bookingId cancelled: $result")
                             if (result) {
-                                Toast.makeText(context, "Booking cancelled", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, "Booking cancelled", Toast.LENGTH_SHORT)
+                                    .show()
                                 findNavController().navigate(R.id.action_bookingDetailFragment_to_homeFragment2)
                             }
                         }
@@ -142,8 +151,6 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
     }
 
 
-
-
     override fun onBiometricAuthenticateError(error: Int, errMsg: String) {
         when (error) {
             BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED -> {
@@ -154,8 +161,12 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
                 Toast.makeText(requireContext(), "No device credential", Toast.LENGTH_SHORT)
                     .show()
             }
-            else ->       {
-                Toast.makeText(requireContext(), "No Biometric Authentication installed. Please add PIN to start the ride.", Toast.LENGTH_LONG)
+            else -> {
+                Toast.makeText(
+                    requireContext(),
+                    "No Biometric Authentication installed. Please add PIN to start the ride.",
+                    Toast.LENGTH_LONG
+                )
                     .show()
 //                doStartRiding()
 
@@ -178,7 +189,10 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
         var location = SessionManager.getDeviceLocation()
         var timeNow = Instant.now().toString()
         rideViewModel.startRide(
-            rideId = args.id, startLongitude = location.longitude, startLatitude = location.latitude, startTimeStamp = timeNow
+            rideId = args.id,
+            startLongitude = location.longitude,
+            startLatitude = location.latitude,
+            startTimeStamp = timeNow
         )
     }
 
@@ -187,7 +201,8 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
 
         // build action
 
-        val action = BookingDetailFragmentDirections.actionBookingDetailFragmentToRideFragment(bookingId)
+        val action =
+            BookingDetailFragmentDirections.actionBookingDetailFragmentToRideFragment(bookingId)
 
         findNavController().navigate(action)
 
