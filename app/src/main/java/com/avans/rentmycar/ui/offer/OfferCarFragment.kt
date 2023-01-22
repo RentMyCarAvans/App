@@ -1,6 +1,7 @@
 package com.avans.rentmycar.ui.offer
 
 import android.app.DatePickerDialog
+import android.app.Dialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.TimePicker
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -21,6 +23,7 @@ import com.avans.rentmycar.utils.DateTimeConverter.formatCalendarToDBString
 import com.avans.rentmycar.utils.SessionManager
 import com.avans.rentmycar.viewmodel.BookingViewModel
 import com.avans.rentmycar.viewmodel.OfferViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
 
@@ -39,6 +42,9 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener,
 
     private val defaultHoursToAddForEndDateTime = 8
     private var currentPickerIsForStart = true
+
+    private var customerFirstName: String = ""
+    private var customerLastName: String = ""
 
     // Create calendars for date and time
     var startDateTime: Calendar = Calendar.getInstance()
@@ -84,7 +90,16 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener,
             if (it != null) {
                 Log.d(TAG, "onViewCreated: booking status: ${it.status}")
 
+                it.customer.firstName?.let { firstName ->
+                    customerFirstName = firstName
+                }
+                it.customer.lastName?.let { lastName ->
+                    customerLastName = lastName
+                }
+
                 when (it.status) {
+
+
                     "PENDING" -> {
 
                         // Show the Customer name
@@ -117,11 +132,6 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener,
                         // Show the Customer name
                         binding.textviewOffercarCustomer.text = "Booked by: " + it.customer.firstName + " " + it.customer.lastName
                         binding.textviewOffercarCustomer.visibility = View.VISIBLE
-
-
-                        // Hide ACCEPT and DECLINE buttons
-//                        binding.acceptButton.visibility = View.GONE
-//                        binding.declineButton.visibility = View.GONE
 
                         // Disable the date and time pickers and the location field
                         binding.buttonCarOfferStartDatetime.isEnabled = false
@@ -176,18 +186,38 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener,
 
         binding.buttonOffercarApprove.setOnClickListener {
             Log.d(TAG, "onViewCreated() => Button APPROVE clicked.")
-            // TODO: Show dialog
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Approve booking")
+                .setMessage("Are you sure you want to approve this booking?")
+                .setPositiveButton("Yes") { dialog, which ->
+                    Log.d("[OCF]", "Approved!")
+                }
+                .setNegativeButton("No") { dialog, which ->
+                    Log.d("[OCF]", "Declined!")
+                    }
+                .show()
 
 //            approveOffer(args)
         }
 
         binding.buttonOffercarDecline.setOnClickListener {
             Log.d(TAG, "onViewCreated() => Button DECLINE clicked.")
-            // TODO: Show dialog
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Decline booking")
+                .setMessage("Are you sure you want to decline this booking?\n" + customerFirstName + " might be sad...")
+                .setNegativeButton("No") { dialog, which ->
+                    Log.d("[OCF]", "Decline cancelled!")
+                }
+                .setPositiveButton("Yes") { dialog, which ->
+                    Log.d("[OCF]", "Declinedd!")
+                }
+                .show()
 //            declineOffer(args)
         }
 
     } // end onViewCreated()
+
+
 
 
     /**
