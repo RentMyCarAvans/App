@@ -90,12 +90,27 @@
         app:layout_constraintWidth_percent="0.9"
         app:errorEnabled="true">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/txtInput_birthDate"
-            android:layout_width="match_parent"
+<!--        <com.google.android.material.textfield.TextInputEditText-->
+<!--            android:id="@+id/txtInput_birthDate"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:inputType="datetime"-->
+<!--            android:maxLength="20" />-->
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Date of Birth"
+    android:id="@+id/txtview_register_dateOfBirth"
+    />
+        <DatePicker
+            android:id="@+id/datePicker_register_dateOfBirth"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="datetime"
-            android:maxLength="20" />
+            android:calendarViewShown="false"
+            android:datePickerMode="spinner"
+            android:spinnersShown="true"
+            />
+
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/txtLay_emailAdd"
