@@ -22,6 +22,10 @@ class BookingRepository {
         return OfferService.getApi()?.getBookingById(bookingId)?.body()?.data
     }
 
+    suspend fun getBookingForOfferById(offerId: Long): BookingData? {
+        return OfferService.getApi()?.getBookingForOfferById(offerId)?.body()?.data
+    }
+
     suspend fun createBooking(offerId: Long, customerId: Long): CreateBookingResponse? {
         val bookingDTO = BookingDTO()
         bookingDTO.offerId = offerId

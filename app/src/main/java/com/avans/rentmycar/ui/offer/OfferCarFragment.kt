@@ -11,6 +11,7 @@ import android.widget.DatePicker
 import android.widget.TimePicker
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.avans.rentmycar.R
@@ -18,6 +19,7 @@ import com.avans.rentmycar.databinding.FragmentOfferBinding
 import com.avans.rentmycar.utils.DateTimeConverter
 import com.avans.rentmycar.utils.DateTimeConverter.formatCalendarToDBString
 import com.avans.rentmycar.utils.SessionManager
+import com.avans.rentmycar.viewmodel.BookingViewModel
 import com.avans.rentmycar.viewmodel.OfferViewModel
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
@@ -33,6 +35,7 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener,
     // Offer variables
     private var offerId: Long = 0L
     private var carId: Long = 0L
+    private var bookingId: Long = 0L
 
     private val defaultHoursToAddForEndDateTime = 8
     private var currentPickerIsForStart = true
@@ -52,10 +55,88 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         super.onViewCreated(view, savedInstanceState)
         val args: OfferCarFragmentArgs by navArgs()
 
-        Log.d(TAG, "onViewCreated: args: $args")
+        Log.d(TAG, "========== onViewCreated: args: $args")
 
         bindUI(args)
         setDefaults(args)
+
+        binding.buttonCarOfferStartDatetime.isEnabled = true
+        binding.buttonCarOfferEndDatetime.isEnabled = true
+        binding.txtInputOfferCarLocation.isEnabled = true
+        binding.textviewOffercarCustomer.visibility = View.GONE
+        binding.buttonCarSave.visibility = View.VISIBLE
+
+        val bookingViewModel = ViewModelProvider(requireActivity())[BookingViewModel::class.java]
+
+        bookingViewModel.clearSingleBooking()
+
+        bookingViewModel.bookingSingle.observe(viewLifecycleOwner) {
+            Log.d(TAG, "onViewCreated: bookingSingle: $it")
+
+
+
+            // Log the status of the booking
+            if (it != null) {
+                Log.d(TAG, "onViewCreated: booking status: ${it.status}")
+
+                when (it.status) {
+                    "PENDING" -> {
+
+                        // Show the Customer name
+                        binding.textviewOffercarCustomer.text = it.customer.firstName + " " + it.customer.lastName + " wants to rent your car!"
+                        binding.textviewOffercarCustomer.visibility = View.VISIBLE
+
+                        // Show ACCEPT and DECLINE buttons
+//                        binding.acceptButton.visibility = View.VISIBLE
+//                        binding.declineButton.visibility = View.VISIBLE
+
+                        // Enable the date and time pickers and the location field
+                        binding.buttonCarOfferStartDatetime.isEnabled = false
+                        binding.buttonCarOfferEndDatetime.isEnabled = false
+                        binding.txtInputOfferCarLocation.isEnabled = false
+
+                        // Show the save button
+                        binding.buttonCarSave.visibility = View.GONE
+
+
+                    }
+                    "APPROVED" -> {
+
+                        // Get the name of the user who made the booking
+                        Log.d(TAG, "onViewCreated: booking made by: ${it.customer}")
+                        Log.d(
+                            TAG,
+                            "==========: booking made by: ${it.customer.firstName + " " + it.customer.lastName}"
+                        )
+
+                        // Show the Customer name
+                        binding.textviewOffercarCustomer.text = "Booked by: " + it.customer.firstName + " " + it.customer.lastName
+                        binding.textviewOffercarCustomer.visibility = View.VISIBLE
+
+
+                        // Hide ACCEPT and DECLINE buttons
+//                        binding.acceptButton.visibility = View.GONE
+//                        binding.declineButton.visibility = View.GONE
+
+                        // Disable the date and time pickers and the location field
+                        binding.buttonCarOfferStartDatetime.isEnabled = false
+                        binding.buttonCarOfferEndDatetime.isEnabled = false
+                        binding.txtInputOfferCarLocation.isEnabled = false
+
+                        // Hide the save button
+                        binding.buttonCarSave.visibility = View.GONE
+
+
+                    }
+
+                }
+
+
+            }
+
+        }
+
+        bookingViewModel.getBookingForOfferById(args.id.toLong())
 
         // === Button listeners ===
         binding.buttonCarOfferStartDatetime.setOnClickListener {
@@ -215,6 +296,8 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener,
             ).show()
         }
     } // end onTimeSet()
+
+
 
 
 }

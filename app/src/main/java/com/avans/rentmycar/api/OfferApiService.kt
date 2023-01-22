@@ -37,6 +37,9 @@ interface OfferService {
     @GET("/api/v1/bookings/{id}")
     suspend fun getBookingById(@Path("id") id:Long): Response<SingleBookingResponse>
 
+    @GET("/api/v1/bookings/offer/{id}")
+    suspend fun getBookingForOfferById(@Path("id") id:Long): Response<SingleBookingResponse>
+
     @DELETE("/api/v1/bookings/{id}")
     suspend fun cancelBooking(@Path("id") id:Long): Response<DeleteResponse>
 

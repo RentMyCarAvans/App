@@ -19,6 +19,8 @@ class BookingViewModel : ViewModel() {
     val createBookingResult: MutableLiveData<CreateBookingResponse?> = MutableLiveData()
     var cancelBookingResult: MutableLiveData<Boolean> = MutableLiveData(false)
 
+
+
     // ===== Bookings =====
     private fun setBookingCollection(bookings: Collection<BookingData>) {
         Log.d("[BVM] setBookColl", "setBookingCollection: $bookings")
@@ -45,6 +47,33 @@ class BookingViewModel : ViewModel() {
             }
         }
     }
+
+    fun getBookingForOfferById(id: Long) {
+        if(bookingCollection.value != null) {
+            // Find the booking where the offer.id == id
+            bookingSingle.value = bookingCollection.value?.find { it.offer.id == id }
+        } else {
+//            Log.d("[BVM] getBookingForOfferById", "bookingCollection is null")
+            viewModelScope.launch {
+                try {
+                    val bookingResponse = bookingRepository.getBookingForOfferById(id)
+//                    Log.d("[BVM] getBookingForOfferById", "bookingResponse: $bookingResponse")
+                    if (bookingResponse != null) {
+                        bookingSingle.value = bookingResponse
+//                        Log.d("[BVM] getBookingForOfferById", "bookingSingle: $bookingSingle")
+                    }
+                } catch (e: Exception) {
+                    Log.e("[BVM] getBookingForOfferById", e.message.toString())
+                }
+            }
+        }
+    }
+
+    fun clearSingleBooking() {
+        bookingSingle.value = null
+    }
+
+
 
     // ===== Repository Interaction =====
     fun getBookings(userId: Long? = null) {
