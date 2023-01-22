@@ -49,24 +49,28 @@ class BookingViewModel : ViewModel() {
     }
 
     fun getBookingForOfferById(id: Long) {
-        if(bookingCollection.value != null) {
-            // Find the booking where the offer.id == id
-            bookingSingle.value = bookingCollection.value?.find { it.offer.id == id }
-        } else {
-//            Log.d("[BVM] getBookingForOfferById", "bookingCollection is null")
+        Log.d("[BVM] getBookingForOfferById", " *************** getBookingForOfferById: $id")
+//        if(bookingCollection.value != null) {
+//            Log.d("[BVM] getBookingForOfferById", " *************** bookingCollection is not null")
+//            // Find the booking where the offer.id == id
+//            bookingSingle.value = bookingCollection.value?.find { it.offer.id == id }
+//            Log.d("[BVM] getBookingForOfferById", " *************** bookingCollection: ${bookingCollection.value}")
+//            Log.d("[BVM] getBookingForOfferById", " *************** bookingSingle: ${bookingSingle.value}")
+//        } else {
+            Log.d("[BVM] getBookingForOfferById", "**************bookingCollection is null")
             viewModelScope.launch {
                 try {
                     val bookingResponse = bookingRepository.getBookingForOfferById(id)
-//                    Log.d("[BVM] getBookingForOfferById", "bookingResponse: $bookingResponse")
+                    Log.d("[BVM] getBookingForOfferById", "bookingResponse: $bookingResponse")
                     if (bookingResponse != null) {
                         bookingSingle.value = bookingResponse
-//                        Log.d("[BVM] getBookingForOfferById", "bookingSingle: $bookingSingle")
+                        Log.d("[BVM] getBookingForOfferById", "bookingSingle: $bookingSingle")
                     }
                 } catch (e: Exception) {
                     Log.e("[BVM] getBookingForOfferById", e.message.toString())
                 }
             }
-        }
+//        }
     }
 
     fun clearSingleBooking() {

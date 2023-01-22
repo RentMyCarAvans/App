@@ -54,8 +54,11 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val args: OfferCarFragmentArgs by navArgs()
-
         Log.d(TAG, "========== onViewCreated: args: $args")
+        val bookingViewModel = ViewModelProvider(requireActivity())[BookingViewModel::class.java]
+        bookingViewModel.clearSingleBooking()
+        bookingViewModel.getBookingForOfferById(args.id.toLong())
+
 
         bindUI(args)
         setDefaults(args)
@@ -65,10 +68,12 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         binding.txtInputOfferCarLocation.isEnabled = true
         binding.textviewOffercarCustomer.visibility = View.GONE
         binding.buttonCarSave.visibility = View.VISIBLE
+        binding.buttonOffercarApprove.visibility = View.GONE
+        binding.buttonOffercarDecline.visibility = View.GONE
 
-        val bookingViewModel = ViewModelProvider(requireActivity())[BookingViewModel::class.java]
 
-        bookingViewModel.clearSingleBooking()
+//        bookingViewModel.clearSingleBooking()
+
 
         bookingViewModel.bookingSingle.observe(viewLifecycleOwner) {
             Log.d(TAG, "onViewCreated: bookingSingle: $it")
@@ -87,8 +92,8 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener,
                         binding.textviewOffercarCustomer.visibility = View.VISIBLE
 
                         // Show ACCEPT and DECLINE buttons
-//                        binding.acceptButton.visibility = View.VISIBLE
-//                        binding.declineButton.visibility = View.VISIBLE
+                        binding.buttonOffercarApprove.visibility = View.VISIBLE
+                        binding.buttonOffercarDecline.visibility = View.VISIBLE
 
                         // Enable the date and time pickers and the location field
                         binding.buttonCarOfferStartDatetime.isEnabled = false
@@ -136,7 +141,6 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener,
 
         }
 
-        bookingViewModel.getBookingForOfferById(args.id.toLong())
 
         // === Button listeners ===
         binding.buttonCarOfferStartDatetime.setOnClickListener {
@@ -168,6 +172,19 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener,
             Log.d(TAG, "onViewCreated() => args = " + args)
             Log.d(TAG, "onViewCreated() => Carid = " + args.carid)
             saveOffer(args)
+        }
+
+        binding.buttonOffercarApprove.setOnClickListener {
+            Log.d(TAG, "onViewCreated() => Button APPROVE clicked.")
+            // TODO: Show dialog
+
+//            approveOffer(args)
+        }
+
+        binding.buttonOffercarDecline.setOnClickListener {
+            Log.d(TAG, "onViewCreated() => Button DECLINE clicked.")
+            // TODO: Show dialog
+//            declineOffer(args)
         }
 
     } // end onViewCreated()
@@ -298,6 +315,21 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener,
     } // end onTimeSet()
 
 
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart() => called.")
 
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "onStop() => called.")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume() => called.")
+
+    }
 
 }
