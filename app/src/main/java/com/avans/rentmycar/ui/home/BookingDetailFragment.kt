@@ -86,6 +86,12 @@ class BookingDetailFragment : Fragment(), BiometricAuthListener {
 
                 binding.bookingDetailTitle.text = booking.offer.car.model
 
+                if(booking.status != "APPROVED"){
+                    binding.buttonBookingDetailStartride.isEnabled = false
+                    binding.buttonBookingDetailStartride.visibility = View.GONE
+
+                }
+
             }
         }
 
