@@ -139,6 +139,7 @@ class OfferViewModel : ViewModel() {
                 }
             } catch (e: Exception) {
                 Log.e("[OfferVM] getOffers", e.message.toString())
+                Log.e("[OfferVM] getOffers", e.localizedMessage.toString())
             }
         }
     }

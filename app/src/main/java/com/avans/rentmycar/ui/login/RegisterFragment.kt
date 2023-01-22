@@ -38,12 +38,15 @@ class RegisterFragment : Fragment() {
         //show actionbar
         (activity as AppCompatActivity?)!!.supportActionBar!!.show()
         binding.btnCreateAccount.setOnClickListener {
+            Log.d("RegisterFragment", "Create account button clicked")
             if (isValidated()) {
+                Log.d("RegisterFragment", "Validated")
                 val firstName = binding.txtInputFirstName.text.toString()
                 val lastName = binding.txtInputLastName.text.toString()
                 val email = binding.txtInputEmail.text.toString()
                 val pwd = binding.txtInputPass.text.toString()
-                val birthDate = binding.txtInputBirthDate.text.toString()
+                val birthDate = binding.datePickerRegisterDateOfBirth.year.toString() + "-" + binding.datePickerRegisterDateOfBirth.month+1.toString() + "-" + binding.datePickerRegisterDateOfBirth.dayOfMonth.toString()
+                Log.d("RegisterFragment", "Birthdate: $birthDate")
                 createAccount(
                     firstName = firstName,
                     lastName = lastName,
@@ -108,7 +111,7 @@ class RegisterFragment : Fragment() {
         binding.txtInputLastName.addTextChangedListener(TextFieldValidation(binding.txtInputLastName))
         binding.txtInputEmail.addTextChangedListener(TextFieldValidation(binding.txtInputEmail))
         binding.txtInputPass.addTextChangedListener(TextFieldValidation(binding.txtInputPass))
-        binding.txtInputBirthDate.addTextChangedListener(TextFieldValidation(binding.txtLayBirthDate))
+//        binding.txtInputBirthDate.addTextChangedListener(TextFieldValidation(binding.txtLayBirthDate))
     }
 
     private fun validateFirstName(): Boolean {
@@ -149,17 +152,29 @@ class RegisterFragment : Fragment() {
     }
 
     private fun validateBirthDate(): Boolean {
-        if (binding.txtInputBirthDate.text.toString().trim().isEmpty()) {
-            binding.txtLayBirthDate.error = getString(R.string.required_field)
-            binding.txtInputBirthDate.requestFocus()
+
+        // Check if datepicker entry is in the past
+        // Create String from datepicker
+        val birthDate = binding.datePickerRegisterDateOfBirth.year.toString() + "-" + binding.datePickerRegisterDateOfBirth.month+1.toString() + "-" + binding.datePickerRegisterDateOfBirth.dayOfMonth.toString()
+        Log.d("RegisterFragment", "Birthdate: $birthDate")
+        if (!isValidBirthDate(birthDate)) {
+            Log.d("RegisterFragment", "Birthdate is not valid")
+            binding.datePickerRegisterDateOfBirth.requestFocus()
             return false
-        } else if (!isValidBirthDate(binding.txtInputBirthDate.text.toString())) {
-            binding.txtLayBirthDate.error = getString(R.string.invalid_birthdate)
-            binding.txtInputBirthDate.requestFocus()
-            return false
-        } else {
-            binding.txtLayBirthDate.isErrorEnabled = false
         }
+
+//        if (binding.txtInputBirthDate.text.toString().trim().isEmpty()) {
+//            binding.txtLayBirthDate.error = getString(R.string.required_field)
+//            binding.txtInputBirthDate.requestFocus()
+//            return false
+//        } else if (!isValidBirthDate(binding.txtInputBirthDate.text.toString())) {
+//            binding.txtLayBirthDate.error = getString(R.string.invalid_birthdate)
+//            binding.txtInputBirthDate.requestFocus()
+//            return false
+//        } else {
+//            binding.txtLayBirthDate.isErrorEnabled = false
+//        }
+
         return true
     }
     private fun validatePassword(): Boolean {
@@ -211,9 +226,9 @@ class RegisterFragment : Fragment() {
                 R.id.txtInput_pass -> {
                     validatePassword()
                 }
-                R.id.txtInput_birthDate -> {
-                    validateBirthDate()
-                }
+//                R.id.txtInput_birthDate -> {
+//                    validateBirthDate()
+//                }
             }
         }
     }
