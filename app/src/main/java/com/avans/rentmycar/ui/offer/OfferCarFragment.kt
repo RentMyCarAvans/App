@@ -96,6 +96,7 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener,
      * Binds views with the passed in item data.
      */
     private fun bindUI(args: OfferCarFragmentArgs) {
+        Log.d(TAG, "bindUI() => args = " + args)
         binding.textviewOfferCarStartDatetime.text = args.startdate
         binding.textviewOfferCarEndDatetime.text = args.enddate
         binding.txtInputOfferCarLocation.setText(args.location)
@@ -118,11 +119,16 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener,
             endDateTime = Calendar.getInstance()
             endDateTime.add(Calendar.HOUR_OF_DAY, defaultHoursToAddForEndDateTime)
 
-            binding.textviewOfferCarStartDatetime.text =
-                DateTimeConverter.formatCalendarToString(startDateTime)
-            binding.textviewOfferCarEndDatetime.text =
-                DateTimeConverter.formatCalendarToString(endDateTime)
+        } else {
+            startDateTime = DateTimeConverter.formatDBStringToCalendar(args.startdate)
+            endDateTime = DateTimeConverter.formatDBStringToCalendar(args.enddate)
         }
+
+        binding.textviewOfferCarStartDatetime.text =
+            DateTimeConverter.formatCalendarToString(startDateTime)
+        binding.textviewOfferCarEndDatetime.text =
+            DateTimeConverter.formatCalendarToString(endDateTime)
+
     } // end setDefaults()
 
     fun isEndDateAfterStartDate(startDate: Calendar, endDate: Calendar): Boolean {
@@ -132,17 +138,8 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener,
 
     private fun saveOffer(args: OfferCarFragmentArgs) {
         val offerViewModel: OfferViewModel by viewModels()
-        val carId: Long = args.id.toLong()
+        val carId: Long = args.carid
         val location: String = binding.txtInputOfferCarLocation.text.toString()
-
-        if (!isEndDateAfterStartDate(startDateTime, endDateTime)) {
-            Snackbar.make(
-                binding.root,
-                "Start date can not be after end date",
-                Snackbar.LENGTH_LONG
-            ).show()
-            return
-        }
 
         if (args.startdate.isNullOrEmpty() && args.enddate.isNullOrEmpty()) {
             offerViewModel.createOffer(

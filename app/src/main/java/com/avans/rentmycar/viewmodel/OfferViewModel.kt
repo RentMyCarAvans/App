@@ -211,6 +211,7 @@ class OfferViewModel : ViewModel() {
                     carId = carId)
                 Log.d("[RMC][OfferVM", "updateOffer() => offerRequest = " + offerRequest)
                 val response = offerRepository.updateOffer(id, offerRequest = offerRequest)
+                Log.d("[RMC][OfferVM", "updateOffer() => response = " + response)
                 updateOfferResult.value = response
             } catch (e: Exception) {
                 Log.d("[RMC][OfferViewModel]", "updateOffer() => Exception: " + createOfferResult.value.toString() )
