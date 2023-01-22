@@ -81,4 +81,7 @@
     <string name="success_update_profile">Profiel opgeslagen!</string>
     <string name="cannot_book_own_car">Je kunt je eigen auto niet boeken</string>
     <string name="clear_filter">Clear filter</string>
+    <string name="cancel_this_booking">Annuleer aanbieding</string>
+    <string name="offer_cancelled">Aanbieding geannuleerd</string>
+    <string name="offer_cant_be_cancelled">Aanbieding kan niet geannuleerd worden</string>
 </resources>

@@ -61,6 +61,10 @@ class OfferRepository {
         return OfferService.getApi()?.updateOffer(Id, offerRequest)?.body()
     }
 
+    suspend fun cancelOffer(id: Long): DeleteResponse? {
+        return OfferService.getApi()?.cancelOffer(id)?.body()
+    }
+
 }
 
 
