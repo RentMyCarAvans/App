@@ -181,7 +181,7 @@ class OfferViewModel : ViewModel() {
     fun createOffer( startDateTime: String,
                      endDateTime: String,
                      pickupLocation: String,
-                     carId: Long) {
+                     carId: Long)  {
         Log.d("[RMC][OfferViewModel]", "createOffer() => startDateTime $startDateTime, endDateTime $endDateTime location $pickupLocation carid $carId" )
         viewModelScope.launch {
             try {
@@ -194,6 +194,9 @@ class OfferViewModel : ViewModel() {
                 Log.e("[OfferVM] crOfferResu", e.message.toString())
                 Log.d("[RMC][OfferViewModel]", "createOffer() => Exception: " + createOfferResult.value.toString() )
                 Log.d("[RMC][OfferViewModel]", "createOffer() => Exception message: " + e.message.toString() )
+            } finally {
+                Log.d("[RMC][OfferViewModel]", "createOffer() => Finally: " + createOfferResult.value.toString() )
+
             }
         }
     }

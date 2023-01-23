@@ -297,14 +297,33 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener,
                 location,
                 carId
             )
-            view?.let {
-                Snackbar.make(
-                    it,
-                    "Offer on car with licenseplate " + args.licenseplate + " created",
-                    Snackbar.LENGTH_LONG
-                ).show()
+            // Check if the offer was created successfully
+            offerViewModel.createOfferResult.observe(viewLifecycleOwner) { createOfferResult ->
+                Log.d(TAG, "saveOffer() => createOfferResult = " + createOfferResult)
+                if (createOfferResult?.status == 201) {
+                    Log.d(TAG, "saveOffer() => Offer created successfully")
+                    val snackbar = Snackbar.make(
+                        binding.root,
+                        "Offer created successfully",
+                        Snackbar.LENGTH_LONG
+                    )
+                    snackbar.show()
+                    findNavController().navigate(R.id.action_offerCarFragment_to_mycars)
+                } else {
+                    Log.d(TAG, "saveOffer() => Offer creation failed")
+                    view?.let {
+                        val snackbar = Snackbar.make(
+                            it,
+                            "Offer on car with licenseplate " + args.licenseplate + " creation failed",
+                            Snackbar.LENGTH_LONG
+                        )
+                        snackbar.view.setBackgroundColor(resources.getColor(com.avans.rentmycar.R.color.warning))
+                        snackbar.show()
+                    }
+                }
             }
-            findNavController().navigate(R.id.action_offerCarFragment_to_mycars)
+
+
         } else {
             offerViewModel.updateOffer(
                 offerId,
