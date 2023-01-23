@@ -26,6 +26,7 @@ class OfferViewModel : ViewModel() {
 
     // ===== Results of the API calls =====
     val createOfferResult: MutableLiveData<CreateOfferResponse?> = MutableLiveData()
+    val createOfferResultStatus: MutableLiveData<Int?> = MutableLiveData()
     val updateOfferResult: MutableLiveData<CreateOfferResponse?> = MutableLiveData()
     val deleteOfferResult: MutableLiveData<DeleteResponse?> = MutableLiveData()
 
@@ -181,12 +182,14 @@ class OfferViewModel : ViewModel() {
     fun createOffer( startDateTime: String,
                      endDateTime: String,
                      pickupLocation: String,
-                     carId: Long) {
+                     carId: Long)  {
         Log.d("[RMC][OfferViewModel]", "createOffer() => startDateTime $startDateTime, endDateTime $endDateTime location $pickupLocation carid $carId" )
         viewModelScope.launch {
             try {
                 val createOfferResponse = offerRepository.createOffer(startDateTime, endDateTime, pickupLocation, carId)
                 createOfferResult.value = createOfferResponse
+                createOfferResultStatus.value = createOfferResponse?.status
+                Log.d("[OVM]", "createOffer() => createOfferResultStatus: " + createOfferResultStatus.value)
                 Log.d("[OfferVM] crOfferResp", createOfferResponse.toString())
                 Log.d("[RMC][OfferViewModel]", "createOffer() => Response: " + createOfferResponse.toString() )
             } catch (e: Exception) {
@@ -194,6 +197,9 @@ class OfferViewModel : ViewModel() {
                 Log.e("[OfferVM] crOfferResu", e.message.toString())
                 Log.d("[RMC][OfferViewModel]", "createOffer() => Exception: " + createOfferResult.value.toString() )
                 Log.d("[RMC][OfferViewModel]", "createOffer() => Exception message: " + e.message.toString() )
+            } finally {
+                Log.d("[RMC][OfferViewModel]", "createOffer() => Finally: " + createOfferResult.value.toString() )
+
             }
         }
     }
