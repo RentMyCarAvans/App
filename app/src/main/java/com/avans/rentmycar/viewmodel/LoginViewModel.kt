@@ -68,7 +68,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                 } else {
                     Log.d("APP", "not working this")
 
-                    loginResult.value = BaseResponse.Error(response?.message())
+                    registerResult.value = BaseResponse.Error(response?.message())
                 }
 
             } catch (ex: Exception) {
