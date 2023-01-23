@@ -62,6 +62,8 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         val args: OfferCarFragmentArgs by navArgs()
         Log.d(TAG, "========== onViewCreated: args: $args")
         val bookingViewModel = ViewModelProvider(requireActivity())[BookingViewModel::class.java]
+        val offerViewModel: OfferViewModel by viewModels()
+
 
         bookingViewModel.clearSingleBooking()
         bookingViewModel.getBookingForOfferById(args.id.toLong())
@@ -80,6 +82,30 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener,
 
 
 //        bookingViewModel.clearSingleBooking()
+
+        // Check if the offer was created successfully
+        offerViewModel.createOfferResult.observe(viewLifecycleOwner) { createOfferResult ->
+            Log.d(TAG, "saveOffer() => createOfferResult = " + createOfferResult)
+            if (createOfferResult?.status == 201) {
+                Log.d(TAG, "saveOffer() => Offer created successfully")
+                val snackbar = Snackbar.make(
+                    binding.root,
+                    "Offer created successfully",
+                    Snackbar.LENGTH_LONG
+                )
+                snackbar.show()
+                findNavController().navigate(R.id.action_offerCarFragment_to_mycars)
+            } else if(createOfferResult == null) {
+                Log.d(TAG, "saveOffer() => Offer creation failed")
+                val snackbar = Snackbar.make(
+                    binding.root,
+                    "Offer on car with licenseplate " + args.licenseplate + " creation failed",
+                    Snackbar.LENGTH_LONG
+                )
+                snackbar.view.setBackgroundColor(resources.getColor(com.avans.rentmycar.R.color.warning))
+                snackbar.show()
+            }
+        }
 
 
         bookingViewModel.bookingSingle.observe(viewLifecycleOwner) {
@@ -297,31 +323,7 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener,
                 location,
                 carId
             )
-            // Check if the offer was created successfully
-            offerViewModel.createOfferResult.observe(viewLifecycleOwner) { createOfferResult ->
-                Log.d(TAG, "saveOffer() => createOfferResult = " + createOfferResult)
-                if (createOfferResult?.status == 201) {
-                    Log.d(TAG, "saveOffer() => Offer created successfully")
-                    val snackbar = Snackbar.make(
-                        binding.root,
-                        "Offer created successfully",
-                        Snackbar.LENGTH_LONG
-                    )
-                    snackbar.show()
-                    findNavController().navigate(R.id.action_offerCarFragment_to_mycars)
-                } else {
-                    Log.d(TAG, "saveOffer() => Offer creation failed")
-                    view?.let {
-                        val snackbar = Snackbar.make(
-                            it,
-                            "Offer on car with licenseplate " + args.licenseplate + " creation failed",
-                            Snackbar.LENGTH_LONG
-                        )
-                        snackbar.view.setBackgroundColor(resources.getColor(com.avans.rentmycar.R.color.warning))
-                        snackbar.show()
-                    }
-                }
-            }
+
 
 
         } else {
