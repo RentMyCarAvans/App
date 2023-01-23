@@ -17,6 +17,8 @@ data class BookingData(
     val offer: OfferData,
     val ride: String,
     val customer: OfferUserData,
+    val dropoffLocation: String,
+    val status: String
 )
 
 data class SingleBookingResponse(

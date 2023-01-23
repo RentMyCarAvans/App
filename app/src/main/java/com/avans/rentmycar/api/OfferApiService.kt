@@ -37,11 +37,17 @@ interface OfferService {
     @GET("/api/v1/bookings/{id}")
     suspend fun getBookingById(@Path("id") id:Long): Response<SingleBookingResponse>
 
+    @GET("/api/v1/bookings/offer/{id}")
+    suspend fun getBookingForOfferById(@Path("id") id:Long): Response<SingleBookingResponse>
+
     @DELETE("/api/v1/bookings/{id}")
     suspend fun cancelBooking(@Path("id") id:Long): Response<DeleteResponse>
 
     @DELETE("/api/v1/offers/{id}")
     suspend fun cancelOffer(@Path("id") id:Long): Response<DeleteResponse>
+
+    @PUT("/api/v1/bookings/{id}")
+    suspend fun approveBooking(@Path("id") id:Long, @Body bookingUpdate: BookingUpdateDTO): Response<SingleBookingResponse>
 
 
     companion object {
@@ -62,4 +68,8 @@ class OfferDTO {
     var endDateTime: String = ""
     var pickupLocation: String = ""
     var carId: Long = 0
+}
+
+class BookingUpdateDTO {
+    var status: String = ""
 }

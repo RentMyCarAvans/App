@@ -11,6 +11,7 @@ import android.widget.DatePicker
 import android.widget.TimePicker
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.avans.rentmycar.R
@@ -18,7 +19,9 @@ import com.avans.rentmycar.databinding.FragmentOfferBinding
 import com.avans.rentmycar.utils.DateTimeConverter
 import com.avans.rentmycar.utils.DateTimeConverter.formatCalendarToDBString
 import com.avans.rentmycar.utils.SessionManager
+import com.avans.rentmycar.viewmodel.BookingViewModel
 import com.avans.rentmycar.viewmodel.OfferViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
 
@@ -33,13 +36,19 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener,
     // Offer variables
     private var offerId: Long = 0L
     private var carId: Long = 0L
+    private var bookingId: Long = 0L
 
     private val defaultHoursToAddForEndDateTime = 8
     private var currentPickerIsForStart = true
 
+    private var customerFirstName: String = ""
+    private var customerLastName: String = ""
+
     // Create calendars for date and time
     var startDateTime: Calendar = Calendar.getInstance()
     var endDateTime: Calendar = Calendar.getInstance()
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -51,11 +60,98 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val args: OfferCarFragmentArgs by navArgs()
+        Log.d(TAG, "========== onViewCreated: args: $args")
+        val bookingViewModel = ViewModelProvider(requireActivity())[BookingViewModel::class.java]
 
-        Log.d(TAG, "onViewCreated: args: $args")
+        bookingViewModel.clearSingleBooking()
+        bookingViewModel.getBookingForOfferById(args.id.toLong())
+
 
         bindUI(args)
         setDefaults(args)
+
+        binding.buttonCarOfferStartDatetime.isEnabled = true
+        binding.buttonCarOfferEndDatetime.isEnabled = true
+        binding.txtInputOfferCarLocation.isEnabled = true
+        binding.textviewOffercarCustomer.visibility = View.GONE
+        binding.buttonCarSave.visibility = View.VISIBLE
+        binding.buttonOffercarApprove.visibility = View.GONE
+        binding.buttonOffercarDecline.visibility = View.GONE
+
+
+//        bookingViewModel.clearSingleBooking()
+
+
+        bookingViewModel.bookingSingle.observe(viewLifecycleOwner) {
+            Log.d(TAG, "onViewCreated: bookingSingle: $it")
+
+
+
+            // Log the status of the booking
+            if (it != null) {
+                Log.d(TAG, "onViewCreated: booking status: ${it.status}")
+
+                it.customer.firstName.let { firstName ->
+                    customerFirstName = firstName
+                }
+                it.customer.lastName.let { lastName ->
+                    customerLastName = lastName
+                }
+
+                when (it.status) {
+
+
+                    "PENDING" -> {
+
+                        // Show the Customer name
+                        binding.textviewOffercarCustomer.text = it.customer.firstName + " " + it.customer.lastName + " wants to rent your car!"
+                        binding.textviewOffercarCustomer.visibility = View.VISIBLE
+
+                        // Show ACCEPT and DECLINE buttons
+                        binding.buttonOffercarApprove.visibility = View.VISIBLE
+                        binding.buttonOffercarDecline.visibility = View.VISIBLE
+
+                        // Enable the date and time pickers and the location field
+                        binding.buttonCarOfferStartDatetime.isEnabled = false
+                        binding.buttonCarOfferEndDatetime.isEnabled = false
+                        binding.txtInputOfferCarLocation.isEnabled = false
+
+                        // Show the save button
+                        binding.buttonCarSave.visibility = View.GONE
+
+
+                    }
+                    "APPROVED" -> {
+
+                        // Get the name of the user who made the booking
+                        Log.d(TAG, "onViewCreated: booking made by: ${it.customer}")
+                        Log.d(
+                            TAG,
+                            "==========: booking made by: ${it.customer.firstName + " " + it.customer.lastName}"
+                        )
+
+                        // Show the Customer name
+                        binding.textviewOffercarCustomer.text = "Booked by: " + it.customer.firstName + " " + it.customer.lastName
+                        binding.textviewOffercarCustomer.visibility = View.VISIBLE
+
+                        // Disable the date and time pickers and the location field
+                        binding.buttonCarOfferStartDatetime.isEnabled = false
+                        binding.buttonCarOfferEndDatetime.isEnabled = false
+                        binding.txtInputOfferCarLocation.isEnabled = false
+
+                        // Hide the save button
+                        binding.buttonCarSave.visibility = View.GONE
+
+
+                    }
+
+                }
+
+
+            }
+
+        }
+
 
         // === Button listeners ===
         binding.buttonCarOfferStartDatetime.setOnClickListener {
@@ -89,7 +185,60 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener,
             saveOffer(args)
         }
 
+        binding.buttonOffercarApprove.setOnClickListener {
+            Log.d(TAG, "onViewCreated() => Button APPROVE clicked.")
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Approve booking")
+                .setMessage("Are you sure you want to approve this booking?")
+                .setPositiveButton("Yes") { dialog, which ->
+                    Log.d("[OCF]", "Approved!")
+                                approveBooking(args)
+
+                }
+                .setNegativeButton("No") { dialog, which ->
+                    Log.d("[OCF]", "Declined!")
+                    }
+                .show()
+
+        }
+
+        binding.buttonOffercarDecline.setOnClickListener {
+            Log.d(TAG, "onViewCreated() => Button DECLINE clicked.")
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Decline booking")
+                .setMessage("Are you sure you want to decline this booking?\n" + customerFirstName + " might be sad...")
+                .setNegativeButton("No") { dialog, which ->
+                    Log.d("[OCF]", "Decline cancelled!")
+                }
+                .setPositiveButton("Yes") { dialog, which ->
+                    Log.d("[OCF]", "Declined!")
+                                declineBooking(args)
+
+                }
+                .show()
+        }
+
     } // end onViewCreated()
+
+    private fun approveBooking(args: OfferCarFragmentArgs) {
+        Log.d(TAG, "approveOffer() => args = " + args)
+        val bookingViewModel = ViewModelProvider(requireActivity())[BookingViewModel::class.java]
+
+        bookingViewModel.approveBooking(args.id.toLong())
+        findNavController().navigate(R.id.action_offerCarFragment2_to_myOffersFragment)
+
+
+    }
+
+    private fun declineBooking(args: OfferCarFragmentArgs) {
+        Log.d(TAG, "declineOffer() => args = " + args)
+        val bookingViewModel = ViewModelProvider(requireActivity())[BookingViewModel::class.java]
+
+        bookingViewModel.declineBooking(args.id.toLong())
+        findNavController().navigate(R.id.action_offerCarFragment2_to_myOffersFragment)
+
+
+    }
 
 
     /**
@@ -216,5 +365,22 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         }
     } // end onTimeSet()
 
+
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart() => called.")
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "onStop() => called.")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume() => called.")
+
+    }
 
 }

@@ -29,6 +29,7 @@ class BookingAdapter(
         private val bookingStartDate = itemBookingBinding.textviewItemBookingStartdate
         private val bookingEndDate = itemBookingBinding.textviewItemBookingEnddate
         private val bookingLocation = itemBookingBinding.textviewItemBookingLocation
+        private val bookingStatusBanner = itemBookingBinding.textviewItemBookingStatusBanner
 
         @SuppressLint("SetTextI18n")
         @RequiresApi(Build.VERSION_CODES.O)
@@ -50,6 +51,21 @@ class BookingAdapter(
             bookingStartDate.text = itemView.context.getString(R.string.offer_pickupAfter, startDate)
             bookingEndDate.text = itemView.context.getString(R.string.offer_returnBefore, endDate)
             bookingLocation.text = bookingData.offer.pickupLocation
+
+
+            bookingStatusBanner.text = bookingData.status
+
+            when (bookingData.status) {
+                "PENDING" -> {
+                    bookingStatusBanner.setBackgroundResource(R.color.colorPending)
+                }
+                "APPROVED" -> {
+                    bookingStatusBanner.setBackgroundResource(R.color.colorApproved)
+
+                }
+            }
+
+
         }
 
     }

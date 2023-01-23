@@ -40,6 +40,12 @@ class OfferAdapter(
         @RequiresApi(Build.VERSION_CODES.O)
         fun bindData(offerData: OfferData) {
 
+            // TODO: Disable the distance textview if called from the MyOffersFragment
+            // For now, hide the distance textview if distance is null or 0
+            if (offerData.distance == 0f) {
+                offerDistance.visibility = View.GONE
+            }
+
             val startDate = DateTimeConverter.convertDatabaseDateTimeToReadableDateTime(offerData.startDateTime)
             val endDate = DateTimeConverter.convertDatabaseDateTimeToReadableDateTime(offerData.endDateTime)
 

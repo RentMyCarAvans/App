@@ -87,6 +87,43 @@
             android:maxLines="1"/>
     </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+        android:id="@+id/textview_offercar_customer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Customer"
+        app:layout_constraintTop_toBottomOf="@id/textview_offer_car_end_datetime"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingHorizontal="15dp"
+        android:layout_marginTop="50dp"
+        />
+
+    <Button
+        android:layout_marginTop="20dp"
+        style="@style/primaryButton"
+        android:id="@+id/button_offercar_approve"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/textview_offercar_customer"
+app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/button_offercar_decline"
+        android:text="Approve"
+        />
+    <Button
+        android:layout_marginTop="20dp"
+
+        style="@style/secondaryButton"
+        android:id="@+id/button_offercar_decline"
+        app:layout_constraintStart_toEndOf="@id/button_offercar_approve"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/textview_offercar_customer"
+app:layout_constraintEnd_toEndOf="parent"
+        android:text="Decline"
+
+        />
+
     <Button
         android:id="@+id/button_car_save"
         android:layout_width="match_parent"
