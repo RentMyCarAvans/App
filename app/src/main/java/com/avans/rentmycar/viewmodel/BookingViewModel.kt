@@ -18,6 +18,8 @@ class BookingViewModel : ViewModel() {
     var bookingSingle = MutableLiveData<BookingData?>()
     val createBookingResult: MutableLiveData<CreateBookingResponse?> = MutableLiveData()
     var cancelBookingResult: MutableLiveData<Boolean> = MutableLiveData(false)
+    var declineBookingResult: MutableLiveData<Boolean> = MutableLiveData(false)
+    var approveBookingResult: MutableLiveData<Boolean> = MutableLiveData(false)
 
 
 
@@ -122,6 +124,43 @@ class BookingViewModel : ViewModel() {
                 cancelBookingResult.value = false
             }
         }
+    }
+
+    fun declineBooking(offerId: Long) {
+        Log.d("[BVM] declineBooking", "declineBooking called for offerId: $offerId")
+        viewModelScope.launch {
+            try {
+                val bookingRepository = BookingRepository()
+                val bookingIdBelonigingToOffer = bookingRepository.getBookingForOfferById(offerId)?.id
+                if(bookingIdBelonigingToOffer != null) {
+                    val declineBookingResponse = bookingRepository.cancelBooking(bookingIdBelonigingToOffer)
+                    Log.d("[BVM] declineBooking", "declineBookingResponse: $declineBookingResponse")
+//                    declineBookingResult.value = declineBookingResponse
+                }
+            } catch (e: Exception) {
+                Log.e("[BVM] declineBooking", e.message.toString())
+            }
+        }
+
+    }
+
+    fun approveBooking(offerId: Long) {
+        Log.d("[BVM] approveBooking", "approveBooking called for offerId: $offerId")
+        viewModelScope.launch {
+            try {
+                val bookingRepository = BookingRepository()
+                val bookingIdBelonigingToOffer = bookingRepository.getBookingForOfferById(offerId)?.id
+                if(bookingIdBelonigingToOffer != null) {
+                    Log.d("[BVM] approveBooking", "bookingIdBelonigingToOffer: $bookingIdBelonigingToOffer")
+                    bookingRepository.approveBooking(bookingIdBelonigingToOffer)
+                }
+            } catch (e: Exception) {
+                Log.e("[BVM] approveBooking", e.message.toString())
+                Log.e("[BVM] approveBooking", e.localizedMessage.toString())
+            }
+        }
+
+
     }
 
 

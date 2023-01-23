@@ -46,6 +46,9 @@ interface OfferService {
     @DELETE("/api/v1/offers/{id}")
     suspend fun cancelOffer(@Path("id") id:Long): Response<DeleteResponse>
 
+    @PUT("/api/v1/bookings/{id}")
+    suspend fun approveBooking(@Path("id") id:Long, @Body bookingUpdate: BookingUpdateDTO): Response<SingleBookingResponse>
+
 
     companion object {
         fun getApi(): OfferService? {
@@ -65,4 +68,8 @@ class OfferDTO {
     var endDateTime: String = ""
     var pickupLocation: String = ""
     var carId: Long = 0
+}
+
+class BookingUpdateDTO {
+    var status: String = ""
 }

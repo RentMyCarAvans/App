@@ -1,7 +1,6 @@
 package com.avans.rentmycar.ui.offer
 
 import android.app.DatePickerDialog
-import android.app.Dialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.util.Log
@@ -10,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.TimePicker
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -50,6 +48,8 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener,
     var startDateTime: Calendar = Calendar.getInstance()
     var endDateTime: Calendar = Calendar.getInstance()
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -62,6 +62,7 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         val args: OfferCarFragmentArgs by navArgs()
         Log.d(TAG, "========== onViewCreated: args: $args")
         val bookingViewModel = ViewModelProvider(requireActivity())[BookingViewModel::class.java]
+
         bookingViewModel.clearSingleBooking()
         bookingViewModel.getBookingForOfferById(args.id.toLong())
 
@@ -90,10 +91,10 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener,
             if (it != null) {
                 Log.d(TAG, "onViewCreated: booking status: ${it.status}")
 
-                it.customer.firstName?.let { firstName ->
+                it.customer.firstName.let { firstName ->
                     customerFirstName = firstName
                 }
-                it.customer.lastName?.let { lastName ->
+                it.customer.lastName.let { lastName ->
                     customerLastName = lastName
                 }
 
@@ -191,13 +192,14 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener,
                 .setMessage("Are you sure you want to approve this booking?")
                 .setPositiveButton("Yes") { dialog, which ->
                     Log.d("[OCF]", "Approved!")
+                                approveBooking(args)
+
                 }
                 .setNegativeButton("No") { dialog, which ->
                     Log.d("[OCF]", "Declined!")
                     }
                 .show()
 
-//            approveOffer(args)
         }
 
         binding.buttonOffercarDecline.setOnClickListener {
@@ -209,15 +211,34 @@ class OfferCarFragment : Fragment(), DatePickerDialog.OnDateSetListener,
                     Log.d("[OCF]", "Decline cancelled!")
                 }
                 .setPositiveButton("Yes") { dialog, which ->
-                    Log.d("[OCF]", "Declinedd!")
+                    Log.d("[OCF]", "Declined!")
+                                declineBooking(args)
+
                 }
                 .show()
-//            declineOffer(args)
         }
 
     } // end onViewCreated()
 
+    private fun approveBooking(args: OfferCarFragmentArgs) {
+        Log.d(TAG, "approveOffer() => args = " + args)
+        val bookingViewModel = ViewModelProvider(requireActivity())[BookingViewModel::class.java]
 
+        bookingViewModel.approveBooking(args.id.toLong())
+        findNavController().navigate(R.id.action_offerCarFragment2_to_myOffersFragment)
+
+
+    }
+
+    private fun declineBooking(args: OfferCarFragmentArgs) {
+        Log.d(TAG, "declineOffer() => args = " + args)
+        val bookingViewModel = ViewModelProvider(requireActivity())[BookingViewModel::class.java]
+
+        bookingViewModel.declineBooking(args.id.toLong())
+        findNavController().navigate(R.id.action_offerCarFragment2_to_myOffersFragment)
+
+
+    }
 
 
     /**
